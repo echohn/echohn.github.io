@@ -5,29 +5,9 @@
     <description>Hi,I&#39;m Echo Han.</description>
     <link>http://www.echoed.me/</link>
     <atom:link href="http://www.echoed.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Mar 2016 01:07:08 +0800</pubDate>
-    <lastBuildDate>Mon, 07 Mar 2016 01:07:08 +0800</lastBuildDate>
+    <pubDate>Mon, 07 Mar 2016 01:16:31 +0800</pubDate>
+    <lastBuildDate>Mon, 07 Mar 2016 01:16:31 +0800</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
-    
-      <item>
-        <title>怎么改变一种文件类型所有文件的图标？</title>
-        <description>&lt;p&gt;在 Mac 下，想改变一个文件的图标非常简单，&lt;code&gt;Command + i&lt;/code&gt;显示简介，然后把图片文件拖到图标上去就行了。&lt;/p&gt;
-
-&lt;p&gt;但是这仅仅是某个固定文件的做法，要改变这一类型文件的所有文件的图标，又该如何进行呢？&lt;/p&gt;
-
-&lt;p&gt;我在系统偏好设置里没有找到相关的设置。因为我记得修改文件的默认打开方式的时候，图标也跟着变化过。所以我想，可能需要在打开程序中进行设置吧。&lt;/p&gt;
-
-&lt;p&gt;首先我用 Sublime Text 进行测试。&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 05 Feb 2016 00:00:00 +0800</pubDate>
-        <link>http://www.echoed.me/2016/02/05/how-to-change-the-icon-of-a-file-type/</link>
-        <guid isPermaLink="true">http://www.echoed.me/2016/02/05/how-to-change-the-icon-of-a-file-type/</guid>
-        
-        <category>Mac</category>
-        
-        
-      </item>
     
       <item>
         <title>服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？</title>
