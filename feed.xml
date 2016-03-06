@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Echo&#39;s Blog</title>
+    <description>Hi,I&#39;m Echo Han.</description>
+    <link>http://www.echoed.me/</link>
+    <atom:link href="http://www.echoed.me/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 07 Mar 2016 01:07:08 +0800</pubDate>
+    <lastBuildDate>Mon, 07 Mar 2016 01:07:08 +0800</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>怎么改变一种文件类型所有文件的图标？</title>
+        <description>&lt;p&gt;在 Mac 下，想改变一个文件的图标非常简单，&lt;code&gt;Command + i&lt;/code&gt;显示简介，然后把图片文件拖到图标上去就行了。&lt;/p&gt;
+
+&lt;p&gt;但是这仅仅是某个固定文件的做法，要改变这一类型文件的所有文件的图标，又该如何进行呢？&lt;/p&gt;
+
+&lt;p&gt;我在系统偏好设置里没有找到相关的设置。因为我记得修改文件的默认打开方式的时候，图标也跟着变化过。所以我想，可能需要在打开程序中进行设置吧。&lt;/p&gt;
+
+&lt;p&gt;首先我用 Sublime Text 进行测试。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 05 Feb 2016 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2016/02/05/how-to-change-the-icon-of-a-file-type/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2016/02/05/how-to-change-the-icon-of-a-file-type/</guid>
+        
+        <category>Mac</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？</title>
+        <description>&lt;p&gt;我第一个接触过的 Linux 是 Fedora Core 4。当时读大一，刚买了电脑，在软件店逛的时候看到了它。当时只是觉得 68 元买一盒正版软件，里面7、8张光盘真是太值了……&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/post_images/fc4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我用了整整一天，按照说明书的小册子终于把它成功装在电脑上。我很开心的玩了几天，然后就把它删了，因为它自带的小游戏太无聊……&lt;/p&gt;
+
+&lt;p&gt;再之后过了大概半年，我忘了究竟是什么原因，可能是上课老师提到这玩意多牛X，也可能是上网看了热血青年 Linus葛娃子不可一世的帖子，我又一次扎进 Linux 的大泡子，这一扎就直到现在。&lt;/p&gt;
+
+&lt;p&gt;要说喜欢的还是 Fedora，&lt;/p&gt;
+
+&lt;p&gt;后来工作之后，一直是在 RHEL 系的 Linux 下做运维。 因为平时在这类发行版下经验积累，让我不加思索的继续用着 RHEL/CentOS。&lt;/p&gt;
+
+&lt;p&gt;相信线上系统选择什么发行版这个问题很多做运维的新人都纠结过。&lt;/p&gt;
+
+&lt;p&gt;今天无意间在知乎看到这个问题: &lt;a href=&quot;https://www.zhihu.com/question/19599986&quot;&gt;服务器操作系统应该选择 Debian/Ubuntu 还是 CentOS？&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;我自己也想了一下，发现我还是会选择 RHEL 系的发行版。一则是熟悉、二是 RHEL 确实稳定，在我工作的这些年，只遇到过一次 RHEL 跟 E5 某个版本的 CPU 出现兼容性的问题，不过当时 Redhat 也及时更新了补丁。话说 RHEL 的补丁更新确实要比它家迅速。我记得前年 Bash 漏洞爆出的时候，我看到新闻的当日，登录 Redhat 的 RHN，就已经提供补丁下载了。&lt;/p&gt;
+
+&lt;h2 id=&quot;ubuntudebian-&quot;&gt;Ubuntu/Debian 的优势&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;apt-get 确实比 yum 好用。&lt;/li&gt;
+  &lt;li&gt;软件包数量多，功能性版本更新快。&lt;/li&gt;
+  &lt;li&gt;因为上条，研发使用 Ubuntu 比较多，环境能无缝切换。&lt;/li&gt;
+  &lt;li&gt;Ubuntu 对 Linux 初学者非常友好。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ubuntudebian--1&quot;&gt;Ubuntu/Debian 的劣势&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zhihu.com/question/19599986/answer/83297432&quot;&gt;Ubuntu 补丁更新慢,官方只管放包不管修&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Debian 生命周期不固定，新版本发布以后，上个版本再维护18个月，一般生命周期在5年。当生命周期过了以后，就没有安全补丁，你的服务器就会裸奔或需要重新安装系统。&lt;/li&gt;
+  &lt;li&gt;Ubuntu 的 LTS 版生命周期是5年。&lt;/li&gt;
+  &lt;li&gt;Debian 由于有版权上的考虑和代码纯洁性的洁癖，一些硬件驱动和软件被删除了，导致安装过程有问题。比如 Dell 服务器上，大量使用的忘开 BroadCom，就驱动不了。&lt;/li&gt;
+  &lt;li&gt;Debian 的 LTS 支持，不是由 Debian 官网安全团队维护的，而是由其他志愿者维护的，工作效率和质量是否有保障还不知道。&lt;/li&gt;
+  &lt;li&gt;Ubuntu 社区经常搞些莫名其妙的东西，而且一段时间之后可能就不用了。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;rhelcentos-&quot;&gt;RHEL/CentOS 的优势&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;受鸟哥等 RH 系列 Linux 书籍的影响，国内运维人员对 RH 的系统最熟悉。如果你是一个工程师，熟悉了 CentOS/Redhat，找工作更容易。如果你是一个企业老板，相对也容易招聘到熟悉 CentOS/Redhat的工程师。&lt;/li&gt;
+  &lt;li&gt;CentOS/RHEL 的生命周期是7年，基本可以覆盖硬件的生命周期。RedHat 5、RedHat 6的生命周期，延长到10年。&lt;/li&gt;
+  &lt;li&gt;RedHat 是一个值得尊敬的开源公司，拥有一批 Linux 内核方面如雷贯耳的大牛。长期以来对 Linux 内核的贡献程度都是最多的。可以说，如果一个 Linux 方面的问题，RedHat 搞不定，那么很少有其他公司能搞定了。&lt;/li&gt;
+  &lt;li&gt;CentOS/RHEL 对硬件支持很好，主流硬件厂商早就将服务器拿过去测试，一般不存在硬件兼容性问题。&lt;/li&gt;
+  &lt;li&gt;大量商业软件，比如 Oracle，都是针对 Redhat 认证的，有大量的帮助文档和使用说明，有良好的技术支持。出了问题，也容易在网上找到类似的答案和经验。&lt;/li&gt;
+  &lt;li&gt;CentOS 是 Redhat 的克隆版，如果需要可随时平滑切换到 Redhat，从而享受 Redhat 的厂商服务支持。&lt;/li&gt;
+  &lt;li&gt;Redhat 对安全漏洞的响应更及时。&lt;/li&gt;
+  &lt;li&gt;RHCE 的培训，相对完善，认同程度高。&lt;/li&gt;
+  &lt;li&gt;CentOS/RHEL 的批量安装更方便。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;rhelcentos--1&quot;&gt;RHEL/CentOS 的劣势&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;由于生命周期长，线上系统往往版本老，最近的软件在 RH 的官方库里找不到。只能自己编译。还得专人负责补丁更新。&lt;/li&gt;
+  &lt;li&gt;如果研发多使用 Ubuntu，线上生成环境使用 RHEL，环境的变更会需要更多的调试，大幅影响研发效率。&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 03 Feb 2016 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/</guid>
+        
+        <category>运维</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>分析自己的 Safari 历史记录</title>
+        <description>&lt;p&gt;昨天在知乎逛，看到一个问题&lt;a href=&quot;http://www.zhihu.com/question/21395276&quot;&gt;可以用 Python 编程语言做哪些神奇好玩的事情？&lt;/a&gt;,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。&lt;/p&gt;
+
+&lt;p&gt;于是查了一下，Safari 的历史记录文件是&lt;code&gt;~/Library/Safari/History.db&lt;/code&gt;，file 了一下这个文件，原来它是个 SQLite 数据库哈哈哈，苹果还真是贴心……&lt;/p&gt;
+
+&lt;p&gt;于是写了一条 sql 来查：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+select domain_expansion,count(domain_expansion) from &quot;main&quot;.&quot;history_items&quot;  group by domain_expansion  ORDER BY count(domain_expansion) desc limit 0,20
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;结果是这样的，还真的有点出乎意料。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;domain_expansion&lt;/th&gt;
+      &lt;th&gt;count(domain_expansion)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;baidu&lt;/td&gt;
+      &lt;td&gt;8645&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;m.baidu&lt;/td&gt;
+      &lt;td&gt;2588&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;zhihu&lt;/td&gt;
+      &lt;td&gt;1339&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;github&lt;/td&gt;
+      &lt;td&gt;1126&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;image.baidu&lt;/td&gt;
+      &lt;td&gt;824&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;bbs.feng&lt;/td&gt;
+      &lt;td&gt;642&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;m.qb5&lt;/td&gt;
+      &lt;td&gt;544&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;baike.baidu&lt;/td&gt;
+      &lt;td&gt;476&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;detail.tmall&lt;/td&gt;
+      &lt;td&gt;470&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;zhidao.baidu&lt;/td&gt;
+      &lt;td&gt;458&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;s.taobao&lt;/td&gt;
+      &lt;td&gt;455&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;dashubao&lt;/td&gt;
+      &lt;td&gt;448&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;item.jd&lt;/td&gt;
+      &lt;td&gt;414&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;pan.baidu&lt;/td&gt;
+      &lt;td&gt;397&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;item.taobao&lt;/td&gt;
+      &lt;td&gt;383&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;v2ex&lt;/td&gt;
+      &lt;td&gt;339&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;bttiantang&lt;/td&gt;
+      &lt;td&gt;336&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;tieba.baidu&lt;/td&gt;
+      &lt;td&gt;321&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;waitsun&lt;/td&gt;
+      &lt;td&gt;292&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;google&lt;/td&gt;
+      &lt;td&gt;213&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;一条条来分析：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;百度是我的默认搜索引擎。俗话说内事问百度，外事问 Google 。虽然我平时开着 ss，但是由于普遍通过 ss 访问还是比较慢，所以除了查技术资料走 google 外，平时百度我确实用的不少，百度能登顶在意料之中。但是 image.baidu，zhidao.baidu 居然都能进前 20 是个什么鬼？我又分别对这两个搜了一下，随便点了一些例如 qq 表情、Macbook Pro 15’(怨念啊。。。)、龙庆峡等等的图片；以及貂绒大衣为什么比羽绒服暖和，关于吉列温和型剃须啫哩香味等等的问题，我也给自己跪了。。。&lt;/li&gt;
+  &lt;li&gt;知乎、v2ex 是平时娱乐两大网站、能在 Top 20 我也不意外。&lt;/li&gt;
+  &lt;li&gt;github 作为全球最大同性交友网站我就不说什么了。&lt;/li&gt;
+  &lt;li&gt;bbs.feng 估计是 IOS 9 越狱那阵给闹的。&lt;/li&gt;
+  &lt;li&gt;qb5 和 大书包 ╮(╯_╰)╭ 好吧，我承认我上班时候看网络小说来着……&lt;/li&gt;
+  &lt;li&gt;tmall、taobao、jd：嗯，双十一我真的没买东西，真的……这都是平时网购积累的。&lt;/li&gt;
+  &lt;li&gt;pan.baidu：现在分享个东西都走它，它能上榜也算积少成多吧。&lt;/li&gt;
+  &lt;li&gt;bttiantang：是我平时网上找电影的第一选择。&lt;/li&gt;
+  &lt;li&gt;tieba.baidu：这都能上榜，只能说贴吧的圈子真的很大。&lt;/li&gt;
+  &lt;li&gt;waitsun：我为我用了不少盗版软件而羞愧。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;首先感慨一下，百度的生态圈子确实大，虽然我平时没少跟人黑它，但是由于 Google 访问慢，我确实每天也很依赖它。&lt;/p&gt;
+
+&lt;p&gt;其次，我以后一定少看小说，有时间还是多扫扫 Pocket，刚打开手机看了一下，未读又堆到快700了。&lt;/p&gt;
+
+&lt;p&gt;最近开始读李笑来的《把时间当做朋友》，感觉很有收获，希望真能开启心智，发扬精神，好好治一治我的精神病。&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Dec 2015 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/mac/2015/12/06/analyse_my_safari_history/</link>
+        <guid isPermaLink="true">http://www.echoed.me/mac/2015/12/06/analyse_my_safari_history/</guid>
+        
+        <category>Mac</category>
+        
+        <category>Safari</category>
+        
+        
+        <category>mac</category>
+        
+      </item>
+    
+      <item>
+        <title>搜索 rubygems 并安装的 Alfred Workflow</title>
+        <description>&lt;p&gt;有时候，我会打开 &lt;a href=&quot;https://rubygems.org&quot;&gt;rubygems.org&lt;/a&gt; 去搜一个 gem 包。 一般是打开它的 GitHub 主页去查看文档，或是其他一些信息，也有的时候去搜索相关的 gem 进行安装使用。&lt;/p&gt;
+
+&lt;p&gt;但是对于懒人来说，还是 Alfred 好用呀，所以十一放假穷极无聊的时候我写了一个 Workflow 用于搜索和安装 gem 。&lt;/p&gt;
+
+&lt;p&gt;使用方法：&lt;/p&gt;
+
+&lt;p&gt;使用 gem 关键字，后接 gem 名进行搜索。待列表出来后，可选择需要的 gem ，enter，即可选择安装或是打开 gem 的相关链接。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/post_images/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/post_images/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/echohn/ruby_gems_org_alfred_workflow/raw/master/RubyGems.alfredworkflow&quot;&gt;点击这里下载&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2015/10/17/rubygems-workflow/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2015/10/17/rubygems-workflow/</guid>
+        
+        <category>Mac</category>
+        
+        <category>Ruby</category>
+        
+        <category>Alfred</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ruby 强制解构</title>
+        <description>&lt;p&gt;今天在写 Rakefile 的时候，突然想起之前看过 Ruby 的一个小技巧。&lt;/p&gt;
+
+&lt;p&gt;我们经常使用 &lt;code&gt;|x,y|&lt;/code&gt; 的形式在 block 中对传参的数组进行解构，那么在类似 reduce 的方法中，也可以使用 &lt;code&gt;()&lt;/code&gt; 强制对参数进行解构。&lt;/p&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;foo1&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;bar1&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;foo2&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;bar2&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;foo1&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bar1&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;foo2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;bar2&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;bar1&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;foo1&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2015/10/17/ruby-destructuring/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2015/10/17/ruby-destructuring/</guid>
+        
+        <category>Ruby</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Alfred 自动补全的技巧</title>
+        <description>&lt;p&gt;在写这个 &lt;a href=&quot;/2015/10/17/rubygems-workflow/&quot;&gt;RubyGems Workflow&lt;/a&gt; 这个 Workflow 的时候，我发现了 Alfred 一点很有用的地方，就是对查询的结果进行自动补全，在补全后对查询结果进行另外的操作。&lt;/p&gt;
+
+&lt;p&gt;当 Feedback 的 valid = no 时，就可以通过 autocomplete 属性自动补全 Feedback 。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:uid&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:subtitle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Downloads: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;downloads&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; ; Info: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;info&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:arg&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:autocomplete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; : &amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:valid&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;no&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;而 autocomplete 的值就是第二次查询的 query，所以需要在脚本开始接收 query 的地方对结果进行解析，映射到不同的方法上。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;:&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;search&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在补全之后的方法中，记得将 Feedback valid 属性的值设为 &lt;code&gt;yes&lt;/code&gt;。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2015/10/17/alfred_tips/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2015/10/17/alfred_tips/</guid>
+        
+        <category>Alfred</category>
+        
+        <category>Ruby</category>
+        
+        <category>Mac</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>查询 IP 地址位置的 Alfred Workflow</title>
+        <description>&lt;p&gt;周五开例会的时候，穷极无聊写了一个搜索 IP 地理位置的 Alfred Workflow，嗯嗯，这也是我写的第一个 Alfred Workflow。&lt;/p&gt;
+
+&lt;p&gt;数据源用的是 www.ip138.com。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://raw.github.com/echohn/search_ip_location_alfred/master/Search%20Ip%20Location.alfredworkflow&quot;&gt;点击这里下载&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 19 Apr 2015 23:00:00 +0800</pubDate>
+        <link>http://www.echoed.me/2015/04/19/search_ip_location_alfred/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2015/04/19/search_ip_location_alfred/</guid>
+        
+        <category>Mac</category>
+        
+        <category>Alfred</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>严重的拖延症患者</title>
+        <description>&lt;p&gt;从买这个虚机，搭建完 jekyll 到现在已经足足8个月了。开始的新鲜劲过后，又被其他的东西吸引了目光。如若不是今天听 podcast 到相关话题，绝难想起还有这个东西。&lt;/p&gt;
+
+&lt;p&gt;回想这8个月来，生活发生了太多太多的改变。还好的是，经历了紧张、焦虑、忙碌、烦躁之后，我的生活又重新回到了与以往相似的情形。现在我休假回到老家，又可以轻松的做自己喜欢的事。&lt;/p&gt;
+
+&lt;p&gt;不多说了，2015，新年新气象！仅以此 post 作为一个开始，记录我的崭新生活。&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hello new world!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Mon, 16 Feb 2015 08:05:00 +0800</pubDate>
+        <link>http://www.echoed.me/2015/02/16/hello-world/</link>
+        <guid isPermaLink="true">http://www.echoed.me/2015/02/16/hello-world/</guid>
+        
+        <category>杂记</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
