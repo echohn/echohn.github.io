@@ -1,5 +1,30 @@
 require 'time'
 
+def convert_block_area(file_name)
+  flag_in_block = false
+  lines = IO.readlines(file_name).map do |l|
+    if l.chomp.match /(\s*)```(.*)$/
+      if flag_in_block
+        flag_in_block = false
+        "{% endhighlight %}\n"
+      else
+        if $2.length > 0
+          flag_in_block = true
+          "#{$1}{% highlight #{$2} %}\n"
+        else
+          l
+        end
+      end
+    else
+      l
+    end
+  end
+
+  File.open(file_name,'w') do |f|
+    f.puts lines
+  end
+end
+
 desc "Auto Check on my jekyll server."
 task :autocheck do
   exec "god start -c .autocheck.god"
@@ -21,6 +46,10 @@ end
 
 desc "Build my site ..."
 task :build do
+  Dir.chdir File.expand_path('..',__FILE__)
+  Dir['_posts/*.md'].each do |md_file|
+    convert_block_area md_file
+  end
   system "jekyll build"
 end
 
@@ -56,8 +85,10 @@ task :new do
     post.puts "---"
     post.puts "layout: post"
     post.puts "title: \"#{title.gsub(/-/,' ')}\""
+    post.puts "subtitle: \'\'"
     post.puts "date: #{date}"
-    post.puts "categories:"
+    post.puts "header-img: \"\""
+    post.puts "author: \"Echo\""
     post.puts "tags: "
     post.puts "---"
   end

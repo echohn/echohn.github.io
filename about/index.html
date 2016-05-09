@@ -10,9 +10,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Echo 的网络日志 | Echo's Blog</title>
+    <title>About - Echo 的网络日志 | Echo's Blog</title>
 
-    <link rel="canonical" href="http://echohn.github.io/">
+    <link rel="canonical" href="http://echohn.github.io/about/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -124,14 +124,14 @@
 
 
     <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+<header class="intro-header" style="background-image: url('/img/about-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>Echo's Blog</h1>
+                    <h1>About</h1>
                     <!--<hr class="small">-->
-                    <span class="subheading">我把桃花切两斤，且与时光炖了。</span>
+                    <span class="subheading">Hey, this is Echo.</span>
                 </div>
             </div>
         </div>
@@ -152,228 +152,90 @@
                 col-xs-12
                 post-container
             ">
-    			
-<div class="post-preview">
-    <a href="/2016/05/09/reading-note-of-woa/">
-        <h2 class="post-title">
-            「提问的智慧」读书笔记
-        </h2>
-        
-        <h3 class="post-subtitle">
-            本来我是想放图片上来的，可是太大了……
-        </h3>
-        
-        <div class="post-content-preview">
-            周末休假在家，重读了「提问的智慧」，并按照自己的理解重新梳理了一下导图的结构。
+    			<!-- Language Selector -->
+<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
+    <option value="0" selected> 中文 Chinese </option>
+    <option value="1"> 英语 English </option>
+</select>
 
+<!-- Chinese Version -->
+<div class="zh post-container">
+    <blockquote>
+        我把桃花切两斤，且与时光炖了。
+    </blockquote>
+    9月21日上午，阳光明媚，鲜花斗艳。帕洛阿尔托苹果店里欢声笑语，人头攒动。苹果公司首席执行官蒂姆·库克先生在店长欧阳猛南陪同下，不远千米，深入到一线店面，为那里的员工带去节曰的问候和良好的祝愿。<br><br>“果粉们，你们辛苦了，我代表某果公司，祝你们身体健康，生活幸福，工作成功！”库克亲切慰问广大员工和顾客，并就iOS7、iPhone 5S和iPhone 5C的销售状况进行调研。 <br><br>“您现在每月工资有多少？肾5S拿到了吗？”在店里，库克关切地向果粉们问起这一问题。当听说果粉们排到了5S，库克满意地连连点头。接着他指出，近年来苹果事业发展取得巨大成就，特别是iPhone影响剧增，老百姓对iOS满意度逐步提高，在这个转变过程中，果粉的辛勤工作功不可没。<br><br>库克看到一个中国小朋友在排队买iPhone 5S，亲切的问：“5288元一台能承受不？”小朋友回答到：“能！”当得知这位小朋友卖了一个肾来买iPhone 5S时，库克叮嘱道：“在支持苹果的同时，也要爱护身体。”<br><br>库克与购买苹果手机的果粉们兴致勃勃地参观了苹果专卖店，和员工们拉了拉家常，并饶有兴趣地玩了四盘切西瓜游戏，与普通员工同乐。<br><br>在交谈中，库克多次关心地强调：“有了iPhone 5C，就不卖iPhone 5了。”并对顾客说：“好好休息，身体是革命的本钱嘛！”会谈始终在亲切友好的气氛中进行。<br><br>顾客们就库克的讲话达成了广泛的共识，并承认世界上只有iOS最流畅，要紧紧的团结在以库克先生为首席执行官的苹果公司集体周围，一心一意抓学习，聚精会神谋发展。<br>
+    <br>帕洛阿尔托苹果专卖店当日原则通过《蒂姆·库克首席执行官在加州新苹果店的讲话纪要》，并下发各分店认真学习、研讨。
 
-
-本来我是想放图片上来的，可是即使压缩完，也太大了……
-
-不过你可以访问这里下载 PDF 版本。
-
-
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 9, 2016
+    <p style="text-align:right;">
+        —— <a href="http://www.zhihu.com/question/19687065">李书航 － 什么是「共产中文腔调」？ </a>
     </p>
+
 </div>
-<hr>
 
-<div class="post-preview">
-    <a href="/2016/04/30/how-to-run-a-script-after-network-interface-up/">
-        <h2 class="post-title">
-            How to run a script after network interface up
-        </h2>
-        
-        <h3 class="post-subtitle">
-            顺便还有怎么不登录系统就能看到 ip 地址
-        </h3>
-        
-        <div class="post-content-preview">
-            我懒，我喜欢让自己的工作环境变得轻松，喜欢 Automate Everything 。
+<!-- English Version -->
+<div class="en post-container">
+    <blockquote>
+        Designer or Engineer, things in between.
+    </blockquote>
 
-今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个ip a看一下 ip 地址，再 ⌃ + ⌘ 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on April 30, 2016
+    <p>
+        Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven’t found it yet, keep looking. Don’t settle. As with all matters of the heart, you’ll know when you find it.
     </p>
-</div>
-<hr>
 
-<div class="post-preview">
-    <a href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/">
-        <h2 class="post-title">
-            服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？
-        </h2>
-        
-        <h3 class="post-subtitle">
-            知乎相关问题总结
-        </h3>
-        
-        <div class="post-content-preview">
-            我第一个接触过的 Linux 是 Fedora Core 4。当时读大一，刚买了电脑，在软件店逛的时候看到了它。当时只是觉得 68 元买一盒正版软件，里面7、8张光盘真是太值了……
-
-
-
-我用了整整一天，按照说明书的小册子终于把它成功装在电脑上。我很开心的玩了几天，然后就把它删了，因为它自带的小游戏太无聊……
-
-再之后过了大概半年，我忘了究竟是什么原因，可能是上课老师提到这玩意多牛X，也可能...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on February 3, 2016
+    <p>
+    If you want to live your life in a creative way, as an artist, you have to not look back too much. You have to be willing to take whatever you’ve done and whoever you were and throw them away.
     </p>
-</div>
-<hr>
 
-<div class="post-preview">
-    <a href="/mac/2015/12/06/analyse_my_safari_history/">
-        <h2 class="post-title">
-            看看自己平时上网都在干嘛？
-        </h2>
-        
-        <h3 class="post-subtitle">
-            分析自己的 Safari 历史记录
-        </h3>
-        
-        <div class="post-content-preview">
-            昨天在知乎逛，看到一个问题可以用 Python 编程语言做哪些神奇好玩的事情？,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。
-
-于是查了一下，Safari 的历史记录文件是~/Library/Safari/History.db，file 了一下这个...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on December 6, 2015
+    <p style="text-align:right;">
+    -- Steve Jobs
     </p>
+
 </div>
-<hr>
 
-<div class="post-preview">
-    <a href="/2015/10/17/rubygems-workflow/">
-        <h2 class="post-title">
-            搜索 rubygems 并安装的 Alfred Workflow
-        </h2>
-        
-        <h3 class="post-subtitle">
-            嘿，又是 Alfred workflow
-        </h3>
-        
-        <div class="post-content-preview">
-            有时候，我会打开 rubygems.org 去搜一个 gem 包。 一般是打开它的 GitHub 主页去查看文档，或是其他一些信息，也有的时候去搜索相关的 gem 进行安装使用。
+<!-- Handle Language Change -->
+<script type="text/javascript">
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    function onLanChange(index){
+        if(index == 0){
+            $zh.style.display = "block";
+            $en.style.display = "none";
+        }else{
+            $en.style.display = "block";
+            $zh.style.display = "none";
+        }
+    }
+    onLanChange(0);
+</script>
 
-但是对于懒人来说，还是 Alfred 好用呀，所以十一放假穷极无聊的时候我写了一个 Workflow 用于搜索和安装 gem 。
 
-使用方法：
 
-使用 gem 关键字，后接 gem 名进行搜索。待列表出来后，可选...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on October 17, 2015
-    </p>
+
+
+
+
+<!-- disqus 评论框 start -->
+<div class="comment">
+    <div id="disqus_thread" class="disqus-thread">
+
+    </div>
 </div>
-<hr>
+<!-- disqus 评论框 end -->
 
-<div class="post-preview">
-    <a href="/2015/10/17/ruby-destructuring/">
-        <h2 class="post-title">
-            Ruby 强制解构
-        </h2>
-        
-        <div class="post-content-preview">
-            今天在写 Rakefile 的时候，突然想起之前看过 Ruby 的一个小技巧。
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "echohn//about/";
+    var disqus_url = "http://echohn.github.io/about/";
 
-我们经常使用 |x,y| 的形式在 block 中对传参的数组进行解构，那么在类似 reduce 的方法中，也可以使用 () 强制对参数进行解构。
-
-例如：
-
-[2] pry(main)&gt; a = [['foo1','bar1'],['foo2','bar2']]
-=&gt; [["foo1", "bar...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on October 17, 2015
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2015/10/17/alfred_tips/">
-        <h2 class="post-title">
-            Alfred 自动补全的技巧
-        </h2>
-        
-        <div class="post-content-preview">
-            在写这个 RubyGems Workflow 这个 Workflow 的时候，我发现了 Alfred 一点很有用的地方，就是对查询的结果进行自动补全，在补全后对查询结果进行另外的操作。
-
-当 Feedback 的 valid = no 时，就可以通过 autocomplete 属性自动补全 Feedback 。
-
-{
-  :uid      =&gt; result['name'],
-  :...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on October 17, 2015
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2015/04/19/search_ip_location_alfred/">
-        <h2 class="post-title">
-            查询 IP 地址位置的 Alfred Workflow
-        </h2>
-        
-        <h3 class="post-subtitle">
-            我的第一个 Alfred workflow
-        </h3>
-        
-        <div class="post-content-preview">
-            周五开例会的时候，穷极无聊写了一个搜索 IP 地理位置的 Alfred Workflow，嗯嗯，这也是我写的第一个 Alfred Workflow。
-
-数据源用的是 www.ip138.com。
-
-点击这里下载
-
-
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on April 19, 2015
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2015/02/16/hello-world/">
-        <h2 class="post-title">
-            严重的拖延症患者
-        </h2>
-        
-        <h3 class="post-subtitle">
-            生命不休，拖延不止
-        </h3>
-        
-        <div class="post-content-preview">
-            从买这个虚机，搭建完 jekyll 到现在已经足足8个月了。开始的新鲜劲过后，又被其他的东西吸引了目光。如若不是今天听 podcast 到相关话题，绝难想起还有这个东西。
-
-回想这8个月来，生活发生了太多太多的改变。还好的是，经历了紧张、焦虑、忙碌、烦躁之后，我的生活又重新回到了与以往相似的情形。现在我休假回到老家，又可以轻松的做自己喜欢的事。
-
-不多说了，2015，新年新气象！仅以此 po...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on February 16, 2015
-    </p>
-</div>
-<hr>
-
-
-<!-- Pager -->
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
 
 
     		</div>

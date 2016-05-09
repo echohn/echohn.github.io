@@ -1,12 +1,547 @@
-<!DOCTYPE html> <html> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /> <!--[if lte IE 9]><meta http-equiv="refresh" content="0;url=/ie.html"><![endif]--> <title>Alfred 自动补全的技巧</title> <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600|Droid+Sans+Mono' rel='stylesheet' type='text/css'> <link rel="stylesheet" href="/css/main.css"> <link rel="canonical" href="http://www.echoed.me/2015/10/17/alfred_tips/"> <link rel="alternate" type="application/rss+xml" title="Echo's Blog" href="http://www.echoed.me/feed.xml" /> <script src="/assets/js/prefixfree.js"></script> </head> <body> <aside id="sidebar"> <div id="sidebar-left"> <a id="sidebar-avatar" href="/"> <img id="sidebar-avatar-img" alt="" src="/assets/img/avatar.jpg"/> </a> <div id="sidebar-social"> <a href="/feed.xml" class="sidebar-social-icon feed"></a> <a href="mailto:echohn@gmail.com" class="sidebar-social-icon email"></a> <a href="https://twitter.com/echo_hon" class="sidebar-social-icon twitter" target="_blank"></a> <a href="http://www.weibo.com/1130234205" class="sidebar-social-icon weibo" target="_blank"></a> <a href="https://github.com/echohn" class="sidebar-social-icon github" target="_blank"></a> </div> <ul id="sidebar-tags"> <li class="sidebar-tag active" data-filter="all">全部文章</li> <li class="sidebar-tag" data-filter="杂记">杂记</li> <li class="sidebar-tag" data-filter="Mac">Mac</li> <li class="sidebar-tag" data-filter="Alfred">Alfred</li> <li class="sidebar-tag" data-filter="Ruby">Ruby</li> <li class="sidebar-tag" data-filter="Safari">Safari</li> <li class="sidebar-tag" data-filter="运维">运维</li> <li class="sidebar-tag" data-filter="script">script</li> <li class="sidebar-tag" data-filter="linux">linux</li> </ul> </div> <div id="sidebar-right"> <div id="search-box"> <input id="search-input" type="text" placeholder="Search" /> </div> <nav id="toc"> <a class="toc-link" data-tags="script linux" href="/2016/04/30/how-to-run-a-script-after-network-interface-up/"> how to run a script after network interface up </a> <a class="toc-link" data-tags="运维" href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/"> 服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？ </a> <a class="toc-link" data-tags="Mac Safari" href="/mac/2015/12/06/analyse_my_safari_history/"> 分析自己的 Safari 历史记录 </a> <a class="toc-link" data-tags="Mac Ruby Alfred" href="/2015/10/17/rubygems-workflow/"> 搜索 rubygems 并安装的 Alfred Workflow </a> <a class="toc-link" data-tags="Ruby" href="/2015/10/17/ruby-destructuring/"> Ruby 强制解构 </a> <a class="toc-link" data-tags="Alfred Ruby Mac" href="/2015/10/17/alfred_tips/"> Alfred 自动补全的技巧 </a> <a class="toc-link" data-tags="Mac Alfred" href="/2015/04/19/search_ip_location_alfred/"> 查询 IP 地址位置的 Alfred Workflow </a> <a class="toc-link" data-tags="杂记" href="/2015/02/16/hello-world/"> 严重的拖延症患者 </a> </nav> </div> </aside> <main id="main"> <article class="post container"> <div class="post-meta"> <span class="post-meta-span date">2015 October 17</span> <span class="post-meta-span tag">Alfred, Ruby, Mac</span> </div> <h1 class="post-title">Alfred 自动补全的技巧</h1> <p>在写这个 <a href="/2015/10/17/rubygems-workflow/">RubyGems Workflow</a> 这个 Workflow 的时候，我发现了 Alfred 一点很有用的地方，就是对查询的结果进行自动补全，在补全后对查询结果进行另外的操作。</p> <p>当 Feedback 的 valid = no 时，就可以通过 autocomplete 属性自动补全 Feedback 。</p> <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">{</span>
-  <span class="ss">:uid</span>      <span class="o">=&gt;</span> <span class="n">result</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="p">,</span>
-  <span class="ss">:title</span>    <span class="o">=&gt;</span> <span class="n">result</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="p">,</span>
-  <span class="ss">:subtitle</span> <span class="o">=&gt;</span> <span class="s2">&quot;Downloads: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="s1">&#39;downloads&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2"> ; Info: </span><span class="si">#{</span><span class="n">result</span><span class="o">[</span><span class="s1">&#39;info&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-  <span class="ss">:arg</span>      <span class="o">=&gt;</span> <span class="n">result</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span><span class="p">,</span>
-  <span class="ss">:autocomplete</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="o">[</span><span class="s1">&#39;name&#39;</span><span class="o">]</span> <span class="o">+</span> <span class="s1">&#39; : &#39;</span><span class="p">,</span>
-  <span class="ss">:valid</span>    <span class="o">=&gt;</span> <span class="s1">&#39;no&#39;</span>
-<span class="p">}</span></code></pre></div> <p>而 autocomplete 的值就是第二次查询的 query，所以需要在脚本开始接收 query 的地方对结果进行解析，映射到不同的方法上。</p> <div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="s1">&#39;:&#39;</span>
-  <span class="n">info</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">first</span>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hi,I'm Echo Han.">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Alfred 自动补全的技巧 - Echo 的网络日志 | Echo's Blog</title>
+
+    <link rel="canonical" href="http://echohn.github.io/2015/10/17/alfred_tips/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Echo's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Alfred" title="Alfred">Alfred</a>
+                        
+                        <a class="tag" href="/tags/#Ruby" title="Ruby">Ruby</a>
+                        
+                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
+                        
+                    </div>
+                    <h1>Alfred 自动补全的技巧</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by Echo's Blog on October 17, 2015</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<p>在写这个 <a href="/2015/10/17/rubygems-workflow/">RubyGems Workflow</a> 这个 Workflow 的时候，我发现了 Alfred 一点很有用的地方，就是对查询的结果进行自动补全，在补全后对查询结果进行另外的操作。</p>
+
+<p>当 Feedback 的 valid = no 时，就可以通过 autocomplete 属性自动补全 Feedback 。</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">{</span>
+  <span class="ss">:uid</span>      <span class="o">=&gt;</span> <span class="n">result</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span>
+  <span class="ss">:title</span>    <span class="o">=&gt;</span> <span class="n">result</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span>
+  <span class="ss">:subtitle</span> <span class="o">=&gt;</span> <span class="s2">"Downloads: </span><span class="si">#{</span><span class="n">result</span><span class="p">[</span><span class="s1">'downloads'</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; Info: </span><span class="si">#{</span><span class="n">result</span><span class="p">[</span><span class="s1">'info'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+  <span class="ss">:arg</span>      <span class="o">=&gt;</span> <span class="n">result</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span>
+  <span class="ss">:autocomplete</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">' : '</span><span class="p">,</span>
+  <span class="ss">:valid</span>    <span class="o">=&gt;</span> <span class="s1">'no'</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>而 autocomplete 的值就是第二次查询的 query，所以需要在脚本开始接收 query 的地方对结果进行解析，映射到不同的方法上。</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">if</span> <span class="n">query</span><span class="p">.</span><span class="nf">match</span> <span class="s1">':'</span>
+  <span class="n">info</span> <span class="n">query</span><span class="p">.</span><span class="nf">split</span><span class="p">.</span><span class="nf">first</span>
 <span class="k">else</span>
   <span class="n">search</span> <span class="n">query</span>
-<span class="k">end</span></code></pre></div> <p>在补全之后的方法中，记得将 Feedback valid 属性的值设为 <code>yes</code>。</p> </article> <div class="post-share"> <div class="container"> <a href="https://twitter.com/share?url=http://www.echoed.me/2015/10/17/alfred_tips/&text=Alfred 自动补全的技巧" target="_blank" class="post-share-icon twitter"></a> <a href="https://www.evernote.com/clip.action?url=http://www.echoed.me/2015/10/17/alfred_tips/&title=Alfred 自动补全的技巧" target="_blank" class="post-share-icon evernote"></a> <a href="http://service.weibo.com/share/share.php?url=http://www.echoed.me/2015/10/17/alfred_tips/&title=Alfred 自动补全的技巧" target="_blank" class="post-share-icon weibo"></a> </div> </div> <div class="comment container"> <div id="disqus_thread"> <a href=""></a> </div> </div> <div class="footer"> <div class="container"> <p class="footer-entry">All content is licensed under <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA</a></p> <p class="footer-entry">Buit with <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> and <a href="https://github.com/P233/3-Jekyll" target="_blank">3-Jekyll theme</a> • Hosted on <a href="https://pages.github.com/" target="_blank">Github</a></p> </div> </div> </main> <button id="menu"> <span id="menu-icons"></span> </button> <script src="/assets/js/jquery-2.1.3.min.js"></script> <script src="/assets/js/jquery.pjax.js"></script> <script src="/assets/js/nprogress.js"></script> <script src="/assets/js/main.js"></script> </body> </html>
+<span class="k">end</span></code></pre></figure>
+
+<p>在补全之后的方法中，记得将 Feedback valid 属性的值设为 <code class="highlighter-rouge">yes</code>。</p>
+
+
+
+                <hr>
+
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/04/19/search_ip_location_alfred/" data-toggle="tooltip" data-placement="top" title="查询 IP 地址位置的 Alfred Workflow">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2015/10/17/ruby-destructuring/" data-toggle="tooltip" data-placement="top" title="Ruby 强制解构">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#杂记" title="杂记" rel="1">
+                                    杂记
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Mac" title="Mac" rel="4">
+                                    Mac
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Alfred" title="Alfred" rel="3">
+                                    Alfred
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                                    Ruby
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Safari" title="Safari" rel="1">
+                                    Safari
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#运维" title="运维" rel="1">
+                                    运维
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Linux" title="Linux" rel="1">
+                                    Linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#script" title="script" rel="1">
+                                    script
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#linux" title="linux" rel="1">
+                                    linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#读书笔记" title="读书笔记" rel="1">
+                                    读书笔记
+                                </a>
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://echohn.github.io">Echo's Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "/2015/10/17/alfred_tips";
+    var disqus_url = "http://echohn.github.io/2015/10/17/alfred_tips/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+                    <li>
+                        <a href="https://twitter.com/echo_hon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/echohn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/echohn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Echo's Blog 2016
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-77431076-1';
+    var _gaDomain = 'echohn.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '3f73ebe1e7ff90638adbb85f89789e3a';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Image to hack wechat
+<img src="/img/icon_wechat.png" width="0" height="0" />
+-->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
