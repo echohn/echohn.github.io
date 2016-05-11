@@ -10,9 +10,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>看看自己平时上网都在干嘛？ - Echo 的网络日志 | Echo's Blog</title>
+    <title>谁离开了，谁还在？ - Echo 的网络日志 | Echo's Blog</title>
 
-    <link rel="canonical" href="http://echohn.github.io/mac/2015/12/06/analyse_my_safari_history/">
+    <link rel="canonical" href="http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -149,13 +149,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-time.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg.jpg')
+        background-image: url('/img/post-bg-time.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -171,17 +171,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
-                        
-                        <a class="tag" href="/tags/#Safari" title="Safari">Safari</a>
+                        <a class="tag" href="/tags/#杂记" title="杂记">杂记</a>
                         
                     </div>
-                    <h1>看看自己平时上网都在干嘛？</h1>
+                    <h1>谁离开了，谁还在？</h1>
                     
                     
-                    <h2 class="subheading">分析自己的 Safari 历史记录</h2>
+                    <h2 class="subheading">怀念那些已经离职了的人们</h2>
                     
-                    <span class="meta">Posted by Echo's Blog on December 6, 2015</span>
+                    <span class="meta">Posted by Echo on May 11, 2016</span>
                 </div>
             </div>
         </div>
@@ -199,129 +197,56 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>昨天在知乎逛，看到一个问题<a href="http://www.zhihu.com/question/21395276">可以用 Python 编程语言做哪些神奇好玩的事情？</a>,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。</p>
+				<p>今天想联系某个同事时，没找到他的电话，忽然发现我已经很久没有更新单位的通讯录了。</p>
 
-<p>于是查了一下，Safari 的历史记录文件是<code class="highlighter-rouge">~/Library/Safari/History.db</code>，file 了一下这个文件，原来它是个 SQLite 数据库哈哈哈，苹果还真是贴心……</p>
+<p>于是，下午不忙的时候，找出来以前写的导出单位通讯录的程序，从 OA 上下载了目前最新的通讯录。</p>
 
-<p>于是写了一条 sql 来查：</p>
+<p>在与自己的通讯录合并之前，突然想到，很久没用过了，还是比较一下差异吧。</p>
 
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">domain_expansion</span><span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">from</span> <span class="nv">"main"</span><span class="p">.</span><span class="nv">"history_items"</span>  <span class="k">group</span> <span class="k">by</span> <span class="n">domain_expansion</span>  <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">desc</span> <span class="k">limit</span> <span class="mi">0</span><span class="p">,</span><span class="mi">20</span></code></pre></figure>
+<p>随着键盘几个简单的敲击，屏幕中突然出现了一大片或熟悉、或陌生的名字……</p>
 
-<p>结果是这样的，还真的有点出乎意料。</p>
+<hr />
 
-<table>
-  <thead>
-    <tr>
-      <th>domain_expansion</th>
-      <th>count(domain_expansion)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>baidu</td>
-      <td>8645</td>
-    </tr>
-    <tr>
-      <td>m.baidu</td>
-      <td>2588</td>
-    </tr>
-    <tr>
-      <td>zhihu</td>
-      <td>1339</td>
-    </tr>
-    <tr>
-      <td>github</td>
-      <td>1126</td>
-    </tr>
-    <tr>
-      <td>image.baidu</td>
-      <td>824</td>
-    </tr>
-    <tr>
-      <td>bbs.feng</td>
-      <td>642</td>
-    </tr>
-    <tr>
-      <td>m.qb5</td>
-      <td>544</td>
-    </tr>
-    <tr>
-      <td>baike.baidu</td>
-      <td>476</td>
-    </tr>
-    <tr>
-      <td>detail.tmall</td>
-      <td>470</td>
-    </tr>
-    <tr>
-      <td>zhidao.baidu</td>
-      <td>458</td>
-    </tr>
-    <tr>
-      <td>s.taobao</td>
-      <td>455</td>
-    </tr>
-    <tr>
-      <td>dashubao</td>
-      <td>448</td>
-    </tr>
-    <tr>
-      <td>item.jd</td>
-      <td>414</td>
-    </tr>
-    <tr>
-      <td>pan.baidu</td>
-      <td>397</td>
-    </tr>
-    <tr>
-      <td>item.taobao</td>
-      <td>383</td>
-    </tr>
-    <tr>
-      <td>v2ex</td>
-      <td>339</td>
-    </tr>
-    <tr>
-      <td>bttiantang</td>
-      <td>336</td>
-    </tr>
-    <tr>
-      <td>tieba.baidu</td>
-      <td>321</td>
-    </tr>
-    <tr>
-      <td>waitsun</td>
-      <td>292</td>
-    </tr>
-    <tr>
-      <td>google</td>
-      <td>213</td>
-    </tr>
-  </tbody>
-</table>
+<p>我在 2012 年 9 月加入这家单位。</p>
 
-<p>一条条来分析：</p>
+<p>我还记得在上一家公司接到丽娜的电话，啊？事业单位？你没弄错吧，我是做游戏的……</p>
 
-<ol>
-  <li>百度是我的默认搜索引擎。俗话说内事问百度，外事问 Google 。虽然我平时开着 ss，但是由于普遍通过 ss 访问还是比较慢，所以除了查技术资料走 google 外，平时百度我确实用的不少，百度能登顶在意料之中。但是 image.baidu，zhidao.baidu 居然都能进前 20 是个什么鬼？我又分别对这两个搜了一下，随便点了一些例如 qq 表情、Macbook Pro 15’(怨念啊。。。)、龙庆峡等等的图片；以及貂绒大衣为什么比羽绒服暖和，关于吉列温和型剃须啫哩香味等等的问题，我也给自己跪了。。。</li>
-  <li>知乎、v2ex 是平时娱乐两大网站、能在 Top 20 我也不意外。</li>
-  <li>github 作为全球最大同性交友网站我就不说什么了。</li>
-  <li>bbs.feng 估计是 IOS 9 越狱那阵给闹的。</li>
-  <li>qb5 和 大书包 ╮(╯_╰)╭ 好吧，我承认我上班时候看网络小说来着……</li>
-  <li>tmall、taobao、jd：嗯，双十一我真的没买东西，真的……这都是平时网购积累的。</li>
-  <li>pan.baidu：现在分享个东西都走它，它能上榜也算积少成多吧。</li>
-  <li>bttiantang：是我平时网上找电影的第一选择。</li>
-  <li>tieba.baidu：这都能上榜，只能说贴吧的圈子真的很大。</li>
-  <li>waitsun：我为我用了不少盗版软件而羞愧。</li>
-</ol>
+<p>我还记得刚入职的时候对这里到处都充满了好奇，那么多工会活动，还给钱……打完球之后总是被大睿拉着砸地摊子喝酒撸串，总是把我名字记错的门卫大爷，听着那些认识或不认识人的八卦……</p>
 
-<h2 id="section">总结</h2>
+<p>突然有一天，我特别高兴，因为我能叫出所有人的名字啦！我写程序把单位 Excel 的通讯录转成 VCard，再把 VCard 跟好多熟悉的人分享……</p>
 
-<p>首先感慨一下，百度的生态圈子确实大，虽然我平时没少跟人黑它，但是由于 Google 访问慢，我确实每天也很依赖它。</p>
+<p>偶尔食堂吃饭的时候，我也偷偷打量没见过的新人。跟部门的弟兄一起，看脸看胸看腿看屁股，他们告诉我，她叫什么，是哪个部门的。</p>
 
-<p>其次，我以后一定少看小说，有时间还是多扫扫 Pocket，刚打开手机看了一下，未读又堆到快700了。</p>
+<p>可是渐渐地，所有人似乎变得都很忙很忙，再也聚不起一场球赛，再也没人组织一块儿聚餐，甚至，不知道从哪时起，就再也没见过那个人了。</p>
 
-<p>最近开始读李笑来的《把时间当做朋友》，感觉很有收获，希望真能开启心智，发扬精神，好好治一治我的精神病。</p>
+<hr />
+
+<p>当我看到终端滚出的那些熟悉的名字，心里突然有点柔软。</p>
+
+<p>看到它们，就仿佛看到了那些曾经一起加班、一起打球、一起开过玩笑、聊过心事的，却已经再也看不到了的身影。</p>
+
+<p>我把名单截图给博学看，博学说，「嗯，还有我的女神。」</p>
+
+<hr />
+
+<p>可能生活就是这样，我们渐渐与一些人相遇，又与一些人分离。</p>
+
+<p>我还记得那天在楼下突然看到离职的安冬，她从远处走来，带着笑容，喊我的名字，一如昨日。</p>
+
+<hr />
+
+<p>偶尔就会缅怀。</p>
+
+<p>但是，也只是偶尔罢了。</p>
+
+<p>因为，非常非常幸运的，</p>
+
+<p>那些与我信念相同的兄弟们，</p>
+
+<p>仍与我并肩站在一起，</p>
+
+<p>从未离开。</p>
+
 
 
                 <hr>
@@ -332,13 +257,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2015/10/17/rubygems-workflow/" data-toggle="tooltip" data-placement="top" title="搜索 rubygems 并安装的 Alfred Workflow">&larr; Previous Post</a>
+                        <a href="/2016/05/09/reading-note-of-woa/" data-toggle="tooltip" data-placement="top" title="「提问的智慧」读书笔记">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/" data-toggle="tooltip" data-placement="top" title="服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -465,8 +386,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/mac/2015/12/06/analyse_my_safari_history";
-    var disqus_url = "http://echohn.github.io/mac/2015/12/06/analyse_my_safari_history/";
+    var disqus_identifier = "/2016/05/11/who-were-left-who-were-stay";
+    var disqus_url = "http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
