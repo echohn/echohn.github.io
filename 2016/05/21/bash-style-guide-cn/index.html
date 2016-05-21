@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hi,I'm Echo Han.">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Bash 风格指南中文版 - Echo 的网络日志 | Echo's Blog</title>
+
+    <link rel="canonical" href="http://echohn.github.io/2016/05/21/bash-style-guide-cn/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Echo's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from
+     * $toggle/$collapse will break global delegation.
+     *
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg-o.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg-o.jpg')
+    }
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, 0.3);
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Bash" title="Bash">Bash</a>
+                        
+                    </div>
+                    <h1>Bash 风格指南中文版</h1>
+                    
+                    
+                    <h2 class="subheading">全球首发！</h2>
+                    
+                    <span class="meta">Posted by Echo on May 21, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<p>今天下午整理了一下自己 GitHub 的 starred project，正巧看到以前收藏的一篇 <a href="https://github.com/bahamas10/bash-style-guide.git">Bash Style Guide</a>, 闲来无事，就给翻译了。</p>
+
+<p>这篇文章很好，他基于的那篇 Wiki 也非常值得看，我阅读之后，确实感到有一些东西是自己曾经忽视了的。</p>
+
+<p>下面是我翻译的文章，如发现错误，还望及时告知。</p>
+
+<h1 id="bash-">Bash 风格指南</h1>
+
+<p>本风格指南旨在描述如何编写 bash 脚本，并使其安全和可预测。本指南基于 <a href="http://mywiki.wooledge.org">this wiki</a>，特别是这个页面：</p>
+
+<p>http://mywiki.wooledge.org/BashGuide/Practices</p>
+
+<p>如本指南中有任何东西并未明确提出，则默认遵循这个 wiki 中所描述的观点。</p>
+
+<h2 id="section">美学</h2>
+
+<h3 id="section-1">使用制表符还是空格</h3>
+
+<p>制表符</p>
+
+<h3 id="section-2">分号</h3>
+
+<p>你无需在命令行中使用分号（我希望是这样），同样也不要在脚本中使用它。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="nv">name</span><span class="o">=</span><span class="s1">'dave'</span>;
+<span class="nb">echo</span> <span class="s2">"hello </span><span class="nv">$name</span><span class="s2">"</span>;
+
+<span class="c">#right</span>
+<span class="nv">name</span><span class="o">=</span><span class="s1">'dave'</span>
+<span class="nb">echo</span> <span class="s2">"hello </span><span class="nv">$name</span><span class="s2">"</span></code></pre></figure>
+
+<h3 id="section-3">函数</h3>
+
+<p>不要使用关键字 <code class="highlighter-rouge">function</code> 创建函数。所有函数中创建的变量都应该声明为局部变量。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="k">function </span>foo <span class="o">{</span>
+    <span class="nv">i</span><span class="o">=</span>foo <span class="c"># this is now global, wrong</span>
+<span class="o">}</span>
+
+<span class="c"># right</span>
+foo<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">local </span><span class="nv">i</span><span class="o">=</span>foo <span class="c"># this is local, preferred</span>
+<span class="o">}</span></code></pre></figure>
+
+<h3 id="section-4">代码块声明</h3>
+
+<p><code class="highlighter-rouge">then</code> 应与 <code class="highlighter-rouge">if</code> 放在同一行，<code class="highlighter-rouge">do</code> 应与 <code class="highlighter-rouge">while</code> 放在同一行。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="k">if </span><span class="nb">true
+</span><span class="k">then</span>
+    ...
+<span class="k">fi</span>
+
+<span class="c"># also wrong, though admittedly looks kinda cool</span>
+<span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="o">{</span>
+    ...
+<span class="o">}</span>
+
+<span class="c"># right</span>
+<span class="k">if </span><span class="nb">true</span>; <span class="k">then</span>
+    ...
+<span class="k">fi</span></code></pre></figure>
+
+<h3 id="section-5">间距</h3>
+
+<p>不要超过两个连续的换行符（即不超过一行空行）。</p>
+
+<h3 id="section-6">注释</h3>
+
+<p>注释没有明确的代码风格。除非你重写或者更新注释内容，否则不要因为美观的因素去改动它。</p>
+
+<h2 id="bash--1">Bash 主义</h2>
+
+<p>本风格指南用于 bash。这意味着，如果可以选择，使用 bash 的内建命令或关键字，总是好于外部命令或<code class="highlighter-rouge">sh(1)</code>的语法。</p>
+
+<h3 id="test1"><code class="highlighter-rouge">test(1)</code></h3>
+
+<p>使用 <code class="highlighter-rouge">[[ ... ]]</code> 进行条件测试, 而不是 <code class="highlighter-rouge">[ .. ]</code> 或 <code class="highlighter-rouge">test ...</code></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="nb">test</span> -d /etc
+
+<span class="c"># also wrong</span>
+<span class="o">[</span> -d /etc <span class="o">]</span>
+
+<span class="c"># correct</span>
+<span class="o">[[</span> -d /etc <span class="o">]]</span></code></pre></figure>
+
+<p>查看 http://mywiki.wooledge.org/BashFAQ/031 了解更多信息。</p>
+
+<h3 id="section-7">队列</h3>
+
+<p>使用 bash 的内部命令生成队列。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">n</span><span class="o">=</span>10
+
+<span class="c"># wrong</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>seq 1 5<span class="k">)</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span>
+
+<span class="c"># wrong</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>seq 1 <span class="s2">"</span><span class="nv">$n</span><span class="s2">"</span><span class="k">)</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span>
+
+<span class="c"># right</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="o">{</span>1..5<span class="o">}</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span>
+
+<span class="c"># right</span>
+<span class="k">for</span> <span class="o">((</span>i <span class="o">=</span> 0; i &lt; n; i++<span class="o">))</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span></code></pre></figure>
+
+<h3 id="section-8">命令替换</h3>
+
+<p>使用 <code class="highlighter-rouge">$(...)</code> 进行命令替换.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">foo</span><span class="o">=</span><span class="sb">`</span>date<span class="sb">`</span>  <span class="c"># wrong</span>
+<span class="nv">foo</span><span class="o">=</span><span class="k">$(</span>date<span class="k">)</span> <span class="c"># right</span></code></pre></figure>
+
+<h3 id="section-9">数学 / 整数操作</h3>
+
+<p>使用 <code class="highlighter-rouge">((...))</code> 和 <code class="highlighter-rouge">$((...))</code>。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">a</span><span class="o">=</span>5
+<span class="nv">b</span><span class="o">=</span>4
+
+<span class="c"># wrong</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$a</span> -gt <span class="nv">$b</span> <span class="o">]]</span>; <span class="k">then</span>
+    ...
+<span class="k">fi</span>
+
+<span class="c"># right</span>
+<span class="k">if</span> <span class="o">((</span>a &gt; b<span class="o">))</span>; <span class="k">then</span>
+    ...
+<span class="k">fi</span></code></pre></figure>
+
+<p><strong>不要</strong>使用 <code class="highlighter-rouge">let</code> 命令。</p>
+
+<h3 id="section-10">参数扩展</h3>
+
+<p>使用<a href="http://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion">参数扩展</a>要好于使用外部命令，例如 <code class="highlighter-rouge">echo</code>, <code class="highlighter-rouge">sed</code>, <code class="highlighter-rouge">awk</code> 等等。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">name</span><span class="o">=</span><span class="s1">'bahamas10'</span>
+
+<span class="c"># wrong</span>
+<span class="nv">prog</span><span class="o">=</span><span class="k">$(</span>basename <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="k">)</span>
+<span class="nv">nonumbers</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$name</span><span class="s2">"</span> | sed -e <span class="s1">'s/[0-9]//g'</span><span class="k">)</span>
+
+<span class="c"># right</span>
+<span class="nv">prog</span><span class="o">=</span><span class="k">${</span><span class="nv">0</span><span class="p">##*/</span><span class="k">}</span>
+<span class="nv">nonumbers</span><span class="o">=</span><span class="k">${</span><span class="nv">name</span><span class="p">//[0-9]/</span><span class="k">}</span></code></pre></figure>
+
+<h3 id="section-11">列出文件</h3>
+
+<p>不要使用 <a href="http://mywiki.wooledge.org/ParsingLs">解析 ls(1)</a>，而使用 bash 内置函数来循环文件。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># very wrong, potentially unsafe</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>ls<span class="k">)</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span>
+
+<span class="c"># right</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="k">*</span>; <span class="k">do</span>
+    ...
+<span class="k">done</span></code></pre></figure>
+
+<h3 id="section-12">查明可执行文件路径</h3>
+
+<p>简单声明一点，你肯定不知道，如果你视图找出可执行程序的完整路径，你应该反思你的软件设计了。</p>
+
+<p>查看 http://mywiki.wooledge.org/BashFAQ/028 获取更多信息。</p>
+
+<h3 id="section-13">数组和列表</h3>
+
+<p>只要有可能，尽量使用 bash 数组来代替使用空格（或是换行符、制表符等）分隔的字符串。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="nv">modules</span><span class="o">=</span><span class="s1">'json httpserver jshint'</span>
+<span class="k">for </span>module <span class="k">in</span> <span class="nv">$modules</span>; <span class="k">do
+    </span>npm install -g <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
+<span class="k">done</span>
+
+<span class="c"># right</span>
+<span class="nv">modules</span><span class="o">=(</span>json httpserver jshint<span class="o">)</span>
+<span class="k">for </span>module <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">modules</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span>; <span class="k">do
+    </span>npm install -g <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
+<span class="k">done</span></code></pre></figure>
+
+<h3 id="section-14">内置读取</h3>
+
+<p>只要有可能，使用 bash 内置的 <code class="highlighter-rouge">read</code> 避免调用外部命令。</p>
+
+<p>例子：</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">fqdn</span><span class="o">=</span><span class="s1">'computer1.daveeddy.com'</span>
+
+<span class="nv">IFS</span><span class="o">=</span>. <span class="nb">read </span>hostname domain tld <span class="o">&lt;&lt;&lt;</span> <span class="s2">"</span><span class="nv">$fqdn</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$hostname</span><span class="s2"> is in </span><span class="nv">$domain</span><span class="s2">.</span><span class="nv">$tld</span><span class="s2">"</span>
+<span class="c"># =&gt; "computer1 is in daveeddy.com"</span></code></pre></figure>
+
+<h2 id="section-15">外部命令</h2>
+
+<h3 id="gnu-">GNU 用户工具</h3>
+
+<p>全世界不会都运行在 GNU 或 Linux 上；当调用外部命令时，例如 <code class="highlighter-rouge">awk</code>, <code class="highlighter-rouge">sed</code>, <code class="highlighter-rouge">grep</code>，避免 GNU 特定的选项，使其尽量易于移植。</p>
+
+<p>当你编写 bash ，并且使用给你的所有强大工具和 bash 的内建命令时，你会发现甚至很少有机会需要调用外部命令。</p>
+
+<h3 id="uuochttpwwwsmalloruhrdeawardhtml"><a href="http://www.smallo.ruhr.de/award.html">UUOC</a></h3>
+
+<p>不要在你不需要的时候使用 <code class="highlighter-rouge">cat(1)</code>。如果程序支持从标准输入读取，使用 bash 重定向传递数据。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+cat file | grep foo
+
+<span class="c"># right</span>
+grep foo &lt; file
+
+<span class="c"># also right</span>
+grep foo file</code></pre></figure>
+
+<p>如果我们能够推断，当程序说它可以通过名称读取文件，并且这样做能获得更好的性能时，我们可以使用这个内置读取文件方法的命令行工具，而不是标准输入。</p>
+
+<h2 id="section-16">风格</h2>
+
+<h3 id="section-17">引号</h3>
+
+<p>当字符串需要变量扩展或命令替换插值的时候使用双引号，其它时候使用单引号。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># right</span>
+<span class="nv">foo</span><span class="o">=</span><span class="s1">'Hello World'</span>
+<span class="nv">bar</span><span class="o">=</span><span class="s2">"You are </span><span class="nv">$USER</span><span class="s2">"</span>
+
+<span class="c"># wrong</span>
+<span class="nv">foo</span><span class="o">=</span><span class="s2">"hello world"</span>
+
+<span class="c"># possibly wrong, depending on intent</span>
+<span class="nv">bar</span><span class="o">=</span><span class="s1">'You are $USER'</span></code></pre></figure>
+
+<p>所有将要经历分词的变量都 <em>必须</em> 被引用 (1)。如果分词不会发生，变量可以不加引号。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">foo</span><span class="o">=</span><span class="s1">'hello world'</span>
+
+<span class="k">if</span> <span class="o">[[</span> -n <span class="nv">$foo</span> <span class="o">]]</span>; <span class="k">then</span>   <span class="c"># 不需要引号 - [[ ... ]] 不会把变量分词</span>
+    <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$foo</span><span class="s2">"</span>          <span class="c"># 需要印号</span>
+<span class="k">fi
+
+</span><span class="nv">bar</span><span class="o">=</span><span class="nv">$foo</span>  <span class="c"># 不需要引号 - 变量不会分词</span></code></pre></figure>
+
+<ol>
+  <li>唯一的例外是，如果代码或 bash 控制着这个变量的整个生命周期。这种情况 <a href="https://github.com/bahamas10/basher">basher</a> 有类似的代码：</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">printf_date_supported</span><span class="o">=</span><span class="nb">false
+</span><span class="k">if </span><span class="nb">printf</span> <span class="s1">'%()T'</span> &amp;&gt;/dev/null; <span class="k">then
+    </span><span class="nv">printf_date_supported</span><span class="o">=</span><span class="nb">true
+</span><span class="k">fi
+
+if</span> <span class="nv">$printf_date_supported</span>; <span class="k">then</span>
+    ...
+<span class="k">fi</span></code></pre></figure>
+
+<p>在这个例子中，虽然在 <code class="highlighter-rouge">if</code> 声明中的 <code class="highlighter-rouge">$printf_date_supported</code> 将经历分词，但仍然不需要引号，因为这个变量的内容被明确地控制着，并不会从用户或其它命令里取值。</p>
+
+<p>同样的，例如 <code class="highlighter-rouge">$$</code>, <code class="highlighter-rouge">$?</code>, <code class="highlighter-rouge">$#</code>这些变量，也不需要引号，因为他们绝不会包含空格、制表符或换行符。</p>
+
+<p>然而，如果仍怀有疑问，可以查看<a href="http://mywiki.wooledge.org/Quotes">引用所有的扩展</a>。</p>
+
+<h3 id="section-18">变量声明</h3>
+
+<p>避免大写的变量名，除非有一个很好的理由使用他们。不要使用 <code class="highlighter-rouge">let</code> 或 <code class="highlighter-rouge">readonly</code> 创建变量。<code class="highlighter-rouge">declare</code> 应该<em>只用于</em>关联数组。在函数中，应<em>始终</em>使用 <code class="highlighter-rouge">local</code> 声明变量。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="nb">declare</span> -i <span class="nv">foo</span><span class="o">=</span>5
+<span class="nb">let </span>foo++
+<span class="nb">readonly </span><span class="nv">bar</span><span class="o">=</span><span class="s1">'something'</span>
+<span class="nv">FOOBAR</span><span class="o">=</span>baz
+
+<span class="c"># right</span>
+<span class="nv">i</span><span class="o">=</span>5
+<span class="o">((</span>i++<span class="o">))</span>
+<span class="nv">bar</span><span class="o">=</span><span class="s1">'something'</span>
+<span class="nv">foobar</span><span class="o">=</span>baz</code></pre></figure>
+
+<h3 id="shebang">shebang</h3>
+
+<p>Bash 不总是位于 <code class="highlighter-rouge">/bin/bash</code>，因此尽量这样来写这一行：</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/usr/bin/env bash</span></code></pre></figure>
+
+<h3 id="section-19">错误检查</h3>
+
+<p>举个例子，<code class="highlighter-rouge">cd</code> 不总是工作。请务必检查 <code class="highlighter-rouge">cd</code>（或类似的命令）任何可能的错误，如果错误存在就退出或将错误抛出。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
+<span class="nb">cd</span> /some/path <span class="c"># 可能会失败</span>
+rm file       <span class="c"># 如果 cd 失败我在哪？我删除了什么？</span>
+
+<span class="c"># right</span>
+<span class="nb">cd</span> /some/path <span class="o">||</span> <span class="nb">exit
+</span>rm file</code></pre></figure>
+
+<h3 id="set--e"><code class="highlighter-rouge">set -e</code></h3>
+
+<p>不要设置 <code class="highlighter-rouge">errexit</code>。如同在 C 语言中，有时你想要得到一个错误，或是你期望什么执行失败，并不意味着你想要退出程序。</p>
+
+<p>http://mywiki.wooledge.org/BashFAQ/105</p>
+
+<h3 id="eval"><code class="highlighter-rouge">eval</code></h3>
+
+<p>永远不要使用.</p>
+
+<hr />
+
+<p>没有人会在代码库中接受下面这个链接列出的东西。</p>
+
+<p>http://mywiki.wooledge.org/BashPitfalls</p>
+
+<p>这里也例举了一些如何修复这些问题的例子。</p>
+
+<h2 id="license">License</h2>
+
+<p>MIT License</p>
+
+
+
+                <hr>
+
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/05/15/how-to-manage-your-servers/" data-toggle="tooltip" data-placement="top" title="如何在 Mac 上管理你经常变化的服务器列表？">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+            <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5 id="catalog">
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+
+            </div>
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#杂记" title="杂记" rel="2">
+                                    杂记
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Mac" title="Mac" rel="4">
+                                    Mac
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Alfred" title="Alfred" rel="3">
+                                    Alfred
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                                    Ruby
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Safari" title="Safari" rel="1">
+                                    Safari
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#运维" title="运维" rel="2">
+                                    运维
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Linux" title="Linux" rel="1">
+                                    Linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#script" title="script" rel="1">
+                                    script
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#linux" title="linux" rel="1">
+                                    linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#读书笔记" title="读书笔记" rel="1">
+                                    读书笔记
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Bash" title="Bash" rel="1">
+                                    Bash
+                                </a>
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://echohn.github.io">Echo's Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "/2016/05/21/bash-style-guide-cn";
+    var disqus_url = "http://echohn.github.io/2016/05/21/bash-style-guide-cn/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+                    <li>
+                        <a href="https://twitter.com/echo_hon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/echohn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/echohn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Echo's Blog 2016
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-77431076-1';
+    var _gaDomain = 'echohn.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '3f73ebe1e7ff90638adbb85f89789e3a';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<!-- side catalog -->
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Image to hack wechat
+<img src="/img/icon_wechat.png" width="0" height="0" />
+-->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -5,9 +5,352 @@
     <description>Hi,I&#39;m Echo Han.</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 15 May 2016 03:09:57 +0800</pubDate>
-    <lastBuildDate>Sun, 15 May 2016 03:09:57 +0800</lastBuildDate>
+    <pubDate>Sat, 21 May 2016 21:00:17 +0800</pubDate>
+    <lastBuildDate>Sat, 21 May 2016 21:00:17 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>Bash 风格指南中文版</title>
+        <description>&lt;p&gt;今天下午整理了一下自己 GitHub 的 starred project，正巧看到以前收藏的一篇 &lt;a href=&quot;https://github.com/bahamas10/bash-style-guide.git&quot;&gt;Bash Style Guide&lt;/a&gt;, 闲来无事，就给翻译了。&lt;/p&gt;
+
+&lt;p&gt;这篇文章很好，他基于的那篇 Wiki 也非常值得看，我阅读之后，确实感到有一些东西是自己曾经忽视了的。&lt;/p&gt;
+
+&lt;p&gt;下面是我翻译的文章，如发现错误，还望及时告知。&lt;/p&gt;
+
+&lt;h1 id=&quot;bash-&quot;&gt;Bash 风格指南&lt;/h1&gt;
+
+&lt;p&gt;本风格指南旨在描述如何编写 bash 脚本，并使其安全和可预测。本指南基于 &lt;a href=&quot;http://mywiki.wooledge.org&quot;&gt;this wiki&lt;/a&gt;，特别是这个页面：&lt;/p&gt;
+
+&lt;p&gt;http://mywiki.wooledge.org/BashGuide/Practices&lt;/p&gt;
+
+&lt;p&gt;如本指南中有任何东西并未明确提出，则默认遵循这个 wiki 中所描述的观点。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;美学&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;使用制表符还是空格&lt;/h3&gt;
+
+&lt;p&gt;制表符&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;分号&lt;/h3&gt;
+
+&lt;p&gt;你无需在命令行中使用分号（我希望是这样），同样也不要在脚本中使用它。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;dave&#39;&lt;/span&gt;;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hello &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;;
+
+&lt;span class=&quot;c&quot;&gt;#right&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;dave&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hello &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;函数&lt;/h3&gt;
+
+&lt;p&gt;不要使用关键字 &lt;code class=&quot;highlighter-rouge&quot;&gt;function&lt;/code&gt; 创建函数。所有函数中创建的变量都应该声明为局部变量。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;foo &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;foo &lt;span class=&quot;c&quot;&gt;# this is now global, wrong&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+foo&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;foo &lt;span class=&quot;c&quot;&gt;# this is local, preferred&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;代码块声明&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;then&lt;/code&gt; 应与 &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; 放在同一行，&lt;code class=&quot;highlighter-rouge&quot;&gt;do&lt;/code&gt; 应与 &lt;code class=&quot;highlighter-rouge&quot;&gt;while&lt;/code&gt; 放在同一行。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# also wrong, though admittedly looks kinda cool&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    ...
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;间距&lt;/h3&gt;
+
+&lt;p&gt;不要超过两个连续的换行符（即不超过一行空行）。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;注释&lt;/h3&gt;
+
+&lt;p&gt;注释没有明确的代码风格。除非你重写或者更新注释内容，否则不要因为美观的因素去改动它。&lt;/p&gt;
+
+&lt;h2 id=&quot;bash--1&quot;&gt;Bash 主义&lt;/h2&gt;
+
+&lt;p&gt;本风格指南用于 bash。这意味着，如果可以选择，使用 bash 的内建命令或关键字，总是好于外部命令或&lt;code class=&quot;highlighter-rouge&quot;&gt;sh(1)&lt;/code&gt;的语法。&lt;/p&gt;
+
+&lt;h3 id=&quot;test1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;test(1)&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;[[ ... ]]&lt;/code&gt; 进行条件测试, 而不是 &lt;code class=&quot;highlighter-rouge&quot;&gt;[ .. ]&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;test ...&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; -d /etc
+
+&lt;span class=&quot;c&quot;&gt;# also wrong&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; -d /etc &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# correct&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -d /etc &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;查看 http://mywiki.wooledge.org/BashFAQ/031 了解更多信息。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;队列&lt;/h3&gt;
+
+&lt;p&gt;使用 bash 的内部命令生成队列。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10
+
+&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;seq 1 5&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;seq 1 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1..5&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0; i &amp;lt; n; i++&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;命令替换&lt;/h3&gt;
+
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$(...)&lt;/code&gt; 进行命令替换.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;date&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;date&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-9&quot;&gt;数学 / 整数操作&lt;/h3&gt;
+
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;((...))&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;$((...))&lt;/code&gt;。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
+&lt;span class=&quot;nv&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4
+
+&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt; -gt &lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;a &amp;gt; b&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;不要&lt;/strong&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;let&lt;/code&gt; 命令。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-10&quot;&gt;参数扩展&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;a href=&quot;http://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion&quot;&gt;参数扩展&lt;/a&gt;要好于使用外部命令，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;echo&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;sed&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;awk&lt;/code&gt; 等等。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;bahamas10&#39;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;prog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;nonumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; | sed -e &lt;span class=&quot;s1&quot;&gt;&#39;s/[0-9]//g&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;prog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;##*/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;nonumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;//[0-9]/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-11&quot;&gt;列出文件&lt;/h3&gt;
+
+&lt;p&gt;不要使用 &lt;a href=&quot;http://mywiki.wooledge.org/ParsingLs&quot;&gt;解析 ls(1)&lt;/a&gt;，而使用 bash 内置函数来循环文件。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# very wrong, potentially unsafe&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ls&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-12&quot;&gt;查明可执行文件路径&lt;/h3&gt;
+
+&lt;p&gt;简单声明一点，你肯定不知道，如果你视图找出可执行程序的完整路径，你应该反思你的软件设计了。&lt;/p&gt;
+
+&lt;p&gt;查看 http://mywiki.wooledge.org/BashFAQ/028 获取更多信息。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-13&quot;&gt;数组和列表&lt;/h3&gt;
+
+&lt;p&gt;只要有可能，尽量使用 bash 数组来代替使用空格（或是换行符、制表符等）分隔的字符串。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;json httpserver jshint&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;module &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$modules&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
+    &lt;/span&gt;npm install -g &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$module&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;json httpserver jshint&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;module &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;modules&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[@]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
+    &lt;/span&gt;npm install -g &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$module&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-14&quot;&gt;内置读取&lt;/h3&gt;
+
+&lt;p&gt;只要有可能，使用 bash 内置的 &lt;code class=&quot;highlighter-rouge&quot;&gt;read&lt;/code&gt; 避免调用外部命令。&lt;/p&gt;
+
+&lt;p&gt;例子：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;fqdn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;computer1.daveeddy.com&#39;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;IFS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;. &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;hostname domain tld &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fqdn&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$hostname&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; is in &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$domain&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$tld&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# =&amp;gt; &quot;computer1 is in daveeddy.com&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;section-15&quot;&gt;外部命令&lt;/h2&gt;
+
+&lt;h3 id=&quot;gnu-&quot;&gt;GNU 用户工具&lt;/h3&gt;
+
+&lt;p&gt;全世界不会都运行在 GNU 或 Linux 上；当调用外部命令时，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;awk&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;sed&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;grep&lt;/code&gt;，避免 GNU 特定的选项，使其尽量易于移植。&lt;/p&gt;
+
+&lt;p&gt;当你编写 bash ，并且使用给你的所有强大工具和 bash 的内建命令时，你会发现甚至很少有机会需要调用外部命令。&lt;/p&gt;
+
+&lt;h3 id=&quot;uuochttpwwwsmalloruhrdeawardhtml&quot;&gt;&lt;a href=&quot;http://www.smallo.ruhr.de/award.html&quot;&gt;UUOC&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;不要在你不需要的时候使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;cat(1)&lt;/code&gt;。如果程序支持从标准输入读取，使用 bash 重定向传递数据。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+cat file | grep foo
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+grep foo &amp;lt; file
+
+&lt;span class=&quot;c&quot;&gt;# also right&lt;/span&gt;
+grep foo file&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;如果我们能够推断，当程序说它可以通过名称读取文件，并且这样做能获得更好的性能时，我们可以使用这个内置读取文件方法的命令行工具，而不是标准输入。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-16&quot;&gt;风格&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-17&quot;&gt;引号&lt;/h3&gt;
+
+&lt;p&gt;当字符串需要变量扩展或命令替换插值的时候使用双引号，其它时候使用单引号。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Hello World&#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;You are &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$USER&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello world&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# possibly wrong, depending on intent&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;You are $USER&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;所有将要经历分词的变量都 &lt;em&gt;必须&lt;/em&gt; 被引用 (1)。如果分词不会发生，变量可以不加引号。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;hello world&#39;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -n &lt;span class=&quot;nv&quot;&gt;$foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;# 不需要引号 - [[ ... ]] 不会把变量分词&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$foo&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# 需要印号&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$foo&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 不需要引号 - 变量不会分词&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;唯一的例外是，如果代码或 bash 控制着这个变量的整个生命周期。这种情况 &lt;a href=&quot;https://github.com/bahamas10/basher&quot;&gt;basher&lt;/a&gt; 有类似的代码：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;printf_date_supported&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;%()T&#39;&lt;/span&gt; &amp;amp;&amp;gt;/dev/null; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;printf_date_supported&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;fi
+
+if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$printf_date_supported&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    ...
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;在这个例子中，虽然在 &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; 声明中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;$printf_date_supported&lt;/code&gt; 将经历分词，但仍然不需要引号，因为这个变量的内容被明确地控制着，并不会从用户或其它命令里取值。&lt;/p&gt;
+
+&lt;p&gt;同样的，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;$$&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;$?&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;$#&lt;/code&gt;这些变量，也不需要引号，因为他们绝不会包含空格、制表符或换行符。&lt;/p&gt;
+
+&lt;p&gt;然而，如果仍怀有疑问，可以查看&lt;a href=&quot;http://mywiki.wooledge.org/Quotes&quot;&gt;引用所有的扩展&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-18&quot;&gt;变量声明&lt;/h3&gt;
+
+&lt;p&gt;避免大写的变量名，除非有一个很好的理由使用他们。不要使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;let&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;readonly&lt;/code&gt; 创建变量。&lt;code class=&quot;highlighter-rouge&quot;&gt;declare&lt;/code&gt; 应该&lt;em&gt;只用于&lt;/em&gt;关联数组。在函数中，应&lt;em&gt;始终&lt;/em&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;local&lt;/code&gt; 声明变量。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;declare&lt;/span&gt; -i &lt;span class=&quot;nv&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
+&lt;span class=&quot;nb&quot;&gt;let &lt;/span&gt;foo++
+&lt;span class=&quot;nb&quot;&gt;readonly &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;something&#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;FOOBAR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;baz
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5
+&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;i++&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;something&#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;foobar&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;baz&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;shebang&quot;&gt;shebang&lt;/h3&gt;
+
+&lt;p&gt;Bash 不总是位于 &lt;code class=&quot;highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;，因此尽量这样来写这一行：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;section-19&quot;&gt;错误检查&lt;/h3&gt;
+
+&lt;p&gt;举个例子，&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt; 不总是工作。请务必检查 &lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt;（或类似的命令）任何可能的错误，如果错误存在就退出或将错误抛出。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# wrong&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /some/path &lt;span class=&quot;c&quot;&gt;# 可能会失败&lt;/span&gt;
+rm file       &lt;span class=&quot;c&quot;&gt;# 如果 cd 失败我在哪？我删除了什么？&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# right&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /some/path &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit
+&lt;/span&gt;rm file&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;set--e&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;set -e&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;不要设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;errexit&lt;/code&gt;。如同在 C 语言中，有时你想要得到一个错误，或是你期望什么执行失败，并不意味着你想要退出程序。&lt;/p&gt;
+
+&lt;p&gt;http://mywiki.wooledge.org/BashFAQ/105&lt;/p&gt;
+
+&lt;h3 id=&quot;eval&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;eval&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;永远不要使用.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;没有人会在代码库中接受下面这个链接列出的东西。&lt;/p&gt;
+
+&lt;p&gt;http://mywiki.wooledge.org/BashPitfalls&lt;/p&gt;
+
+&lt;p&gt;这里也例举了一些如何修复这些问题的例子。&lt;/p&gt;
+
+&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
+
+&lt;p&gt;MIT License&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 21 May 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/05/21/bash-style-guide-cn/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/05/21/bash-style-guide-cn/</guid>
+        
+        <category>Bash</category>
+        
+        
+      </item>
     
       <item>
         <title>如何在 Mac 上管理你经常变化的服务器列表？</title>
@@ -610,26 +953,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <category>Ruby</category>
         
         <category>Mac</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>查询 IP 地址位置的 Alfred Workflow</title>
-        <description>&lt;p&gt;周五开例会的时候，穷极无聊写了一个搜索 IP 地理位置的 Alfred Workflow，嗯嗯，这也是我写的第一个 Alfred Workflow。&lt;/p&gt;
-
-&lt;p&gt;数据源用的是 www.ip138.com。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://raw.github.com/echohn/search_ip_location_alfred/master/Search%20Ip%20Location.alfredworkflow&quot;&gt;点击这里下载&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 19 Apr 2015 23:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2015/04/19/search_ip_location_alfred/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2015/04/19/search_ip_location_alfred/</guid>
-        
-        <category>Mac</category>
-        
-        <category>Alfred</category>
         
         
       </item>
