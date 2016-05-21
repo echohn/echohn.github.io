@@ -90,6 +90,7 @@ task :new do
     post.puts "header-img: \"\""
     post.puts "author: \"Echo\""
     post.puts "tags: "
+    post.puts "keywords: "
     post.puts "---"
   end
 

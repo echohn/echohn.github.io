@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Hi,I'm Echo Han.">
-    <meta name="keyword"  content="">
+    <meta name="description" content="如何在 Mac 上管理你经常变化的服务器列表？ 为广大懒人同胞指出一条明路 | Hi,I'm Echo Han,我是一名运维工程师，这里是我的博客，我喜欢 Ruby。">
+    <meta name="keyword"  content="运维 自动化 mac 管理 salt saltstack ssh zsh 终端 脚本 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>如何在 Mac 上管理你经常变化的服务器列表？ - Echo 的网络日志 | Echo's Blog</title>
+    <title>如何在 Mac 上管理你经常变化的服务器列表？</title>
 
     <link rel="canonical" href="http://echohn.github.io/2016/05/15/how-to-manage-your-servers/">
 
@@ -80,6 +80,10 @@
                     
                     <li>
                         <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/robots.txt">robots</a>
                     </li>
                     
                     <li>
@@ -220,7 +224,7 @@
 <p>补全脚本是酱婶儿的：</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"> cat ~/.zsh/completion/_salt
- 
+
 <span class="c">#compdef salt</span>
 _arguments  <span class="se">\</span>
   <span class="s2">"1:keys:(</span><span class="k">$(</span>ruby -ryaml -e <span class="s1">'puts YAML.load(IO.read("/var/www/html/salt_keys.yml"))["minions"]'</span><span class="k">)</span><span class="s2">)"</span>   <span class="se">\</span>

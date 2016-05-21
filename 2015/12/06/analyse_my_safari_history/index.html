@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="About  | Hi,I'm Echo Han,我是一名运维工程师，这里是我的博客，我喜欢 Ruby。">
-    <meta name="keyword"  content=" Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="看看自己平时上网都在干嘛？ 分析自己的 Safari 历史记录 | Hi,I'm Echo Han,我是一名运维工程师，这里是我的博客，我喜欢 Ruby。">
+    <meta name="keyword"  content="mac safari 知乎 历史 历史记录 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>About</title>
+    <title>看看自己平时上网都在干嘛？</title>
 
-    <link rel="canonical" href="http://echohn.github.io/about/">
+    <link rel="canonical" href="http://echohn.github.io/2015/12/06/analyse_my_safari_history/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -151,250 +151,307 @@
 </script>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/about-bg.jpg')">
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg')
+    }
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, 0.3);
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">Hey, this is Echo.</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
+                        
+                        <a class="tag" href="/tags/#Safari" title="Safari">Safari</a>
+                        
+                    </div>
+                    <h1>看看自己平时上网都在干嘛？</h1>
+                    
+                    
+                    <h2 class="subheading">分析自己的 Safari 历史记录</h2>
+                    
+                    <span class="meta">Posted by Echo's Blog on December 6, 2015</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-        
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
-    		<div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-    			<!-- Language Selector -->
-<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-    <option value="0" selected> 中文 Chinese </option>
-    <option value="1"> 英语 English </option>
-</select>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-<!-- Chinese Version -->
-<div class="zh post-container">
-    <blockquote>
-        我把桃花切两斤，且与时光炖了。
-    </blockquote>
-    Hey, 我是韩啸 (Echo)。我是一名运维工程师。
+				<p>昨天在知乎逛，看到一个问题<a href="http://www.zhihu.com/question/21395276">可以用 Python 编程语言做哪些神奇好玩的事情？</a>,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。</p>
 
-</div>
+<p>于是查了一下，Safari 的历史记录文件是<code class="highlighter-rouge">~/Library/Safari/History.db</code>，file 了一下这个文件，原来它是个 SQLite 数据库哈哈哈，苹果还真是贴心……</p>
 
-<!-- English Version -->
-<div class="en post-container">
-    <blockquote>
-        Designer or Engineer, things in between.
-    </blockquote>
+<p>于是写了一条 sql 来查：</p>
 
-    <p>
-        Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven’t found it yet, keep looking. Don’t settle. As with all matters of the heart, you’ll know when you find it.
-    </p>
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">domain_expansion</span><span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">from</span> <span class="nv">"main"</span><span class="p">.</span><span class="nv">"history_items"</span>  <span class="k">group</span> <span class="k">by</span> <span class="n">domain_expansion</span>  <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">desc</span> <span class="k">limit</span> <span class="mi">0</span><span class="p">,</span><span class="mi">20</span></code></pre></figure>
 
-    <p>
-    If you want to live your life in a creative way, as an artist, you have to not look back too much. You have to be willing to take whatever you’ve done and whoever you were and throw them away.
-    </p>
+<p>结果是这样的，还真的有点出乎意料。</p>
 
-    <p style="text-align:right;">
-    -- Steve Jobs
-    </p>
+<table>
+  <thead>
+    <tr>
+      <th>domain_expansion</th>
+      <th>count(domain_expansion)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>baidu</td>
+      <td>8645</td>
+    </tr>
+    <tr>
+      <td>m.baidu</td>
+      <td>2588</td>
+    </tr>
+    <tr>
+      <td>zhihu</td>
+      <td>1339</td>
+    </tr>
+    <tr>
+      <td>github</td>
+      <td>1126</td>
+    </tr>
+    <tr>
+      <td>image.baidu</td>
+      <td>824</td>
+    </tr>
+    <tr>
+      <td>bbs.feng</td>
+      <td>642</td>
+    </tr>
+    <tr>
+      <td>m.qb5</td>
+      <td>544</td>
+    </tr>
+    <tr>
+      <td>baike.baidu</td>
+      <td>476</td>
+    </tr>
+    <tr>
+      <td>detail.tmall</td>
+      <td>470</td>
+    </tr>
+    <tr>
+      <td>zhidao.baidu</td>
+      <td>458</td>
+    </tr>
+    <tr>
+      <td>s.taobao</td>
+      <td>455</td>
+    </tr>
+    <tr>
+      <td>dashubao</td>
+      <td>448</td>
+    </tr>
+    <tr>
+      <td>item.jd</td>
+      <td>414</td>
+    </tr>
+    <tr>
+      <td>pan.baidu</td>
+      <td>397</td>
+    </tr>
+    <tr>
+      <td>item.taobao</td>
+      <td>383</td>
+    </tr>
+    <tr>
+      <td>v2ex</td>
+      <td>339</td>
+    </tr>
+    <tr>
+      <td>bttiantang</td>
+      <td>336</td>
+    </tr>
+    <tr>
+      <td>tieba.baidu</td>
+      <td>321</td>
+    </tr>
+    <tr>
+      <td>waitsun</td>
+      <td>292</td>
+    </tr>
+    <tr>
+      <td>google</td>
+      <td>213</td>
+    </tr>
+  </tbody>
+</table>
 
-</div>
+<p>一条条来分析：</p>
 
-<!-- Handle Language Change -->
-<script type="text/javascript">
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    function onLanChange(index){
-        if(index == 0){
-            $zh.style.display = "block";
-            $en.style.display = "none";
-        }else{
-            $en.style.display = "block";
-            $zh.style.display = "none";
-        }
-    }
-    onLanChange(0);
-</script>
+<ol>
+  <li>百度是我的默认搜索引擎。俗话说内事问百度，外事问 Google 。虽然我平时开着 ss，但是由于普遍通过 ss 访问还是比较慢，所以除了查技术资料走 google 外，平时百度我确实用的不少，百度能登顶在意料之中。但是 image.baidu，zhidao.baidu 居然都能进前 20 是个什么鬼？我又分别对这两个搜了一下，随便点了一些例如 qq 表情、Macbook Pro 15’(怨念啊。。。)、龙庆峡等等的图片；以及貂绒大衣为什么比羽绒服暖和，关于吉列温和型剃须啫哩香味等等的问题，我也给自己跪了。。。</li>
+  <li>知乎、v2ex 是平时娱乐两大网站、能在 Top 20 我也不意外。</li>
+  <li>github 作为全球最大同性交友网站我就不说什么了。</li>
+  <li>bbs.feng 估计是 IOS 9 越狱那阵给闹的。</li>
+  <li>qb5 和 大书包 ╮(╯_╰)╭ 好吧，我承认我上班时候看网络小说来着……</li>
+  <li>tmall、taobao、jd：嗯，双十一我真的没买东西，真的……这都是平时网购积累的。</li>
+  <li>pan.baidu：现在分享个东西都走它，它能上榜也算积少成多吧。</li>
+  <li>bttiantang：是我平时网上找电影的第一选择。</li>
+  <li>tieba.baidu：这都能上榜，只能说贴吧的圈子真的很大。</li>
+  <li>waitsun：我为我用了不少盗版软件而羞愧。</li>
+</ol>
 
+<h2 id="section">总结</h2>
 
+<p>首先感慨一下，百度的生态圈子确实大，虽然我平时没少跟人黑它，但是由于 Google 访问慢，我确实每天也很依赖它。</p>
 
+<p>其次，我以后一定少看小说，有时间还是多扫扫 Pocket，刚打开手机看了一下，未读又堆到快700了。</p>
 
-
-
-
-<!-- disqus 评论框 start -->
-<div class="comment">
-    <div id="disqus_thread" class="disqus-thread">
-
-    </div>
-</div>
-<!-- disqus 评论框 end -->
-
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "echohn";
-    var disqus_identifier = "echohn//about/";
-    var disqus_url = "http://echohn.github.io/about/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus 公共JS代码 end -->
+<p>最近开始读李笑来的《把时间当做朋友》，感觉很有收获，希望真能开启心智，发扬精神，好好治一治我的精神病。</p>
 
 
-    		</div>
+                <hr>
+
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2015/10/17/rubygems-workflow/" data-toggle="tooltip" data-placement="top" title="搜索 rubygems 并安装的 Alfred Workflow">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/" data-toggle="tooltip" data-placement="top" title="服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+            <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5 id="catalog">
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+
+            </div>
+
     <!-- Sidebar Container -->
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <hr class="hidden-sm hidden-xs">
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                        
+        				
                             
-                                <a href="/tags/#杂记" title="杂记" rel="2">
+                				<a href="/tags/#杂记" title="杂记" rel="2">
                                     杂记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Mac" title="Mac" rel="4">
+                				<a href="/tags/#Mac" title="Mac" rel="4">
                                     Mac
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Alfred" title="Alfred" rel="3">
+                				<a href="/tags/#Alfred" title="Alfred" rel="3">
                                     Alfred
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="3">
                                     Ruby
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Safari" title="Safari" rel="1">
+                				<a href="/tags/#Safari" title="Safari" rel="1">
                                     Safari
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#运维" title="运维" rel="2">
+                				<a href="/tags/#运维" title="运维" rel="2">
                                     运维
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Linux" title="Linux" rel="1">
+                				<a href="/tags/#Linux" title="Linux" rel="1">
                                     Linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#script" title="script" rel="1">
+                				<a href="/tags/#script" title="script" rel="1">
                                     script
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#linux" title="linux" rel="1">
+                				<a href="/tags/#linux" title="linux" rel="1">
                                     linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#读书笔记" title="读书笔记" rel="1">
+                				<a href="/tags/#读书笔记" title="读书笔记" rel="1">
                                     读书笔记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Bash" title="Bash" rel="1">
+                				<a href="/tags/#Bash" title="Bash" rel="1">
                                     Bash
                                 </a>
                             
-                        
-                    </div>
+        				
+        			</div>
                 </section>
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-                        
-                            <img src="/img/avatar-echo.jpg" />
-                        
-                        
-                            <p>你好，我是 Echo，我是一名运维工程师，Ruby 爱好者。</p>
-                        
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            <li>
-                                <a href="https://twitter.com/echo_hon">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://github.com/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </section>
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -405,10 +462,67 @@
                     
                 </ul>
                 
-    		</div>
-        
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "/2015/12/06/analyse_my_safari_history";
+    var disqus_url = "http://echohn.github.io/2015/12/06/analyse_my_safari_history/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
