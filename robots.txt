@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: <http://echohn.github.io/sitemap.xml>
+Sitemap: http://echohn.github.io/sitemap.xml
