@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="谁离开了，谁还在？  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content="杂记 离职 同事 通讯录 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="翻墙 工具 科学上网 ShadowSocks ProxyChains Mac GFW FuckGFW Lantern 蓝灯 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>谁离开了，谁还在？</title>
+    <title>打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具</title>
 
-    <link rel="canonical" href="http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/">
+    <link rel="canonical" href="http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -153,13 +153,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/post-bg-time.jpg" width="0" height="0"> -->
+<!-- <img src="/img/contact-bg.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/post-bg-time.jpg')
+        background-image: url('/img/contact-bg.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -175,15 +175,21 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#杂记" title="杂记">杂记</a>
+                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
+                        
+                        <a class="tag" href="/tags/#科学上网" title="科学上网">科学上网</a>
+                        
+                        <a class="tag" href="/tags/#ShadowSocks" title="ShadowSocks">ShadowSocks</a>
+                        
+                        <a class="tag" href="/tags/#Alfred" title="Alfred">Alfred</a>
                         
                     </div>
-                    <h1>谁离开了，谁还在？</h1>
+                    <h1>打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具</h1>
                     
                     
                     <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo on May 11, 2016</span>
+                    <span class="meta">Posted by Echo on May 29, 2016</span>
                 </div>
             </div>
         </div>
@@ -201,55 +207,132 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>今天想联系某个同事时，没找到他的电话，忽然发现我已经很久没有更新单位的通讯录了。</p>
+				<p>最近不知道为什么，<a href="https://www.getlantern.org">蓝灯（Lantern）</a>用着经常出问题，要么非常慢，要么报错。</p>
 
-<p>于是，下午不忙的时候，找出来以前写的导出单位通讯录的程序，从 OA 上下载了目前最新的通讯录。</p>
+<p>说实话 Lantern 正常的时候，真是要比我放在东京的 SS (ShadowSocks) VPS 快出很多的。看片一点都不费劲。</p>
 
-<p>在与自己的通讯录合并之前，突然想到，很久没用过了，还是比较一下差异吧。</p>
+<p>没办法之下，我切换回了 SS。还好我之前配置的 SS 直接可以拿来用，自动更新脚本也一直运行着。在这里记录一下我之前 Mac 配置 SS 等相关翻墙工具的过程。</p>
 
-<p>随着键盘几个简单的敲击，屏幕中突然出现了一大片或熟悉、或陌生的名字……</p>
+<p>你可能会疑惑，我写的全栈式科学上网工具是什么？</p>
 
-<hr />
+<p>好吧，其实，我就是一个标题党……</p>
 
-<p>我在 2012 年 9 月加入这家单位。</p>
+<p>我们知道，ShadowSocks 主要用于浏览网页，也可以用于一些支持 Socks 代理的应用（比如 Dropbox）。但是如果想让命令行工具也走 SS 代理，虽然也可以打开 SS 的全局模式临时用一下，但是如果命令执行的时间过长，在全局模式下还是很影响上网体验的。</p>
 
-<p>我还记得在上一家公司接到丽娜的电话，啊？事业单位？你没弄错吧，我是做游戏的……</p>
+<p>所以，我今天所谓的全栈式科学上网不仅包括 SS 的配置，也包括了命令行代理工具 ProxyChains 的配置部分，以及如何自动更新 GFWList 。只要照着配下来，以后基本就不用再折腾翻墙的事了。</p>
 
-<p>我还记得刚入职的时候对这里到处都充满了好奇，那么多工会活动，还给钱……打完球之后总是被大睿拉着砸地摊子喝酒撸串，总是把我名字记错的门卫大爷，听着那些认识或不认识人的八卦……</p>
+<h2 id="ss-">SS 的原理</h2>
 
-<p>突然有一天，我特别高兴，因为我能叫出所有人的名字啦！我写程序把单位 Excel 的通讯录转成 VCard，再把 VCard 跟好多熟悉的人分享……</p>
+<p>我推荐 vc2tea 的这篇介绍原理的文章：<a href="http://vc2tea.com/whats-shadowsocks/">写给非专业人士看的 Shadowsocks 简介</a>。</p>
 
-<p>偶尔食堂吃饭的时候，我也偷偷打量没见过的新人。跟部门的弟兄一起，看脸看胸看腿看屁股，他们告诉我，她叫什么，是哪个部门的。</p>
+<h2 id="shadowsocks-server-">ShadowSocks Server 端的搭建</h2>
 
-<p>可是渐渐地，所有人似乎变得都很忙很忙，再也聚不起一场球赛，再也没人组织一块儿聚餐，甚至，不知道从哪时起，就再也没见过那个人了。</p>
+<p>嗯，SS 搭服务器是蛮简单的，前提是你要有一台国外的 VPS 来做中转。 VPS 我个人之前一直在用 <a href="https://www.digitalocean.com">DigitalOcean</a>，当年觉得它每月 $5 的 VPS 实在是便宜。不过感觉近些年大家都在降价，DO 现在没有什么价格优势了。而且我测试过 DO 各机房到我家（北京联通）的网络质量，普遍不佳，最终矬子里拔大个，选了 Toronto 机房，网络质量相比其他机房稍微好一点。</p>
 
-<hr />
+<p>最近看到 AWS 的推广，可以有 12 个月的免费体验，我又注册了 AWS ，暂停了 DO 的 VPS 。 AWS 的东京机房到我这的网络质量还蛮不错，至少比 DO 强太多了。</p>
 
-<p>当我看到终端滚出的那些熟悉的名字，心里突然有点柔软。</p>
+<p>下面简单介绍一下在 VPS 上如何装 ShadowSocks Server 端。</p>
 
-<p>看到它们，就仿佛看到了那些曾经一起加班、一起打球、一起开过玩笑、聊过心事的，却已经再也看不到了的身影。</p>
+<p>安装依赖。</p>
 
-<p>我把名单截图给博学看，博学说，「嗯，还有我的女神。」</p>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sudo apt-get install build-essential autoconf libtool libssl-dev</code></pre></figure>
 
-<hr />
+<p>下载并编译安装。</p>
 
-<p>可能生活就是这样，我们渐渐与一些人相遇，又与一些人分离。</p>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git clone https://github.com/shadowsocks/shadowsocks-libev.git
+<span class="nb">cd </span>shadowsocks-libev/
+./configure --prefix<span class="o">=</span>/opt/shadowsocks
+make
+sudo make install</code></pre></figure>
 
-<p>我还记得那天在楼下突然看到离职的安冬，她从远处走来，带着笑容，喊我的名字，一如昨日。</p>
+<p>启动 ShadowSocks Server 。</p>
 
-<hr />
+<div class="highlighter-rouge"><pre class="highlight"><code>/opt/shadowsocks/bin/ss-server -p 10080 -k password -m aes-256-cfb --fast-open -f /tmp/shadowsocks.pid
+</code></pre>
+</div>
 
-<p>偶尔就会缅怀。</p>
+<p>这里我指定的端口是 10080，密码是 password，加密方式是 aes-256-cfb，这几项信息在 SS 客户端中都是要填的。</p>
 
-<p>但是，也只是偶尔罢了。</p>
+<h2 id="shadowsocks-">ShadowSocks 客户端的配置</h2>
 
-<p>因为，非常非常幸运的，</p>
+<p>略。就照着上面服务器的信息配置就行了。</p>
 
-<p>那些与我信念相同的兄弟们，</p>
+<p>当你把客户端配置好，现在就可以在浏览器中体验科学上网了。</p>
 
-<p>仍与我并肩站在一起，</p>
+<h2 id="proxychains-">ProxyChains 的配置</h2>
 
-<p>从未离开。</p>
+<p>如我们之前所说的，浏览器科学上网只是一部分，身为一名工程师或非 Windows 用户，我们经常会使用到一些命令行工具，想让命令行工具科学上网肿么办？</p>
+
+<p>ProxyChains 就是一个这样用途的工具，它可以让你的其它工具通过 Socks 或 HTTP 代理访问网络。</p>
+
+<p>首先从 Homebrew 安装 ProxyChains。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">brew install proxychains-ng</code></pre></figure>
+
+<p>然后做一些配置，它默认会读取安装目录下的 etc/proxychains.conf 配置文件，因为我想跟我其它的 dotfiles 一同管理，所以我把它放在了 ~/.proxychains.conf ,其文件内容如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>strict_chain
+proxy_dns
+remote_dns_subnet 224
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+localnet 127.0.0.0/255.0.0.0
+quiet_mode
+[ProxyList]
+socks5  127.0.0.1 1080
+</code></pre>
+</div>
+
+<p><em>需要说明一点，在这里我配置的是 strict_chain。如果你有多重代理，类似我之前一样，比如让命令先通过 Lantern 代理出去，如果失败再走 SS 代理，可以配置成 dynamic_chain 模式。不过这超出今天的文章范畴了，我还是以 strict_chain 举例，如果你对 dynamic_chain 感兴趣，可以自行研究。</em></p>
+
+<p>因为指定了配置文件的路径，为了方便使用，我在 ~/.zshrc 里加一行 alias。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">alias </span><span class="nv">pc</span><span class="o">=</span><span class="s2">"proxychains4 -f ~/.proxychains.conf"</span></code></pre></figure>
+
+<p>在执行 <code class="highlighter-rouge">source ~/.zshrc</code> 重新加载环境变量之后，就可以尝试是否配置成功了。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pc curl https://twitter.com</code></pre></figure>
+
+<h2 id="gfwlist">自动更新 GFWList</h2>
+
+<p>ShadowSocks 客户端自带有从 GFWList 更新 PAC 的功能，但是由于某个你懂的原因，自动更新基本都是失败的。</p>
+
+<p>不过没关系，你可以下载这个<a href="https://raw.githubusercontent.com/echohn/shadowsocks-alfred-workflow/master/update_gfwlist.sh">update_gfwlist.sh 脚本</a>来进行更新 GFWList 。</p>
+
+<p>这个脚本的来源我忘记了，我只记得是之前我研究管理 dotfiles 的时候，从别人的 repo 里拷过来的。</p>
+
+<p>我把这个脚本放在 ~/.ShadowsocksX/ 目录下，这样可以它随着我的 mackup 一同备份到 Dropbox 上了。</p>
+
+<p>对了，别忘了给这个脚本赋执行权。</p>
+
+<p>然后在 crontab 里添加一行计划任务：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>30 9 * * * /Users/Echo/.ShadowsocksX/update_gfwlist.sh
+</code></pre>
+</div>
+
+<p>这样，每天早上 GFWList 会自动更新，你不用再去管它。</p>
+
+<h2 id="gfwlist-1">手动添加域名至 GFWList</h2>
+
+<p>可能会有这种情况：</p>
+
+<ol>
+  <li>哪天上网的时候，突然发现想要访问的网站直连非常慢，希望通过 ss 进行代理访问。</li>
+  <li>发现这个网站被墙了，但是还没收录在 GFWList 里。</li>
+</ol>
+
+<p>碰上以上这两种情况，你可以自己编辑 ~/.ShadowsocksX/user-rule.txt 文件。把每个网站的域名作为一行记录添加进去，再执行一次 update_gfwlist.sh 脚本以更新到 ShadowsSocks。这样做比直接在 gfwlist.js 里加记录要好一点，因为下次 GFWList 更新的时候，不会把你自己收录的域名覆盖掉。</p>
+
+<h2 id="shadowsocks--alfred-workflow">ShadowSocks 的 Alfred Workflow</h2>
+
+<p>如果你是 小帽子 <a href="https://www.alfredapp.com">Alfred</a> 的用户，你可以直接使用我写的 <a href="https://github.com/echohn/shadowsocks-alfred-workflow/raw/master/shadowsocks.alfredworkflow">ShadowSocks-Workflow(点击下载)</a>。在 Alfred 中执行 ssadd ，然后粘贴你准备加入 gfwlist 的 url，url 的域名就添加进 ShadowScoks 了。</p>
+
+<p><img src="/img/in-post/ss.png" alt="" /></p>
+
+<p>至此，我的全栈式科学上网工具就配置完了。现在不论是浏览器应用还是命令行，都实现了科学上网的功能，又提供了方便快捷的更新方式，对我来说，已经足够应付日常使用了。</p>
+
+<p>如果你使用了其他好的工具与方法科学上网，也非常欢迎你与我交流。</p>
 
 
 
@@ -261,13 +344,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/05/09/smart-questions-mindmap/" data-toggle="tooltip" data-placement="top" title="「提问的智慧」读书笔记">&larr; Previous Post</a>
+                        <a href="/2016/05/21/bash-style-guide-cn/" data-toggle="tooltip" data-placement="top" title="Bash 风格指南中文版">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/05/15/how-to-manage-your-servers/" data-toggle="tooltip" data-placement="top" title="如何在 Mac 上管理你经常变化的服务器列表？">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -412,8 +491,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/2016/05/11/who-were-left-who-were-stay";
-    var disqus_url = "http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/";
+    var disqus_identifier = "/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall";
+    var disqus_url = "http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

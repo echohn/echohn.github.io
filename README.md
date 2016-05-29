@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/05/29: <a href="http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/">「打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具」</a></p>
+  </li>
+  <li>
     <p>2016/05/21: <a href="http://echohn.github.io/2016/05/21/bash-style-guide-cn/">「Bash 风格指南中文版」</a></p>
   </li>
   <li>

@@ -5,9 +5,154 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 22 May 2016 16:57:27 +0800</pubDate>
-    <lastBuildDate>Sun, 22 May 2016 16:57:27 +0800</lastBuildDate>
+    <pubDate>Sun, 29 May 2016 23:34:57 +0800</pubDate>
+    <lastBuildDate>Sun, 29 May 2016 23:34:57 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具</title>
+        <description>&lt;p&gt;最近不知道为什么，&lt;a href=&quot;https://www.getlantern.org&quot;&gt;蓝灯（Lantern）&lt;/a&gt;用着经常出问题，要么非常慢，要么报错。&lt;/p&gt;
+
+&lt;p&gt;说实话 Lantern 正常的时候，真是要比我放在东京的 SS (ShadowSocks) VPS 快出很多的。看片一点都不费劲。&lt;/p&gt;
+
+&lt;p&gt;没办法之下，我切换回了 SS。还好我之前配置的 SS 直接可以拿来用，自动更新脚本也一直运行着。在这里记录一下我之前 Mac 配置 SS 等相关翻墙工具的过程。&lt;/p&gt;
+
+&lt;p&gt;你可能会疑惑，我写的全栈式科学上网工具是什么？&lt;/p&gt;
+
+&lt;p&gt;好吧，其实，我就是一个标题党……&lt;/p&gt;
+
+&lt;p&gt;我们知道，ShadowSocks 主要用于浏览网页，也可以用于一些支持 Socks 代理的应用（比如 Dropbox）。但是如果想让命令行工具也走 SS 代理，虽然也可以打开 SS 的全局模式临时用一下，但是如果命令执行的时间过长，在全局模式下还是很影响上网体验的。&lt;/p&gt;
+
+&lt;p&gt;所以，我今天所谓的全栈式科学上网不仅包括 SS 的配置，也包括了命令行代理工具 ProxyChains 的配置部分，以及如何自动更新 GFWList 。只要照着配下来，以后基本就不用再折腾翻墙的事了。&lt;/p&gt;
+
+&lt;h2 id=&quot;ss-&quot;&gt;SS 的原理&lt;/h2&gt;
+
+&lt;p&gt;我推荐 vc2tea 的这篇介绍原理的文章：&lt;a href=&quot;http://vc2tea.com/whats-shadowsocks/&quot;&gt;写给非专业人士看的 Shadowsocks 简介&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;shadowsocks-server-&quot;&gt;ShadowSocks Server 端的搭建&lt;/h2&gt;
+
+&lt;p&gt;嗯，SS 搭服务器是蛮简单的，前提是你要有一台国外的 VPS 来做中转。 VPS 我个人之前一直在用 &lt;a href=&quot;https://www.digitalocean.com&quot;&gt;DigitalOcean&lt;/a&gt;，当年觉得它每月 $5 的 VPS 实在是便宜。不过感觉近些年大家都在降价，DO 现在没有什么价格优势了。而且我测试过 DO 各机房到我家（北京联通）的网络质量，普遍不佳，最终矬子里拔大个，选了 Toronto 机房，网络质量相比其他机房稍微好一点。&lt;/p&gt;
+
+&lt;p&gt;最近看到 AWS 的推广，可以有 12 个月的免费体验，我又注册了 AWS ，暂停了 DO 的 VPS 。 AWS 的东京机房到我这的网络质量还蛮不错，至少比 DO 强太多了。&lt;/p&gt;
+
+&lt;p&gt;下面简单介绍一下在 VPS 上如何装 ShadowSocks Server 端。&lt;/p&gt;
+
+&lt;p&gt;安装依赖。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get install build-essential autoconf libtool libssl-dev&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;下载并编译安装。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git clone https://github.com/shadowsocks/shadowsocks-libev.git
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;shadowsocks-libev/
+./configure --prefix&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/shadowsocks
+make
+sudo make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;启动 ShadowSocks Server 。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/opt/shadowsocks/bin/ss-server -p 10080 -k password -m aes-256-cfb --fast-open -f /tmp/shadowsocks.pid
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这里我指定的端口是 10080，密码是 password，加密方式是 aes-256-cfb，这几项信息在 SS 客户端中都是要填的。&lt;/p&gt;
+
+&lt;h2 id=&quot;shadowsocks-&quot;&gt;ShadowSocks 客户端的配置&lt;/h2&gt;
+
+&lt;p&gt;略。就照着上面服务器的信息配置就行了。&lt;/p&gt;
+
+&lt;p&gt;当你把客户端配置好，现在就可以在浏览器中体验科学上网了。&lt;/p&gt;
+
+&lt;h2 id=&quot;proxychains-&quot;&gt;ProxyChains 的配置&lt;/h2&gt;
+
+&lt;p&gt;如我们之前所说的，浏览器科学上网只是一部分，身为一名工程师或非 Windows 用户，我们经常会使用到一些命令行工具，想让命令行工具科学上网肿么办？&lt;/p&gt;
+
+&lt;p&gt;ProxyChains 就是一个这样用途的工具，它可以让你的其它工具通过 Socks 或 HTTP 代理访问网络。&lt;/p&gt;
+
+&lt;p&gt;首先从 Homebrew 安装 ProxyChains。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install proxychains-ng&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;然后做一些配置，它默认会读取安装目录下的 etc/proxychains.conf 配置文件，因为我想跟我其它的 dotfiles 一同管理，所以我把它放在了 ~/.proxychains.conf ,其文件内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;strict_chain
+proxy_dns
+remote_dns_subnet 224
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+localnet 127.0.0.0/255.0.0.0
+quiet_mode
+[ProxyList]
+socks5  127.0.0.1 1080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;需要说明一点，在这里我配置的是 strict_chain。如果你有多重代理，类似我之前一样，比如让命令先通过 Lantern 代理出去，如果失败再走 SS 代理，可以配置成 dynamic_chain 模式。不过这超出今天的文章范畴了，我还是以 strict_chain 举例，如果你对 dynamic_chain 感兴趣，可以自行研究。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;因为指定了配置文件的路径，为了方便使用，我在 ~/.zshrc 里加一行 alias。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;pc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;proxychains4 -f ~/.proxychains.conf&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;在执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;source ~/.zshrc&lt;/code&gt; 重新加载环境变量之后，就可以尝试是否配置成功了。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pc curl https://twitter.com&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;gfwlist&quot;&gt;自动更新 GFWList&lt;/h2&gt;
+
+&lt;p&gt;ShadowSocks 客户端自带有从 GFWList 更新 PAC 的功能，但是由于某个你懂的原因，自动更新基本都是失败的。&lt;/p&gt;
+
+&lt;p&gt;不过没关系，你可以下载这个&lt;a href=&quot;https://raw.githubusercontent.com/echohn/shadowsocks-alfred-workflow/master/update_gfwlist.sh&quot;&gt;update_gfwlist.sh 脚本&lt;/a&gt;来进行更新 GFWList 。&lt;/p&gt;
+
+&lt;p&gt;这个脚本的来源我忘记了，我只记得是之前我研究管理 dotfiles 的时候，从别人的 repo 里拷过来的。&lt;/p&gt;
+
+&lt;p&gt;我把这个脚本放在 ~/.ShadowsocksX/ 目录下，这样可以它随着我的 mackup 一同备份到 Dropbox 上了。&lt;/p&gt;
+
+&lt;p&gt;对了，别忘了给这个脚本赋执行权。&lt;/p&gt;
+
+&lt;p&gt;然后在 crontab 里添加一行计划任务：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;30 9 * * * /Users/Echo/.ShadowsocksX/update_gfwlist.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样，每天早上 GFWList 会自动更新，你不用再去管它。&lt;/p&gt;
+
+&lt;h2 id=&quot;gfwlist-1&quot;&gt;手动添加域名至 GFWList&lt;/h2&gt;
+
+&lt;p&gt;可能会有这种情况：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;哪天上网的时候，突然发现想要访问的网站直连非常慢，希望通过 ss 进行代理访问。&lt;/li&gt;
+  &lt;li&gt;发现这个网站被墙了，但是还没收录在 GFWList 里。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;碰上以上这两种情况，你可以自己编辑 ~/.ShadowsocksX/user-rule.txt 文件。把每个网站的域名作为一行记录添加进去，再执行一次 update_gfwlist.sh 脚本以更新到 ShadowsSocks。这样做比直接在 gfwlist.js 里加记录要好一点，因为下次 GFWList 更新的时候，不会把你自己收录的域名覆盖掉。&lt;/p&gt;
+
+&lt;h2 id=&quot;shadowsocks--alfred-workflow&quot;&gt;ShadowSocks 的 Alfred Workflow&lt;/h2&gt;
+
+&lt;p&gt;如果你是 小帽子 &lt;a href=&quot;https://www.alfredapp.com&quot;&gt;Alfred&lt;/a&gt; 的用户，你可以直接使用我写的 &lt;a href=&quot;https://github.com/echohn/shadowsocks-alfred-workflow/raw/master/shadowsocks.alfredworkflow&quot;&gt;ShadowSocks-Workflow(点击下载)&lt;/a&gt;。在 Alfred 中执行 ssadd ，然后粘贴你准备加入 gfwlist 的 url，url 的域名就添加进 ShadowScoks 了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/ss.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，我的全栈式科学上网工具就配置完了。现在不论是浏览器应用还是命令行，都实现了科学上网的功能，又提供了方便快捷的更新方式，对我来说，已经足够应付日常使用了。&lt;/p&gt;
+
+&lt;p&gt;如果你使用了其他好的工具与方法科学上网，也非常欢迎你与我交流。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 29 May 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/</guid>
+        
+        <category>Mac</category>
+        
+        <category>科学上网</category>
+        
+        <category>ShadowSocks</category>
+        
+        <category>Alfred</category>
+        
+        
+      </item>
     
       <item>
         <title>Bash 风格指南中文版</title>
@@ -912,45 +1057,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <guid isPermaLink="true">http://echohn.github.io/2015/10/17/ruby-destructuring/</guid>
         
         <category>Ruby</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Alfred 自动补全的技巧</title>
-        <description>&lt;p&gt;在写这个 &lt;a href=&quot;/2015/10/17/rubygems-workflow/&quot;&gt;RubyGems Workflow&lt;/a&gt; 这个 Workflow 的时候，我发现了 Alfred 一点很有用的地方，就是对查询的结果进行自动补全，在补全后对查询结果进行另外的操作。&lt;/p&gt;
-
-&lt;p&gt;当 Feedback 的 valid = no 时，就可以通过 autocomplete 属性自动补全 Feedback 。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:uid&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:subtitle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Downloads: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;downloads&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; ; Info: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;info&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:arg&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:autocomplete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;name&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39; : &#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;ss&quot;&gt;:valid&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;no&#39;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;而 autocomplete 的值就是第二次查询的 query，所以需要在脚本开始接收 query 的地方对结果进行解析，映射到不同的方法上。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;:&#39;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;info&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;search&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;在补全之后的方法中，记得将 Feedback valid 属性的值设为 &lt;code class=&quot;highlighter-rouge&quot;&gt;yes&lt;/code&gt;。&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2015/10/17/alfred_tips/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2015/10/17/alfred_tips/</guid>
-        
-        <category>Alfred</category>
-        
-        <category>Ruby</category>
-        
-        <category>Mac</category>
         
         
       </item>
