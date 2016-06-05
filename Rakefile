@@ -51,6 +51,7 @@ task :build do
     convert_block_area md_file
   end
   system "jekyll build"
+  system "cd ../echohn.github.io && git add ./ && git commit -m 'auto commit' && git push origin master"
 end
 
 desc "Start a locally server"

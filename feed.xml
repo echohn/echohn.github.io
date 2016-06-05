@@ -5,9 +5,470 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 29 May 2016 23:34:57 +0800</pubDate>
-    <lastBuildDate>Sun, 29 May 2016 23:34:57 +0800</lastBuildDate>
+    <pubDate>Sun, 05 Jun 2016 17:20:05 +0800</pubDate>
+    <lastBuildDate>Sun, 05 Jun 2016 17:20:05 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统</title>
+        <description>&lt;p&gt;昨天被安全部拉去开会，我被安利了好多安全工具。&lt;/p&gt;
+
+&lt;p&gt;我很喜欢其中一个叫做 &lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon&quot;&gt;&lt;strong&gt;FastNetMon&lt;/strong&gt;&lt;/a&gt; 的 DoS/DDoS 分析防御工具。&lt;/p&gt;
+
+&lt;p&gt;它性能很高，支持多种抓包引擎。支持 ExaBGP 和外部脚本触发报警。FastNetMon 可以部署在旁路上，侦听从核心交换上镜像过来的流量（见下图）。当它发现受到攻击的时候，可以通过脚本通知管理员，在 BGP 上 Blocked 掉被攻击的 IP，或是通过脚本触发任何你能想到的其他操作。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/network_map.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;FastNetMon 也可以结合 BGP 协议，打造自动化的抗 DDoS 安全防御系统。当发现受到攻击的时候，通过在 BGP 上宣告 blocked 受到攻击的 IP 地址。从而将攻击转移到其他地点，保证本地的其他服务不受到 DDoS 攻击的影响。&lt;/p&gt;
+
+&lt;p&gt;当然，在国内的环境，现实的问题在于，当你遭受攻击的时候，&lt;a href=&quot;http://zhihu.com/question/19581905/answer/37397087&quot;&gt;你其实什么都做不了&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;扯远了，今天我就介绍一下，如何把 FastNetMon 与 &lt;a href=&quot;http://grafana.org&quot;&gt;Grafana&lt;/a&gt; 结合起来，打造一个可视化的 DDoS 安全预警系统。&lt;/p&gt;
+
+&lt;h2 id=&quot;fastnetmon&quot;&gt;1. 安装 FastNetMon&lt;/h2&gt;
+
+&lt;p&gt;由于只是搭建一个实验环境，我把所有相关的组件都安装在一台 CentOS 6 的虚拟机上。&lt;/p&gt;
+
+&lt;p&gt;FastNetMon 官方提供了便捷的安装脚本，这也是目前官方唯一推荐的安装方式。然而这个脚本有一些坑（后面会提到）。而 RPM 包的安装方式官方看来是&lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL_RPM_PACKAGES.md&quot;&gt;已经暂时放弃了&lt;/a&gt;。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget https://raw.githubusercontent.com/FastVPSEestiOu/fastnetmon/master/src/fastnetmon_install.pl -Ofastnetmon_install.pl 
+perl fastnetmon_install.pl&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;首先需要说明的是，使用这个脚本安装的时候，FastNetMon 官方会从运行的机器上收集一些系统的相关信息用于改进产品。如果你不希望被打扰，可以在脚本后面加上&lt;code class=&quot;highlighter-rouge&quot;&gt;--do-not-track-me&lt;/code&gt;参数阻止数据上传。&lt;/p&gt;
+
+&lt;p&gt;FastNetMon 需要安装很多依赖组件，这个脚本的执行时间取决于你的网速。你可以趁这时候喝口水，起来活动一下身体，或跟你的妹子聊聊微信。你也可以通过跟踪安装日志 /tmp/fastnetmon_install.log 来查看安装的时候究竟做了什么。&lt;/p&gt;
+
+&lt;p&gt;在我十几分钟的等待结束之后，fastnetmon 终于安装完成了。&lt;/p&gt;
+
+&lt;p&gt;在这里，我不得不吐槽一下这个安装脚本。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;虽然在安装之后，屏幕上会输出 We created service fastnetmon for you. You could run it with command: &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/init.d/fastnetmon start&lt;/code&gt; 但是粗心的官方忘记了给 /etc/init.d/fastnetmon 脚本加执行权，我在发现执行找不到脚本的时候发现了这个问题，自己加上了。&lt;/li&gt;
+  &lt;li&gt;即使加上了，/etc/init.d/fastnetmon 这个脚本依赖于 daemonize ，然 daemonize 这个依赖包并没有安装，我自己通过 yum 装上了。&lt;/li&gt;
+  &lt;li&gt;即使这个包装上了，启动的时候也显示成功启动，然后我发现进程并没有运行。查看日志，发现一条 [ERROR] FastNetMon is already running with pid: 3068 的错误。然而，我是第一次启动好不好！&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/shuai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以我尝试自己改动了启动脚本，因为 fastnetmon 本身就支持 daemonize 模式，而且直接通过进程运行时生成的 pid 文件与通过启动的 pid 文件路径是一样的，所以可以直接修改 /etc/init.d/fastnetmon 脚本，将 &lt;code class=&quot;highlighter-rouge&quot;&gt;start()&lt;/code&gt;函数替换成如下所示：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;start&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -n &lt;span class=&quot;s2&quot;&gt;$&quot;Starting &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PROGNAME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &quot;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$FASTNETMON&lt;/span&gt; --daemonize
+        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# add pretty error messages&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+            &lt;/span&gt;echo_success
+        &lt;span class=&quot;k&quot;&gt;else
+            &lt;/span&gt;echo_failure
+        &lt;span class=&quot;k&quot;&gt;fi
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;现在通过脚本启动关闭就是正常的了。&lt;/p&gt;
+
+&lt;p&gt;之前说过，FastNetMon 支持多种抓包引擎。有像 pf_ring、netmap、pcap 这种 mirror capture, 也支持 netflow 和 sflow。FastNetMon 的作者 Pavel Odintsov 做过这些抓包引擎的性能对比：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/mirror-performance.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;同样，我也找到&lt;a href=&quot;http://prod.sandia.gov/techlib/access-control.cgi/2015/159378r.pdf&quot;&gt;这篇测试报告&lt;/a&gt;,其中有 pf_ring zc 和 netmap 的性能对比。&lt;/p&gt;
+
+&lt;p&gt;由于 netmap 需要单独安装。在这里我将介绍使用 pf_ring 作为抓包引擎进行实验。你也可以选择 pcap，如果作为实验环境，它的兼容性是最好的。&lt;/p&gt;
+
+&lt;h2 id=&quot;pfring--fastnetmon-&quot;&gt;2. 使用 pf_ring 作为 FastNetMon 的抓包引擎&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;这部分是讲我是怎么填坑的。如果你只是做测试，可以选择 pcap 引擎，忽略这一部分。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;FastNetMon 在安装的时候，已经安装了 pf_ring 。&lt;/p&gt;
+
+&lt;p&gt;首先编辑文件 /etc/fastnetmon.conf，将 mirror 的值改为 on ，这将使用 pf_ring 作为抓包引擎。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# PF_RING traffic capture, enough fast but wire speed version need paid license
+mirror = on
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;同时，可以顺便把报警阈值调小一点，方便后面测试攻击。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Limits for Dos/DDoS attacks
+&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;threshold_pps&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;200&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;threshold_mbps&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;threshold_flows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;350&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;现在就可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/init.d/fastnetmon start&lt;/code&gt; 来启动 FastNetMon 了，这时候我惊喜的发现，FastNetMon 根本起！不！来！&lt;/p&gt;
+
+&lt;p&gt;通过日志可以看到：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;2016-06-03 22:31:08,966 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] pfring_open error: No such device &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pf_ring not loaded or perhaps you use quick mode and have already a socket bound to: eth1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+2016-06-03 22:31:08,966 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ERROR] PF_RING initilization failed, &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;from programm&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这里又是 FastNetMon 那个安装脚本的一大坑。 它并没有安装成功 pf_ring 的 Kernel module，也没有将安装错误抛出来。&lt;/p&gt;
+
+&lt;p&gt;如果通过命令&lt;code class=&quot;highlighter-rouge&quot;&gt;lsmod |grep pf_ring&lt;/code&gt;查找机器上已安装的 pf_ring ，会发现根本找不到。/proc/net 里也没有建立 pf_ring 的目录。&lt;/p&gt;
+
+&lt;p&gt;所以我仔细排查了 fastnetmon 的安装日志 /tmp/fastnetmon_install.log，我发现日志里有这样的内容。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel
+
+make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;&#39;
+********** WARNING WARNING WARNING **********
+*
+* Compiling PF_RING as root might lead you to compile errors
+* Please compile PF_RING as unpriviliged user
+*
+*********************************************
+make -C /lib/modules/2.6.32-573.22.1.el6.x86_64/build SUBDIRS=/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel EXTRA_CFLAGS=&#39;&lt;/span&gt;-I/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel -DSVN_REV&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;已导出 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39; modules
+make: Entering an unknown directory
+make: Leaving an unknown directory
+make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&#39;&lt;/span&gt;
+Command finished with code 512
+
+We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel install
+
+make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;&#39;
+mkdir -p /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
+cp *.ko /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
+make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&#39;&lt;/span&gt;
+Command finished with code 512
+
+We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: rmmod pf_ring 2&amp;gt;/dev/null
+
+Command finished with code 256
+
+We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: modprobe pf_ring
+
+Command finished with code 256&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;可以看到，首先 pf_ring 在编译的时候有提示，不要用 root 进行编译，可能会导致失败，而且 make、make install 和 modprobe 命令的返回值也不是 0 ，说明编译和之后的安装都没有成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/shuai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以我只能自己编译一下 pf_ring 的 Kernel module。&lt;/p&gt;
+
+&lt;p&gt;首先按照人家建议的，我们建一个普通用户 echo，然后找到日志中的编译临时目录，并赋给 echo 用户这个目录的读写权限。&lt;/p&gt;
+
+&lt;p&gt;切换到 echo 用户 然后执行下面命令进行编译。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# su - echo
+$ cd /tmp/fastnetmon.build.dir.lAVvYX7Htd/
+$ ls
+fastnetmon  PF_RING-6.0.3  PF_RING-6.0.3.tar.gz
+$ rm -rf PF_RING-6.0.3
+$ tar zxf  PF_RING-6.0.3.tar.gz
+$ cd PF_RING-6.0.3/kernel/
+$ make
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;好了，退出到这个用户，回到 root，执行安装：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;make -C /tmp/fastnetmon.build.dir.lAVvYX7Htd/PF_RING-6.0.3/kernel install
+modprobe pf_ring&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;现在执行 lsmod 就能看到这个 module 了。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# lsmod |grep pf_ring&lt;/span&gt;
+pf_ring               691861  2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;现在重新启动 fastnetmon，就能够成功启动了。&lt;/p&gt;
+
+&lt;h2 id=&quot;ddos--fastnetmon&quot;&gt;3. 模拟 DDoS 攻击测试 FastNetMon&lt;/h2&gt;
+
+&lt;p&gt;接下来我们测试 fastnetmon 是否能正确识别 DDoS 攻击。&lt;/p&gt;
+
+&lt;p&gt;首先我们配置一下 FastNetMon 的通知脚本（&lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon/raw/master/src/notify_about_attack.sh&quot;&gt;下载脚本示例&lt;/a&gt;)。&lt;/p&gt;
+
+&lt;p&gt;将这个脚本复制为 /usr/local/bin/notify_about_attack.sh ，这是 fastnetmon.conf 文件中 notify_script_path 选项默认指定的通知脚本位置，并得给脚本赋执行权。&lt;/p&gt;
+
+&lt;p&gt;编辑这个脚本，找到 ban 的条件语句，由于只是进行测试，我仅仅输出一条消息到 /tmp/ban.log 日志中。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if [ &quot;$4&quot; = &quot;ban&quot; ]; then
+    echo &quot;FastNetMon Guard: IP $1 blocked because $2 attack with power $3 pps&quot; &amp;gt;&amp;gt; /tmp/ban.log
+    exit 0
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样通知脚本就配置好了。&lt;/p&gt;
+
+&lt;p&gt;我使用一款叫做 iperf 的工具来模拟 DDoS 攻击，这个工具一般用于测试网络带宽，当然也可以通过大量发包模拟一次 DDoS 攻击。&lt;/p&gt;
+
+&lt;p&gt;在 CentOS 上可以通过 yum 直接安装 iperf：&lt;code class=&quot;highlighter-rouge&quot;&gt;yum install iperf&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;然后通过&lt;code class=&quot;highlighter-rouge&quot;&gt;iperf -su&lt;/code&gt;命令启动 iperf 的服务器端。&lt;/p&gt;
+
+&lt;p&gt;这里 -u 参数指明侦听 udp 端口。&lt;/p&gt;
+
+&lt;p&gt;我将我的 mbp 作为攻击的发器端，同样安装 iperf ： &lt;code class=&quot;highlighter-rouge&quot;&gt;brew install iperf&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;在客户端上向服务器发起探测：&lt;code class=&quot;highlighter-rouge&quot;&gt;iperf  -u -c 10.1.2.137 -b 100M -P 5&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;这时，在服务器上执行 FastNetMon 的客户端命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/fastnetmon/fastnetmon_clinet&lt;/code&gt;进行查看,可以看到出现如下信息。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;FastNetMon v1.0 FastVPS Eesti OU &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VPS and dedicated: http://FastVPS.host
+IPs ordered by: packets
+Incoming traffic         42594 pps    491 mbps      0 flows
+10.1.2.137               35552 pps    410 mbps      0 flows  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;banned&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+
+Outgoing traffic             1 pps	0 mbps      0 flows
+10.1.2.137                   1 pps	0 mbps      0 flows  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;banned&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+
+Internal traffic             0 pps	0 mbps
+
+Other traffic                0 pps	0 mbps
+
+Screen updated &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;:              0 sec 191 microseconds
+Traffic calculated &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;:          0 sec 7 microseconds
+Total amount of not processed packets: 0
+Packets received:	404792
+Packets dropped:        0
+Packets dropped:        0.0 %
+
+Ban list:
+10.1.2.137/35552 pps incoming at 04_06_16_00:40:13&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;因为之前我设置了攻击阈值为 200 pps，10 mb，目前的这个负载量已经远远超过我设定的阈值，被认为遭到了攻击。可以看到，目前 10.1.2.137 这个 IP 已经被拉进 Ban list 之中了。&lt;/p&gt;
+
+&lt;p&gt;现在我们查看 FastNetMon 是否触发了通知，查看 /tmp/ban.log 这个日志，可以看到通知的消息。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FastNetMon Guard: IP 10.1.2.137 blocked because incoming attack with power 293 pps
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;FastNetMon 确实触发了通知的操作。&lt;/p&gt;
+
+&lt;h2 id=&quot;fastnetmon--influxdb&quot;&gt;4. FastNetMon 集成 InfluxDB&lt;/h2&gt;
+
+&lt;p&gt;InfluxDB 是一款开源的分布式时钟、事件和指标数据库。使用 Go 语言编写，它易于分布式和水平伸缩扩展。 InfluxDB 本身提供了非常简单易用的 HTTP API，因此它经常用于监控程序的后端数据存储，Grafana 对它就有非常好的支持。&lt;/p&gt;
+
+&lt;p&gt;它有三大特性：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Time Series（时间序列）：你可以使用与时间有关的相关函数，如最大，最小，求和等。&lt;/li&gt;
+  &lt;li&gt;Metrics（度量）：你可以实时对大量数据进行计算。&lt;/li&gt;
+  &lt;li&gt;Eevents（事件）：它支持任意的事件数据。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;先来安装 InfluxDB。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget https://dl.influxdata.com/influxdb/releases/influxdb-0.13.0.x86_64.rpm
+yum localinstall influxdb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;编辑 InfluxDB 的配置文件 /etc/influxdb/influxdb.conf 中的 graphite 选项，按照如下配置：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[[graphite]&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;bind-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:2003&quot;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;tcp&quot;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;consistency-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;level&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;one&quot;&lt;/span&gt;
+
+
+  &lt;span class=&quot;err&quot;&gt;batch-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5000&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;batch-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1s&quot;&lt;/span&gt; 
+  &lt;span class=&quot;s&quot;&gt;separator = &quot;.&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;py&quot;&gt;templates&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.hosts.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.cidr.direction.function.resource&quot;,&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.networks.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.cidr.direction.resource&quot;,&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.total.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.direction.resource&quot;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;现在就可以启动 InfluxDB 了。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# /etc/init.d/influxdb start&lt;/span&gt;
+Starting the process influxdb &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; OK &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+influxdb process was started &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; OK &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;同样，需要在 FastNetMon 的配置文件 /etc/fastnetmon.conf 里做一些配置:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;graphite = on
+graphite_host = 127.0.0.1
+graphite_port = 2003
+graphite_prefix = fastnetmon
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;然后重启 FastNetMon:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/init.d/fastnetmon restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;等待几秒，接下来登录 Influxdb shell，查看数据库里是否有数据了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# influx
+Visit https://enterprise.influxdata.com to register for updates, InfluxDB server management, and monitoring.
+Connected to http://localhost:8086 version 0.13.0
+InfluxDB shell version: 0.13.0
+&amp;gt; show databases
+name: databases
+---------------
+name
+graphite
+_internal
+
+&amp;gt; use graphite
+Using database graphite
+&amp;gt; show measurements
+name: measurements
+------------------
+name
+fastnetmon.10_1_2_137.incoming.flows
+fastnetmon.10_1_2_137.incoming.mbps
+fastnetmon.10_1_2_137.incoming.pps
+fastnetmon.10_1_2_137.outgoing.flows
+fastnetmon.10_1_2_137.outgoing.mbps
+fastnetmon.10_1_2_137.outgoing.pps
+fastnetmon.172_26_1_1.incoming.flows
+fastnetmon.172_26_1_1.incoming.mbps
+fastnetmon.172_26_1_1.incoming.pps
+fastnetmon.172_26_1_1.outgoing.flows
+fastnetmon.172_26_1_1.outgoing.mbps
+fastnetmon.172_26_1_1.outgoing.pps
+fastnetmon.incoming.mbps
+fastnetmon.incoming.pps
+fastnetmon.incomingflows
+fastnetmon.outgoing.mbps
+fastnetmon.outgoing.pps
+fastnetmon.outgoingflows
+
+&amp;gt; select * from &quot;fastnetmon.incoming.pps&quot; order by time desc limit 10
+name: fastnetmon.incoming.pps
+-----------------------------
+time			value
+1465079546000000000	0
+1465079545000000000	0
+1465079544000000000	3
+1465079543000000000	0
+1465079542000000000	2
+1465079541000000000	0
+1465079540000000000	0
+1465079539000000000	0
+1465079538000000000	0
+1465079537000000000	0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可以看到，在 graphite 这个数据库里，FastNetMon 已经自动创建了一些表，而且在表里已经有写入的数据了。&lt;/p&gt;
+
+&lt;p&gt;在 InfluxDB 里，有些概念是与传统数据库不同的。在它的每张表（在 InfluxDB 中称为 measurement）里，并没有固定的字段，所以你不需要在前期先设计表的结构。&lt;/p&gt;
+
+&lt;p&gt;表中的每条记录（在 InfluxDB 中称为 points），由时间戳（time）、数据（field）、标签（tags）组成。 每条 points 都要至少包含一个 field。&lt;/p&gt;
+
+&lt;p&gt;如果一条记录插入进来，即使在表中没有这个 tags 或 field 的时候，它也会自动添加这个字段。&lt;/p&gt;
+
+&lt;p&gt;InfluxDB 官方介绍说，在 InfluxDB 的数据库中，可能会有百万计的表。它提供了一个非常强大的特性，支持通过 Go 语言风格的正则表达式对 measurement 进行查询。这对后面我们生成 Grafana 的图表非常有用。例如：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; select * from /fastnetmon.*\.incoming\.pps/ order by time desc limit 3
+name: fastnetmon.incoming.pps
+-----------------------------
+time			value
+1465083127000000000	3
+1465083126000000000	0
+1465083125000000000	0
+
+name: fastnetmon.172_26_1_1.incoming.pps
+----------------------------------------
+time			value
+1465083127000000000	0
+1465083126000000000	0
+1465083125000000000	0
+
+name: fastnetmon.10_1_2_137.incoming.pps
+----------------------------------------
+time			value
+1465083127000000000	3
+1465083126000000000	0
+1465083125000000000	0
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样可以获取到 FastNetMon 中所有进站流量的 pps,而无需确切知道镜像来的流量中一共有多少个目的 IP 地址。&lt;/p&gt;
+
+&lt;p&gt;InfluxDB 不仅提供了 shell ，同时也提供了 WEB 管理接口（端口 8083）和 HTTP API 接口（端口 8086）。接下来，我将配置 Grafana 与它的 HTTP API 端口进行交互。&lt;/p&gt;
+
+&lt;h2 id=&quot;grafana&quot;&gt;5. 安装配置 Grafana&lt;/h2&gt;
+
+&lt;p&gt;Grafana 目前已经&lt;a href=&quot;http://grafana.org/blog/2016/05/11/grafana-3-0-stable-released.html&quot;&gt;更新到 3.0 &lt;/a&gt;版本了，新增了许多特性。哈哈，好激动，我终于可以把 Kibana 难看的图表给扔掉了。&lt;/p&gt;
+
+&lt;p&gt;使用下面的命令下载安装 Grafana:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install https://grafanarel.s3.amazonaws.com/builds/grafana-3.0.4-1464167696.x86_64.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;话不多说，直接启动吧。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/init.d/grafana-server start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;浏览器打开 Grafana（端口默认 3000），默认用户是 admin, 密码 admin。&lt;/p&gt;
+
+&lt;p&gt;首先点击左上角 Logo，添加数据源,添加 InfluxDB 的配置信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-datasource.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;填好之后，点击下方的&lt;code class=&quot;highlighter-rouge&quot;&gt;Save and Test&lt;/code&gt;按钮，如果显示 Success ，说明已经可以连到 InfluxDB 了。&lt;/p&gt;
+
+&lt;p&gt;然后转到 Dashboard ，新建一个 Dashboard。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-dash.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在 Dashboard 里新建一个 Panel。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-new.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;点击 Metrics 标签中的 SQL 语句。在 FROM 一行中，点击 select measurement ，选择 fastnetmon.incoming.pps,可以看到上方 Panel 中的数值已经变化了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-metrics.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;现在数据已经设置好了，你可以选择在 General 标签设置标题，Options 标签设置样式，修改成你喜欢的样子。&lt;/p&gt;
+
+&lt;p&gt;然后我们以同样的方式新建一排 Singlestat 的 Panel ，分别对应 incoming 和 outgoing 的 pps 和 mpbs。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-row.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;接下来新建一行，新建两张分别对应 pps 和 mbps 的图表。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-graph-new.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这次数据的设置里，同样在 select meatruement 的地方，可以使用上一节我讲到的正则表达式，查询所有关于 pps 表的正则表达式 &lt;code class=&quot;highlighter-rouge&quot;&gt;/fastnetmon.*\.pps/&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-graph-metrics.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后同样另建一张查询所有 mpbs 表的图。&lt;/p&gt;
+
+&lt;p&gt;至此，我们的 Dashboard 就算新建完成了。&lt;/p&gt;
+
+&lt;p&gt;这时候，我再通过 iperf 模拟发起一次攻击，看一下 Grafana 的效果。还是很漂亮的嘛。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-attack.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;今天这篇帖子就讲完了，不知道你是不是已经学会使用 FastNetMon 集成 Grafana 搭建这个 DDoS 安全预警平台了，如果你有任何想法，欢迎你与我交流。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL.md&lt;/p&gt;
+
+&lt;p&gt;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INFLUXDB_INTEGRATION.md&lt;/p&gt;
+
+&lt;p&gt;https://docs.influxdata.com/influxdb/v0.13/introduction/getting_started/&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 03 Jun 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/</guid>
+        
+        <category>安全</category>
+        
+        <category>运维</category>
+        
+        
+      </item>
     
       <item>
         <title>打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具</title>
@@ -1034,29 +1495,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <category>Ruby</category>
         
         <category>Alfred</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ruby 强制解构</title>
-        <description>&lt;p&gt;今天在写 Rakefile 的时候，突然想起之前看过 Ruby 的一个小技巧。&lt;/p&gt;
-
-&lt;p&gt;我们经常使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;|x,y|&lt;/code&gt; 的形式在 block 中对传参的数组进行解构，那么在类似 reduce 的方法中，也可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;()&lt;/code&gt; 强制对参数进行解构。&lt;/p&gt;
-
-&lt;p&gt;例如：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;foo1&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;bar1&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;foo2&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;bar2&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;foo1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bar1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;foo2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bar2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;inject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;bar1&#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;foo1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2015/10/17/ruby-destructuring/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2015/10/17/ruby-destructuring/</guid>
-        
-        <category>Ruby</category>
         
         
       </item>

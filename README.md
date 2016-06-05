@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/06/03: <a href="http://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/">「使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统 – 」</a></p>
+  </li>
+  <li>
     <p>2016/05/29: <a href="http://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/">「打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具」</a></p>
   </li>
   <li>
