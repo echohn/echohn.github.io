@@ -5,9 +5,73 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 08 Jul 2016 13:32:23 +0800</pubDate>
-    <lastBuildDate>Fri, 08 Jul 2016 13:32:23 +0800</lastBuildDate>
+    <pubDate>Fri, 22 Jul 2016 16:14:04 +0800</pubDate>
+    <lastBuildDate>Fri, 22 Jul 2016 16:14:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>如何自动备份 Safari 书签</title>
+        <description>&lt;p&gt;今天上午美男子找我，「我 Safari 的书签突然全没啦，怎么办？」&lt;/p&gt;
+
+&lt;p&gt;「你上次说买 &lt;a href=&quot;http://www.apple.com/cn/shop/product/ME177CH/A/airport-time-capsule-2tb?fnode=5f&quot;&gt;Time Capsule&lt;/a&gt; 后来买了吗？」&lt;/p&gt;
+
+&lt;p&gt;「还没啊。」&lt;/p&gt;
+
+&lt;p&gt;「那你试试登 iCloud 看看，我记得好像有恢复书签的功能。」&lt;/p&gt;
+
+&lt;p&gt;过了一会，美男子告诉我，确实在 iCloud 里找到了恢复书签的选项，包括通讯录，日历和 iCloud Drive 的文件，iCloud 都有恢复的功能。&lt;/p&gt;
+
+&lt;p&gt;这件事就这样结束了，然后我就在想，Safari 的书签是存在  ~/Library/Safari/Bookmarks.plist 里的，而 Safari 导出的书签实际上是一个 HTML 文件，其实写一个脚本就可以把书签自动备份了呀。&lt;/p&gt;
+
+&lt;p&gt;(我写这个就是写着玩，我平时用 Time Capsule 做备份也用不着这个。。。)&lt;/p&gt;
+
+&lt;p&gt;我尝试研究了一下，发现确实完全可行，但是发现了 Safari 的一个问题，Safari 在导入书签的时候，无法正确地识别&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签。而且只能解析与&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签处在同一行的书签。&lt;/p&gt;
+
+&lt;p&gt;这么说可能不易理解，我举例解释一下。&lt;/p&gt;
+
+&lt;p&gt;正常 HTML 生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签应该是闭合的。如果在输出后的 HTML 文件不换行，是下面的样式。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;DT&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.zhihu.com/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;知乎&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/DT&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这种情况下，Safari 会错误的把&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;前面的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/a&amp;gt;&lt;/code&gt;也解析成书签名，书签名会变成&lt;code class=&quot;highlighter-rouge&quot;&gt;知乎&amp;lt;/a&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;如果输出允许 indent，例如下面的样式：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;DT&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.zhihu.com/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;知乎&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/DT&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;。。。Safari 根本就认不出来这个书签啦。&lt;/p&gt;
+
+&lt;p&gt;我试验出的结果是，Safari 在导入书签的时候，只能识别出非闭合的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签，并且需要把书签放置在&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签的同一行中，例如下面这样才能够正常的解析。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;DT&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.zhihu.com/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;知乎&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;由于上面的问题，而且 xsltproc 将 xml 转换成 html 的时候，没法转换非闭合的标签，最后我在写脚本的时候，只能在导出 HTML 时，加了一个 sed 删除所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签，这真让强迫症痛苦。。。&lt;/p&gt;
+
+&lt;p&gt;最后附上脚本。&lt;/p&gt;
+
+&lt;p&gt;自动备份脚本的使用方法：&lt;/p&gt;
+
+&lt;p&gt;将 「&lt;a href=&quot;https://gist.github.com/echohn/eb8f31165aa288a3d0de115ac11ee543&quot;&gt;备份脚本&lt;/a&gt; 」与「 &lt;a href=&quot;https://gist.github.com/echohn/4c5edcd8697b29cec9bafb36889e6953&quot;&gt;转换模板&lt;/a&gt; 」下载到同一目录，然后在 crontab 里添加执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;SCRIPT_PATH/backup_safari_bookmarks.sh OUTPUT_PATH&lt;/code&gt;即可,其中 OUTPUT_PATH 是书签备份将存放的目录，脚本执行之后，会在这个目录下生成一个文件名为当天日期的 HTML 书签文件。&lt;/p&gt;
+
+&lt;p&gt;导入备份书签的方法：&lt;/p&gt;
+
+&lt;p&gt;选择 Safari -&amp;gt; 文件 -&amp;gt; 导入自 -&amp;gt; 书签 HTML 文件…，然后选择最新的备份文件恢复即可。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 22 Jul 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/07/22/auto-backup-safari-bookmarks/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/07/22/auto-backup-safari-bookmarks/</guid>
+        
+        <category>Safari</category>
+        
+        <category>Mac</category>
+        
+        <category>script</category>
+        
+        
+      </item>
     
       <item>
         <title>使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统</title>
@@ -1465,36 +1529,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <category>Mac</category>
         
         <category>Safari</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>搜索 rubygems 并安装的 Alfred Workflow</title>
-        <description>&lt;p&gt;有时候，我会打开 &lt;a href=&quot;https://rubygems.org&quot;&gt;rubygems.org&lt;/a&gt; 去搜一个 gem 包。 一般是打开它的 GitHub 主页去查看文档，或是其他一些信息，也有的时候去搜索相关的 gem 进行安装使用。&lt;/p&gt;
-
-&lt;p&gt;但是对于懒人来说，还是 Alfred 好用呀，所以十一放假穷极无聊的时候我写了一个 Workflow 用于搜索和安装 gem 。&lt;/p&gt;
-
-&lt;p&gt;使用方法：&lt;/p&gt;
-
-&lt;p&gt;使用 gem 关键字，后接 gem 名进行搜索。待列表出来后，可选择需要的 gem ，enter，即可选择安装或是打开 gem 的相关链接。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/echohn/ruby_gems_org_alfred_workflow/raw/master/RubyGems.alfredworkflow&quot;&gt;点击这里下载&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 17 Oct 2015 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2015/10/17/rubygems-workflow/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2015/10/17/rubygems-workflow/</guid>
-        
-        <category>Mac</category>
-        
-        <category>Ruby</category>
-        
-        <category>Alfred</category>
         
         
       </item>

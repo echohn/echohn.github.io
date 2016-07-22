@@ -81,18 +81,75 @@ task :new do
     abort("rake aborted: #{filename} already exists.")
   end
 
+  yaml_header = <<-EOF.gsub(/^\s+\|/,'')
+    |---
+    |layout: post
+    |title: \"#{title.gsub(/-/,' ')}\"
+    |subtitle: \'\'
+    |date: #{date}
+    |header-img: \"img/post-bg-unix-linux.jpg\"
+    |author: \"Echo\"
+    |tags:
+    |keywords:
+    |---
+    EOF
+
   puts "Creating new post: #{filename}"
   open(filename, 'w') do |post|
-    post.puts "---"
-    post.puts "layout: post"
-    post.puts "title: \"#{title.gsub(/-/,' ')}\""
-    post.puts "subtitle: \'\'"
-    post.puts "date: #{date}"
-    post.puts "header-img: \"\""
-    post.puts "author: \"Echo\""
-    post.puts "tags: "
-    post.puts "keywords: "
-    post.puts "---"
+    post.puts yaml_header
+  end
+
+  exec "open #{filename}"
+end
+
+# Usage: rake post title="A Title" [date="2014-04-14"]
+desc "Create a new slide"
+task :slide do
+  unless FileTest.directory?('./_slides')
+    abort("rake aborted: '_slides' directory not found.")
+  end
+
+  title = ENV["title"] || "new-slide"
+  slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  begin
+    date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now)
+           .strftime('%Y-%m-%d')
+  rescue Exception => e
+    puts "Error: date format must be YYYY-MM-DD!"
+    exit -1
+  end
+
+  filename = File.join('.', '_slides', "#{date}-#{slug}.haml")
+  if File.exist?(filename)
+    abort("rake aborted: #{filename} already exists.")
+  end
+
+  slide_home_page = <<-EOF.gsub(/^\s+\|/,'')
+    |%section
+    |  %h1 #{title}
+    |  %h3 #{date.gsub(/\-/,'.')}
+    |  %p
+    |    %small
+    |      Created by
+    |      %a{:href => "http://echohn.github.io"} Echo Hon
+    |      \/
+    |      %a{:href => "http://twitter.com/echo_hon"} @echohn
+    EOF
+  yaml_header = <<-EOF.gsub(/^\s+\|/,'')
+    |---
+    |layout: slide
+    |title: \"#{title.gsub(/-/,' ')}\"
+    |date: #{date}
+    |author: \"Echo\"
+    |tags:
+    |keywords:
+    |---
+    EOF
+
+  puts "Creating new slide: #{filename}"
+  open(filename, 'w') do |post|
+    post.puts yaml_header
+    post.puts slide_home_page
   end
 
   exec "open #{filename}"

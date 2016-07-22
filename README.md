@@ -2,9 +2,12 @@
 
 <p>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</p>
 
-<p>我近期更新的日志如下:</p>
+<p>我所有的日志如下:</p>
 
 <ul>
+  <li>
+    <p>2016/07/22: <a href="http://echohn.github.io/2016/07/22/auto-backup-safari-bookmarks/">「如何自动备份 Safari 书签 – 嘿，我好像又发现了 Safari 的 BUG」</a></p>
+  </li>
   <li>
     <p>2016/06/03: <a href="http://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/">「使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统 – 」</a></p>
   </li>
