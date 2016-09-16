@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/09/16: <a href="http://echohn.github.io/2016/09/16/what-did-i-do-in-these-months/">「这两个月我在忙什么 – 」</a></p>
+  </li>
+  <li>
     <p>2016/07/22: <a href="http://echohn.github.io/2016/07/22/auto-backup-safari-bookmarks/">「如何自动备份 Safari 书签 – 嘿，我好像又发现了 Safari 的 BUG」</a></p>
   </li>
   <li>

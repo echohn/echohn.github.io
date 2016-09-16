@@ -5,9 +5,103 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 22 Jul 2016 16:14:04 +0800</pubDate>
-    <lastBuildDate>Fri, 22 Jul 2016 16:14:04 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Sep 2016 01:10:04 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Sep 2016 01:10:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>这两个月我在忙什么</title>
+        <description>&lt;p&gt;转眼间有两个多月没有写一篇文章了。&lt;/p&gt;
+
+&lt;p&gt;这两个多月，我一直在公司忙于开发一个给客户使用的数据可视化的项目。&lt;/p&gt;
+
+&lt;p&gt;说起来我接到做这个项目的因为，是因为研发的同事实在太忙了，研发的 Boss 对业务说实在抽不出人手来做这个项目，所以这个项目落到运维来了。&lt;/p&gt;
+
+&lt;p&gt;毕竟之前是一直写东西给自己人用，现在终于能写东西给客户用，我刚接到这个项目的时候还是很兴奋的。&lt;/p&gt;
+
+&lt;p&gt;这个项目立项时有三个人，我负责项目进度和开发，还有研发的一位设计师和一位前端工程师。但是，因为他们实在太忙了，所以除了有必要找他们把控界面以外，这个项目其实只有我一个人在做。&lt;/p&gt;
+
+&lt;p&gt;所以，我这段时间看上去还挺忙的。&lt;/p&gt;
+
+&lt;p&gt;因为是由我自己把控项目进度，我对这个项目进度的焦虑感还挺少的，因为我很清楚自己开发的效率，每个任务都留了足够的时间。&lt;/p&gt;
+
+&lt;p&gt;然而，我在这个项目中思考了一些以往自己可能没那么在意的事情。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;对于我对项目把控的缺点&lt;/h2&gt;
+
+&lt;p&gt;我对项目把控属于典型的虎头蛇尾型。&lt;/p&gt;
+
+&lt;p&gt;我往往在项目开始时，把任务分解的特别周到详细，我的项目计划书多次做为范例被领导分享给其他同事做参考。&lt;/p&gt;
+
+&lt;p&gt;但是在项目中后期，项目进度就会渐渐失控，其主要原因就是我没有对他人的任务进度给予即时的监控。&lt;/p&gt;
+
+&lt;p&gt;我总以为别人跟我一样，会认真的对待项目计划和 Deadline。开始我问他们，按照这个项目计划有问题吗，他们说放心吧，没问题。然后我就很放心的不管了。等到了共同的项目节点需要沟通的时候，结果往往是他们的任务还没有完成，进度还差很大一截。我猜这样的原因主要就是他们对别人的项目不重视，所以导致没有细读计划，不遵守 Deadline，甚至对自己的任务完不成时，也不提前做沟通。&lt;/p&gt;
+
+&lt;p&gt;当然，还有一点，就是我对其他人的任务监控确实有待提高。只能说，多沟通吧。&lt;/p&gt;
+
+&lt;p&gt;而且，我身为项目负责人，理应每周向上级汇报进度的，我后来也懒了。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;对于与需求方沟通&lt;/h2&gt;
+
+&lt;p&gt;这次，真的体会到了研发同事的苦。&lt;/p&gt;
+
+&lt;p&gt;我发现在面对满脑子啥想法都没有的业务同事的时候，想保持一种平常心真的是挺难的。&lt;/p&gt;
+
+&lt;p&gt;第一次与业务开项目碰头会的时候，我们大眼瞪小眼。接到任务的我，等着业务跟我详细的说说需求。接到会议通知的业务，以为我们拿到任务已经有一些实现的想法了要汇报给他们。&lt;/p&gt;
+
+&lt;p&gt;然后在他们真正明白这次会议目的之后，就开始天南海北的胡扯，跑的都没边了。&lt;/p&gt;
+
+&lt;p&gt;幸亏我人精人精的领导也参了会，及时给他们刹住了车，直到这时，我还处于懵逼的状态中。&lt;/p&gt;
+
+&lt;p&gt;业务在产品出现之前，他们说的特别客气，时间挺紧的，功能实现了就行哈。待真的产品出来之后，就开始冷着脸各种挑刺了。&lt;/p&gt;
+
+&lt;p&gt;对这我倒是表示理解，就像问一些男生你想找个什么样的女朋友？他说，诶呀，啥样的都行，是女的就行。&lt;/p&gt;
+
+&lt;p&gt;他说不出来，因为他没有目标。&lt;/p&gt;
+
+&lt;p&gt;但是让他说不喜欢什么的，他却恰恰能从各种细节跟你说出个百八十条。&lt;/p&gt;
+
+&lt;p&gt;因为不喜欢什么，自己通常是很了解的，我觉得是一样的道理。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;对于接受与思考&lt;/h2&gt;
+
+&lt;p&gt;我是想事情想的很少那种人。&lt;/p&gt;
+
+&lt;p&gt;我开始觉得业务的需求是需要尽量满足的，因为他们更贴近客户，他们的意见值得尊重。&lt;/p&gt;
+
+&lt;p&gt;嗯，也是我审美水平太次，我对业务的意见挑不出毛病，我觉得他们的想法也行吧，也没啥不好的，改一下试试呗。&lt;/p&gt;
+
+&lt;p&gt;但是跟我一块的还有一个非常具有审美水平的暴脾气设计师。&lt;/p&gt;
+
+&lt;p&gt;他的原话是，信他们的就麻烦了，东一榔头，西一榔头，拍脑袋改，早晚玩完！&lt;/p&gt;
+
+&lt;p&gt;当时我就夹在他们中间，我觉得好难过。&lt;/p&gt;
+
+&lt;p&gt;一方面是对项目的责任感，一方面是答应了别人要实现，但是没有去做的惶恐感。&lt;/p&gt;
+
+&lt;p&gt;这件事让我在公司和回家的时候都在思考怎么做，我也咨询了身为牛逼闪闪的前某公司首席需求分析师现在专心休假在家带孩子的老婆大人。&lt;/p&gt;
+
+&lt;p&gt;老婆大人在鄙视了我公司业务的审美水准之后，教导我，以后定需求的时候，别说的那么死，可以说我回去再考虑一下嘛。&lt;/p&gt;
+
+&lt;p&gt;其实后来想想，这事主要确实是我沟通方式不够圆通，另一方面是我对于类似的事情缺乏经验，思考的还是太少了。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;总之，到节前，项目已经基本完成了。&lt;/p&gt;
+
+&lt;p&gt;我因自己「太忙」找借口懒得更新的理由也没法再用了。&lt;/p&gt;
+
+&lt;p&gt;还是要让自己忙起来，多看一些书，多学一些感兴趣的东西。毕竟，看到自己进步，还是挺有乐趣的。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 16 Sep 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/09/16/what-did-i-do-in-these-months/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/09/16/what-did-i-do-in-these-months/</guid>
+        
+        <category>杂记</category>
+        
+        
+      </item>
     
       <item>
         <title>如何自动备份 Safari 书签</title>
@@ -1392,143 +1486,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <category>运维</category>
         
         <category>Linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>看看自己平时上网都在干嘛？</title>
-        <description>&lt;p&gt;昨天在知乎逛，看到一个问题&lt;a href=&quot;http://www.zhihu.com/question/21395276&quot;&gt;可以用 Python 编程语言做哪些神奇好玩的事情？&lt;/a&gt;,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。&lt;/p&gt;
-
-&lt;p&gt;于是查了一下，Safari 的历史记录文件是&lt;code class=&quot;highlighter-rouge&quot;&gt;~/Library/Safari/History.db&lt;/code&gt;，file 了一下这个文件，原来它是个 SQLite 数据库哈哈哈，苹果还真是贴心……&lt;/p&gt;
-
-&lt;p&gt;于是写了一条 sql 来查：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;domain_expansion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;domain_expansion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;main&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;history_items&quot;&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;by&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;domain_expansion&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;domain_expansion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;desc&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;结果是这样的，还真的有点出乎意料。&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;domain_expansion&lt;/th&gt;
-      &lt;th&gt;count(domain_expansion)&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;baidu&lt;/td&gt;
-      &lt;td&gt;8645&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;m.baidu&lt;/td&gt;
-      &lt;td&gt;2588&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;zhihu&lt;/td&gt;
-      &lt;td&gt;1339&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;github&lt;/td&gt;
-      &lt;td&gt;1126&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;image.baidu&lt;/td&gt;
-      &lt;td&gt;824&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;bbs.feng&lt;/td&gt;
-      &lt;td&gt;642&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;m.qb5&lt;/td&gt;
-      &lt;td&gt;544&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;baike.baidu&lt;/td&gt;
-      &lt;td&gt;476&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;detail.tmall&lt;/td&gt;
-      &lt;td&gt;470&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;zhidao.baidu&lt;/td&gt;
-      &lt;td&gt;458&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;s.taobao&lt;/td&gt;
-      &lt;td&gt;455&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;dashubao&lt;/td&gt;
-      &lt;td&gt;448&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;item.jd&lt;/td&gt;
-      &lt;td&gt;414&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;pan.baidu&lt;/td&gt;
-      &lt;td&gt;397&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;item.taobao&lt;/td&gt;
-      &lt;td&gt;383&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;v2ex&lt;/td&gt;
-      &lt;td&gt;339&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;bttiantang&lt;/td&gt;
-      &lt;td&gt;336&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;tieba.baidu&lt;/td&gt;
-      &lt;td&gt;321&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;waitsun&lt;/td&gt;
-      &lt;td&gt;292&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;google&lt;/td&gt;
-      &lt;td&gt;213&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;一条条来分析：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;百度是我的默认搜索引擎。俗话说内事问百度，外事问 Google 。虽然我平时开着 ss，但是由于普遍通过 ss 访问还是比较慢，所以除了查技术资料走 google 外，平时百度我确实用的不少，百度能登顶在意料之中。但是 image.baidu，zhidao.baidu 居然都能进前 20 是个什么鬼？我又分别对这两个搜了一下，随便点了一些例如 qq 表情、Macbook Pro 15’(怨念啊。。。)、龙庆峡等等的图片；以及貂绒大衣为什么比羽绒服暖和，关于吉列温和型剃须啫哩香味等等的问题，我也给自己跪了。。。&lt;/li&gt;
-  &lt;li&gt;知乎、v2ex 是平时娱乐两大网站、能在 Top 20 我也不意外。&lt;/li&gt;
-  &lt;li&gt;github 作为全球最大同性交友网站我就不说什么了。&lt;/li&gt;
-  &lt;li&gt;bbs.feng 估计是 IOS 9 越狱那阵给闹的。&lt;/li&gt;
-  &lt;li&gt;qb5 和 大书包 ╮(╯_╰)╭ 好吧，我承认我上班时候看网络小说来着……&lt;/li&gt;
-  &lt;li&gt;tmall、taobao、jd：嗯，双十一我真的没买东西，真的……这都是平时网购积累的。&lt;/li&gt;
-  &lt;li&gt;pan.baidu：现在分享个东西都走它，它能上榜也算积少成多吧。&lt;/li&gt;
-  &lt;li&gt;bttiantang：是我平时网上找电影的第一选择。&lt;/li&gt;
-  &lt;li&gt;tieba.baidu：这都能上榜，只能说贴吧的圈子真的很大。&lt;/li&gt;
-  &lt;li&gt;waitsun：我为我用了不少盗版软件而羞愧。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;首先感慨一下，百度的生态圈子确实大，虽然我平时没少跟人黑它，但是由于 Google 访问慢，我确实每天也很依赖它。&lt;/p&gt;
-
-&lt;p&gt;其次，我以后一定少看小说，有时间还是多扫扫 Pocket，刚打开手机看了一下，未读又堆到快700了。&lt;/p&gt;
-
-&lt;p&gt;最近开始读李笑来的《把时间当做朋友》，感觉很有收获，希望真能开启心智，发扬精神，好好治一治我的精神病。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 06 Dec 2015 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2015/12/06/analyse_my_safari_history/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2015/12/06/analyse_my_safari_history/</guid>
-        
-        <category>Mac</category>
-        
-        <category>Safari</category>
         
         
       </item>
