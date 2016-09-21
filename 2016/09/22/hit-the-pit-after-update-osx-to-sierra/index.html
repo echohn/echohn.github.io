@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="谁离开了，谁还在？  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content="杂记 离职 同事 通讯录 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="升级到 macOS Sierra 之后踩到的坑  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="Mac macOS Sierra Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>谁离开了，谁还在？</title>
+    <title>升级到 macOS Sierra 之后踩到的坑</title>
 
-    <link rel="canonical" href="http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/">
+    <link rel="canonical" href="http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -158,13 +158,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/post-bg-time.jpg" width="0" height="0"> -->
+<!-- <img src="/img/home-bg-o.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/post-bg-time.jpg')
+        background-image: url('/img/home-bg-o.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -180,15 +180,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#杂记" title="杂记">杂记</a>
+                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
                         
                     </div>
-                    <h1>谁离开了，谁还在？</h1>
+                    <h1>升级到 macOS Sierra 之后踩到的坑</h1>
                     
                     
                     <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo on May 11, 2016</span>
+                    <span class="meta">Posted by Echo on September 22, 2016</span>
                 </div>
             </div>
         </div>
@@ -206,55 +206,55 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>今天想联系某个同事时，没找到他的电话，忽然发现我已经很久没有更新单位的通讯录了。</p>
+				<p>本来没想这么早升级的，主要是之前看相关的消息，以为新版本 GateKeeper 无法关闭了，怕很多应用用不了。</p>
 
-<p>于是，下午不忙的时候，找出来以前写的导出单位通讯录的程序，从 OA 上下载了目前最新的通讯录。</p>
+<p>之后看到这篇<a href="https://zhuanlan.zhihu.com/p/22537236">《macOS Sierra 正式版升级须知一览》</a>发现 GateKeeper 仍是可以通过命令进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。</p>
 
-<p>在与自己的通讯录合并之前，突然想到，很久没用过了，还是比较一下差异吧。</p>
+<p>安装过程一切顺利，安装完之后直接重置了 NVRAM 。启动之后没有发现大的问题，比如 Homebrew 无法使用之类的。但仍然发现了一些小的问题。</p>
 
-<p>随着键盘几个简单的敲击，屏幕中突然出现了一大片或熟悉、或陌生的名字……</p>
+<h2 id="finder-">坚果云导致 Finder 使用右键菜单时崩溃(已解决)</h2>
 
-<hr />
+<p><img src="/img/in-post/sierra-finder-crash.jpg" alt="" /></p>
 
-<p>我在 2012 年 9 月加入这家单位。</p>
+<p>起初我直觉以为是杀毒软件 ESET Cyber Security 引起的，因为 ESET 开启后明确提示不支持 Sierra ，在我删除 ESET 套件后也突然发现 Finder 右键可用了，但是重启后发现问题仍在。</p>
 
-<p>我还记得在上一家公司接到丽娜的电话，啊？事业单位？你没弄错吧，我是做游戏的……</p>
+<p>后来仔细看了看详细信息，发现崩溃信息中提到 NutstorePlugin 才确定是由坚果云导致的崩溃。</p>
 
-<p>我还记得刚入职的时候对这里到处都充满了好奇，那么多工会活动，还给钱……打完球之后总是被大睿拉着砸地摊子喝酒撸串，总是把我名字记错的门卫大爷，听着那些认识或不认识人的八卦……</p>
+<p>在坚果云论坛搜到了这篇<a href="http://bbs.jianguoyun.com/topic.php?id=6553">帖子</a>，其中客服人员提到可<a href="https://www.jianguoyun.com/p/DTLhAzEQjof1BRjTohU">下载最新的测试版本Mac客户端</a> 。我更新之后问题解决。</p>
 
-<p>突然有一天，我特别高兴，因为我能叫出所有人的名字啦！我写程序把单位 Excel 的通讯录转成 VCard，再把 VCard 跟好多熟悉的人分享……</p>
+<h2 id="xtrafinder--finder-">XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）</h2>
 
-<p>偶尔食堂吃饭的时候，我也偷偷打量没见过的新人。跟部门的弟兄一起，看脸看胸看腿看屁股，他们告诉我，她叫什么，是哪个部门的。</p>
+<p>在升级完 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。</p>
 
-<p>可是渐渐地，所有人似乎变得都很忙很忙，再也聚不起一场球赛，再也没人组织一块儿聚餐，甚至，不知道从哪时起，就再也没见过那个人了。</p>
+<p>这时候需要开机 Command + R 进入恢复模式部分关闭 SIP（System Integrity Protection）。</p>
 
-<hr />
+<p>进入恢复模式后点击实用工具打开终端，执行命令：</p>
 
-<p>当我看到终端滚出的那些熟悉的名字，心里突然有点柔软。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>csrutil enable --without debug
+</code></pre>
+</div>
 
-<p>看到它们，就仿佛看到了那些曾经一起加班、一起打球、一起开过玩笑、聊过心事的，却已经再也看不到了的身影。</p>
+<p>重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来还是在与 Sierra 兼容性上存在问题。于是只能卸载 XtraFinder 等待更新了。</p>
 
-<p>我把名单截图给博学看，博学说，「嗯，还有我的女神。」</p>
+<h2 id="bartender-">Bartender 图标位置错乱（待解决）</h2>
 
-<hr />
+<p>每次重启之后，发现菜单栏的图标位置都不一样，这个问题据说是由于 Sierra 也支持按住 Command 键拖动图标了引起的，只能等 Bartender 更新了。</p>
 
-<p>可能生活就是这样，我们渐渐与一些人相遇，又与一些人分离。</p>
+<h2 id="section">升级之后的感受</h2>
 
-<p>我还记得那天在楼下突然看到离职的安冬，她从远处走来，带着笑容，喊我的名字，一如昨日。</p>
+<p>这次升级让我惊喜的功能有剪切板同步、存储优化、和完全支持了 ES 6 的 Safari 10 。</p>
 
-<hr />
+<p>其他功能我没有太多感受，可能因为很多功能已经有很好的解决方案了。</p>
 
-<p>偶尔就会缅怀。</p>
+<p>Siri 除了记录提醒事项外，其他功能的效率并不比 Alfred 更高，而且中英文混说的时候识别率不高。</p>
 
-<p>但是，也只是偶尔罢了。</p>
+<p>中文输入法仍然不支持自定义双拼方案。</p>
 
-<p>因为，非常非常幸运的，</p>
+<p>自动解锁我之前一直用 Near Lock ，嗯，如果我有 Apple Watch 的话也会觉得这个很酷吧。</p>
 
-<p>那些与我信念相同的兄弟们，</p>
+<p>还有那个巨丑的通知中心是什么鬼。。。</p>
 
-<p>仍与我并肩站在一起，</p>
-
-<p>从未离开。</p>
+<p>等我发现了其他问题，再继续更新吧。</p>
 
 
 
@@ -266,13 +266,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/05/09/smart-questions-mindmap/" data-toggle="tooltip" data-placement="top" title="「提问的智慧」读书笔记">&larr; Previous Post</a>
+                        <a href="/2016/09/16/what-did-i-do-in-these-months/" data-toggle="tooltip" data-placement="top" title="这两个月我在忙什么">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/05/15/how-to-manage-your-servers/" data-toggle="tooltip" data-placement="top" title="如何在 Mac 上管理你经常变化的服务器列表？">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -423,8 +419,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/2016/05/11/who-were-left-who-were-stay";
-    var disqus_url = "http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/";
+    var disqus_identifier = "/2016/09/22/hit-the-pit-after-update-osx-to-sierra";
+    var disqus_url = "http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

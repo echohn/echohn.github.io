@@ -5,9 +5,71 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Sep 2016 01:10:04 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Sep 2016 01:10:04 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Sep 2016 06:10:19 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Sep 2016 06:10:19 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>升级到 macOS Sierra 之后踩到的坑</title>
+        <description>&lt;p&gt;本来没想这么早升级的，主要是之前看相关的消息，以为新版本 GateKeeper 无法关闭了，怕很多应用用不了。&lt;/p&gt;
+
+&lt;p&gt;之后看到这篇&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22537236&quot;&gt;《macOS Sierra 正式版升级须知一览》&lt;/a&gt;发现 GateKeeper 仍是可以通过命令进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。&lt;/p&gt;
+
+&lt;p&gt;安装过程一切顺利，安装完之后直接重置了 NVRAM 。启动之后没有发现大的问题，比如 Homebrew 无法使用之类的。但仍然发现了一些小的问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;finder-&quot;&gt;坚果云导致 Finder 使用右键菜单时崩溃(已解决)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/sierra-finder-crash.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;起初我直觉以为是杀毒软件 ESET Cyber Security 引起的，因为 ESET 开启后明确提示不支持 Sierra ，在我删除 ESET 套件后也突然发现 Finder 右键可用了，但是重启后发现问题仍在。&lt;/p&gt;
+
+&lt;p&gt;后来仔细看了看详细信息，发现崩溃信息中提到 NutstorePlugin 才确定是由坚果云导致的崩溃。&lt;/p&gt;
+
+&lt;p&gt;在坚果云论坛搜到了这篇&lt;a href=&quot;http://bbs.jianguoyun.com/topic.php?id=6553&quot;&gt;帖子&lt;/a&gt;，其中客服人员提到可&lt;a href=&quot;https://www.jianguoyun.com/p/DTLhAzEQjof1BRjTohU&quot;&gt;下载最新的测试版本Mac客户端&lt;/a&gt; 。我更新之后问题解决。&lt;/p&gt;
+
+&lt;h2 id=&quot;xtrafinder--finder-&quot;&gt;XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）&lt;/h2&gt;
+
+&lt;p&gt;在升级完 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。&lt;/p&gt;
+
+&lt;p&gt;这时候需要开机 Command + R 进入恢复模式部分关闭 SIP（System Integrity Protection）。&lt;/p&gt;
+
+&lt;p&gt;进入恢复模式后点击实用工具打开终端，执行命令：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;csrutil enable --without debug
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来还是在与 Sierra 兼容性上存在问题。于是只能卸载 XtraFinder 等待更新了。&lt;/p&gt;
+
+&lt;h2 id=&quot;bartender-&quot;&gt;Bartender 图标位置错乱（待解决）&lt;/h2&gt;
+
+&lt;p&gt;每次重启之后，发现菜单栏的图标位置都不一样，这个问题据说是由于 Sierra 也支持按住 Command 键拖动图标了引起的，只能等 Bartender 更新了。&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;升级之后的感受&lt;/h2&gt;
+
+&lt;p&gt;这次升级让我惊喜的功能有剪切板同步、存储优化、和完全支持了 ES 6 的 Safari 10 。&lt;/p&gt;
+
+&lt;p&gt;其他功能我没有太多感受，可能因为很多功能已经有很好的解决方案了。&lt;/p&gt;
+
+&lt;p&gt;Siri 除了记录提醒事项外，其他功能的效率并不比 Alfred 更高，而且中英文混说的时候识别率不高。&lt;/p&gt;
+
+&lt;p&gt;中文输入法仍然不支持自定义双拼方案。&lt;/p&gt;
+
+&lt;p&gt;自动解锁我之前一直用 Near Lock ，嗯，如果我有 Apple Watch 的话也会觉得这个很酷吧。&lt;/p&gt;
+
+&lt;p&gt;还有那个巨丑的通知中心是什么鬼。。。&lt;/p&gt;
+
+&lt;p&gt;等我发现了其他问题，再继续更新吧。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 22 Sep 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/</guid>
+        
+        <category>Mac</category>
+        
+        
+      </item>
     
       <item>
         <title>这两个月我在忙什么</title>
@@ -1413,79 +1475,6 @@ cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;
         <category>script</category>
         
         <category>linux</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？</title>
-        <description>&lt;p&gt;我第一个接触过的 Linux 是 Fedora Core 4。当时读大一，刚买了电脑，在软件店逛的时候看到了它。当时只是觉得 68 元买一盒正版软件，里面7、8张光盘真是太值了……&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/fc4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我用了整整一天，按照说明书的小册子终于把它成功装在电脑上。我很开心的玩了几天，然后就把它删了，因为它自带的小游戏太无聊……&lt;/p&gt;
-
-&lt;p&gt;再之后过了大概半年，我忘了究竟是什么原因，可能是上课老师提到这玩意多牛X，也可能是上网看了热血青年 Linus葛娃子不可一世的帖子，我又一次扎进 Linux 的大泡子，这一扎就直到现在。&lt;/p&gt;
-
-&lt;p&gt;要说喜欢的还是 Fedora，&lt;/p&gt;
-
-&lt;p&gt;后来工作之后，一直是在 RHEL 系的 Linux 下做运维。 因为平时在这类发行版下经验积累，让我不加思索的继续用着 RHEL/CentOS。&lt;/p&gt;
-
-&lt;p&gt;相信线上系统选择什么发行版这个问题很多做运维的新人都纠结过。&lt;/p&gt;
-
-&lt;p&gt;今天无意间在知乎看到这个问题: &lt;a href=&quot;https://www.zhihu.com/question/19599986&quot;&gt;服务器操作系统应该选择 Debian/Ubuntu 还是 CentOS？&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;我自己也想了一下，发现我还是会选择 RHEL 系的发行版。一则是熟悉、二是 RHEL 确实稳定，在我工作的这些年，只遇到过一次 RHEL 跟 E5 某个版本的 CPU 出现兼容性的问题，不过当时 Redhat 也及时更新了补丁。话说 RHEL 的补丁更新确实要比它家迅速。我记得前年 Bash 漏洞爆出的时候，我看到新闻的当日，登录 Redhat 的 RHN，就已经提供补丁下载了。&lt;/p&gt;
-
-&lt;h2 id=&quot;ubuntudebian-&quot;&gt;Ubuntu/Debian 的优势&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;apt-get 确实比 yum 好用。&lt;/li&gt;
-  &lt;li&gt;软件包数量多，功能性版本更新快。&lt;/li&gt;
-  &lt;li&gt;因为上条，研发使用 Ubuntu 比较多，环境能无缝切换。&lt;/li&gt;
-  &lt;li&gt;Ubuntu 对 Linux 初学者非常友好。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;ubuntudebian--1&quot;&gt;Ubuntu/Debian 的劣势&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://zhihu.com/question/19599986/answer/83297432&quot;&gt;Ubuntu 补丁更新慢,官方只管放包不管修&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Debian 生命周期不固定，新版本发布以后，上个版本再维护18个月，一般生命周期在5年。当生命周期过了以后，就没有安全补丁，你的服务器就会裸奔或需要重新安装系统。&lt;/li&gt;
-  &lt;li&gt;Ubuntu 的 LTS 版生命周期是5年。&lt;/li&gt;
-  &lt;li&gt;Debian 由于有版权上的考虑和代码纯洁性的洁癖，一些硬件驱动和软件被删除了，导致安装过程有问题。比如 Dell 服务器上，大量使用的忘开 BroadCom，就驱动不了。&lt;/li&gt;
-  &lt;li&gt;Debian 的 LTS 支持，不是由 Debian 官网安全团队维护的，而是由其他志愿者维护的，工作效率和质量是否有保障还不知道。&lt;/li&gt;
-  &lt;li&gt;Ubuntu 社区经常搞些莫名其妙的东西，而且一段时间之后可能就不用了。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;rhelcentos-&quot;&gt;RHEL/CentOS 的优势&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;受鸟哥等 RH 系列 Linux 书籍的影响，国内运维人员对 RH 的系统最熟悉。如果你是一个工程师，熟悉了 CentOS/Redhat，找工作更容易。如果你是一个企业老板，相对也容易招聘到熟悉 CentOS/Redhat的工程师。&lt;/li&gt;
-  &lt;li&gt;CentOS/RHEL 的生命周期是7年，基本可以覆盖硬件的生命周期。RedHat 5、RedHat 6的生命周期，延长到10年。&lt;/li&gt;
-  &lt;li&gt;RedHat 是一个值得尊敬的开源公司，拥有一批 Linux 内核方面如雷贯耳的大牛。长期以来对 Linux 内核的贡献程度都是最多的。可以说，如果一个 Linux 方面的问题，RedHat 搞不定，那么很少有其他公司能搞定了。&lt;/li&gt;
-  &lt;li&gt;CentOS/RHEL 对硬件支持很好，主流硬件厂商早就将服务器拿过去测试，一般不存在硬件兼容性问题。&lt;/li&gt;
-  &lt;li&gt;大量商业软件，比如 Oracle，都是针对 Redhat 认证的，有大量的帮助文档和使用说明，有良好的技术支持。出了问题，也容易在网上找到类似的答案和经验。&lt;/li&gt;
-  &lt;li&gt;CentOS 是 Redhat 的克隆版，如果需要可随时平滑切换到 Redhat，从而享受 Redhat 的厂商服务支持。&lt;/li&gt;
-  &lt;li&gt;Redhat 对安全漏洞的响应更及时。&lt;/li&gt;
-  &lt;li&gt;RHCE 的培训，相对完善，认同程度高。&lt;/li&gt;
-  &lt;li&gt;CentOS/RHEL 的批量安装更方便。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;rhelcentos--1&quot;&gt;RHEL/CentOS 的劣势&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;由于生命周期长，线上系统往往版本老，最近的软件在 RH 的官方库里找不到。只能自己编译。还得专人负责补丁更新。&lt;/li&gt;
-  &lt;li&gt;如果研发多使用 Ubuntu，线上生成环境使用 RHEL，环境的变更会需要更多的调试，大幅影响研发效率。&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 03 Feb 2016 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/</guid>
-        
-        <category>运维</category>
-        
-        <category>Linux</category>
         
         
       </item>

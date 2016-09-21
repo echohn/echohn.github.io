@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/09/22: <a href="http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/">「升级到 macOS Sierra 之后踩到的坑」</a></p>
+  </li>
+  <li>
     <p>2016/09/16: <a href="http://echohn.github.io/2016/09/16/what-did-i-do-in-these-months/">「这两个月我在忙什么 – 」</a></p>
   </li>
   <li>
