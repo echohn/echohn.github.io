@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content=" Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="升级到 macOS Sierra 之后踩到的坑 (持续更新)  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="Mac macOS Sierra Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Echo 的网络日志 | Echo's Blog</title>
+    <title>升级到 macOS Sierra 之后踩到的坑 (持续更新)</title>
 
-    <link rel="canonical" href="http://echohn.github.io/">
+    <link rel="canonical" href="http://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,449 +156,262 @@
 </script>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/in-post/sierra.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/in-post/sierra.jpg')
+    }
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, 0.3);
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>Echo's Blog</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">我把桃花切两斤，且与时光炖了。</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
+                        
+                    </div>
+                    <h1>升级到 macOS Sierra 之后踩到的坑 (持续更新)</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by Echo on September 22, 2016</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-        
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
-    		<div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-    			
-<div class="post-preview">
-    <a href="/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/">
-        <h2 class="post-title">
-            升级到 macOS Sierra 之后踩到的坑 (持续更新)
-        </h2>
-        
-        <div class="post-content-preview">
-            本来没想这么早升级的，主要是之前看相关的消息，我以为新版本 GateKeeper 无法关闭，怕很多应用无法使用了。
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-之后看到《macOS Sierra 正式版升级须知一览》发现 GateKeeper 仍是可以通过命令行进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。
+				<p>本来没想这么早升级的，主要是之前看相关的消息，我以为新版本 GateKeeper 无法关闭，怕很多应用无法使用了。</p>
 
-安装过程一切顺利，完成之后直接重置了 NVRAM。
+<p>之后看到<a href="https://zhuanlan.zhihu.com/p/22537236">《macOS Sierra 正式版升级须知一览》</a>发现 GateKeeper 仍是可以通过命令行进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。</p>
 
-正常启动之后没有发现大的问题，比如 Homebrew 无...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on September 22, 2016
-    </p>
+<p>安装过程一切顺利，完成之后直接重置了 NVRAM。</p>
+
+<p>正常启动之后没有发现大的问题，比如 Homebrew 无法使用之类的。</p>
+
+<p>但仍然发现了一些小问题。</p>
+
+<h2 id="finder-">坚果云导致 Finder 使用右键菜单时崩溃(已解决)</h2>
+
+<p><img src="/img/in-post/sierra-finder-crash.jpg" alt="" /></p>
+
+<p>起初我直觉以为是杀毒软件 ESET Cyber Security 引起的，因为 ESET 启动后明确提示不支持 Sierra ，并且在我删除 ESET 套件后也突然发现 Finder 右键可用了，但是重启后发现问题仍在。</p>
+
+<p>仔细看了看详细信息，发现崩溃信息中提到 NutstorePlugin，才确定是由坚果云导致的崩溃。</p>
+
+<p>在坚果云论坛搜到了这篇<a href="http://bbs.jianguoyun.com/topic.php?id=6553">帖子</a>，其中官方提到可<a href="https://www.jianguoyun.com/p/DTLhAzEQjof1BRjTohU">下载最新的测试版本Mac客户端</a> 。</p>
+
+<p>更新之后问题解决。</p>
+
+<h2 id="xtrafinder--finder-">XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）</h2>
+
+<p>在升级 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。</p>
+
+<p>仍然是 SIP（System Integrity Protection）的问题。</p>
+
+<p>解决方法是开机 Command + R 进入恢复模式。</p>
+
+<p>点击实用工具打开终端，执行命令：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>csrutil enable --without debug
+</code></pre>
 </div>
-<hr>
 
-<div class="post-preview">
-    <a href="/2016/09/16/what-did-i-do-in-these-months/">
-        <h2 class="post-title">
-            这两个月我在忙什么
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            转眼间有两个多月没有写一篇文章了。
+<p>重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来 XtraFinder 还是与 Sierra 兼容性上存在问题。于是</p>
 
-这两个多月，我一直在公司忙于开发一个给客户使用的数据可视化的项目。
+<p>只能卸载 XtraFinder 等待更新了。</p>
 
-说起来我接到做这个项目的因为，是因为研发的同事实在太忙了，研发的 Boss 对业务说实在抽不出人手来做这个项目，所以这个项目落到运维来了。
+<h2 id="bartender-">Bartender 图标位置错乱（待解决）</h2>
 
-毕竟之前是一直写东西给自己人用，现在终于能写东西给客户用，我刚接到这个项目的时候还是很兴奋的。
+<p>发现本由 Bartender 掌管的菜单栏图标位置，在每次重启之后，都不大一样。</p>
 
-这个项目立项时有三个人，我负责项目进度和开发，...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on September 16, 2016
-    </p>
-</div>
-<hr>
+<p>据说这是由于 Sierra 也支持按住 Command 键拖动图标了引起的问题。</p>
 
-<div class="post-preview">
-    <a href="/2016/07/22/auto-backup-safari-bookmarks/">
-        <h2 class="post-title">
-            如何自动备份 Safari 书签
-        </h2>
-        
-        <h3 class="post-subtitle">
-            嘿，我好像又发现了 Safari 的 BUG
-        </h3>
-        
-        <div class="post-content-preview">
-            今天上午美男子找我，「我 Safari 的书签突然全没啦，怎么办？」
+<p>只能等 Bartender 更新了。</p>
 
-「你上次说买 Time Capsule 后来买了吗？」
+<h2 id="section">升级之后的感受</h2>
 
-「还没啊。」
+<p>这次升级，外观上几乎没有变化。</p>
 
-「那你试试登 iCloud 看看，我记得好像有恢复书签的功能。」
+<p>（后续更新：刚发现通知中心变丑了。。。）</p>
 
-过了一会，美男子告诉我，确实在 iCloud 里找到了恢复书签的选项，包括通讯录，日历和 iCloud Drive 的文件，iCloud 都有恢复的功能。
+<p>剪切板同步、存储优化、和完全支持了 ES 6 的 Safari 10，都是让我特别惊喜的功能。</p>
 
-这件事就这样结束了，然...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on July 22, 2016
-    </p>
-</div>
-<hr>
+<p>部分功能没有想象中的好用，可能因为很多功能已经有很好的解决方案了。</p>
 
-<div class="post-preview">
-    <a href="/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/">
-        <h2 class="post-title">
-            使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            昨天被安全部拉去开会，我被安利了好多安全工具。
+<p>比如 Siri 除了记录提醒事项外，其他功能的效率并不比 Alfred 更高，而且中英文混说的时候识别率不高。</p>
 
-我很喜欢其中一个叫做 FastNetMon 的 DoS/DDoS 分析防御工具。
+<p>中文输入法仍然不支持自定义双拼方案。</p>
 
-它性能很高，支持多种抓包引擎。支持 ExaBGP 和外部脚本触发报警。FastNetMon 可以部署在旁路上，侦听从核心交换上镜像过来的流量（见下图）。当它发现受到攻击的时候，可以通过脚本通知管理员，在 BGP 上 Blocked 掉被攻击的 IP，或是通过脚...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on June 3, 2016
-    </p>
-</div>
-<hr>
+<p>自动解锁我之前一直用 Near Lock ，嗯，可能如果我有 Apple Watch 的话，也会觉得这个很酷吧。</p>
 
-<div class="post-preview">
-    <a href="/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/">
-        <h2 class="post-title">
-            打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具
-        </h2>
-        
-        <div class="post-content-preview">
-            最近不知道为什么，蓝灯（Lantern）用着经常出问题，要么非常慢，要么报错。
-
-说实话 Lantern 正常的时候，真是要比我放在东京的 SS (ShadowSocks) VPS 快出很多的。看片一点都不费劲。
-
-没办法之下，我切换回了 SS。还好我之前配置的 SS 直接可以拿来用，自动更新脚本也一直运行着。在这里记录一下我之前 Mac 配置 SS 等相关翻墙工具的过程。
-
-你可能会疑惑，...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 29, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/05/21/bash-style-guide-cn/">
-        <h2 class="post-title">
-            Bash 风格指南中文版
-        </h2>
-        
-        <div class="post-content-preview">
-            今天下午整理了一下自己 GitHub 的 starred project，正巧看到以前收藏的一篇 Bash Style Guide, 闲来无事，就给翻译了。
-
-这篇文章很好，他基于的那篇 Wiki 也非常值得看，我阅读之后，确实感到有一些东西是自己曾经忽视了的。
-
-下面是我翻译的文章，如发现错误，还望及时告知。
-
-Bash 风格指南
-
-本风格指南旨在描述如何编写 bash 脚本，并使其安全和...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 21, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/05/15/how-to-manage-your-servers/">
-        <h2 class="post-title">
-            如何在 Mac 上管理你经常变化的服务器列表？
-        </h2>
-        
-        <div class="post-content-preview">
-            相比传统运维「日久不变」的服务器运维，步入云时代之后，虚拟机创建和销毁频率比之前不知高了多少个量级，原本几年前想象中的可以根据日常负载自动添加机器什么的，已经完全变成了现实。现在想要找几台机器搭个小架构测试点什么东西，也不必像从前那样拉网线改 BIOS 装系统初始化一忙一上午了。
-
-所以，如果工程师们还是按照原有的传统运维理念去进行运维，基本上就是嫌自己不够忙作死了。
-
-虽然我非常认同云时代...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 15, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/05/11/who-were-left-who-were-stay/">
-        <h2 class="post-title">
-            谁离开了，谁还在？
-        </h2>
-        
-        <div class="post-content-preview">
-            今天想联系某个同事时，没找到他的电话，忽然发现我已经很久没有更新单位的通讯录了。
-
-于是，下午不忙的时候，找出来以前写的导出单位通讯录的程序，从 OA 上下载了目前最新的通讯录。
-
-在与自己的通讯录合并之前，突然想到，很久没用过了，还是比较一下差异吧。
-
-随着键盘几个简单的敲击，屏幕中突然出现了一大片或熟悉、或陌生的名字……
+<p>等我发现了其他问题，再继续更新这篇文章吧。</p>
 
 
 
-我在 2012 年 9 月加入这家单位。
+                <hr>
 
-我还记得在上一家...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 11, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/05/09/smart-questions-mindmap/">
-        <h2 class="post-title">
-            「提问的智慧」读书笔记
-        </h2>
-        
-        <h3 class="post-subtitle">
-            本来我是想放图片上来的，可是太大了……
-        </h3>
-        
-        <div class="post-content-preview">
-            周末休假在家，重读了「提问的智慧」，并按照自己的理解重新梳理了一下导图的结构。
+                
 
 
-
-本来我是想放图片上来的，可是即使压缩完，也太大了……
-
-你可以访问这里阅读 PDF 版本。
-
-
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on May 9, 2016
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="/2016/04/30/how-to-run-a-script-after-network-interface-up/">
-        <h2 class="post-title">
-            How to run a script after network interface up
-        </h2>
-        
-        <h3 class="post-subtitle">
-            顺便还有怎么不登录系统就能看到 ip 地址
-        </h3>
-        
-        <div class="post-content-preview">
-            我懒，我喜欢让自己的工作环境变得轻松，喜欢 Automate Everything 。
-
-今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个ip a看一下 ip 地址，再 ⌃ + ⌘ 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on April 30, 2016
-    </p>
-</div>
-<hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/09/16/what-did-i-do-in-these-months/" data-toggle="tooltip" data-placement="top" title="这两个月我在忙什么">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
 
 
-<!-- Pager -->
+                
 
-<ul class="pager">
-    
-    
-    <li class="next">
-        <a href="/page2">Older Posts &rarr;</a>
-    </li>
-    
-</ul>
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
 
+            </div>
+            <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5 id="catalog">
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
 
-    		</div>
+            </div>
+
     <!-- Sidebar Container -->
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <hr class="hidden-sm hidden-xs">
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                        
+        				
                             
-                                <a href="/tags/#杂记" title="杂记" rel="3">
+                				<a href="/tags/#杂记" title="杂记" rel="3">
                                     杂记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Mac" title="Mac" rel="7">
+                				<a href="/tags/#Mac" title="Mac" rel="7">
                                     Mac
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Alfred" title="Alfred" rel="4">
+                				<a href="/tags/#Alfred" title="Alfred" rel="4">
                                     Alfred
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="3">
                                     Ruby
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Safari" title="Safari" rel="2">
+                				<a href="/tags/#Safari" title="Safari" rel="2">
                                     Safari
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#运维" title="运维" rel="3">
+                				<a href="/tags/#运维" title="运维" rel="3">
                                     运维
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Linux" title="Linux" rel="1">
+                				<a href="/tags/#Linux" title="Linux" rel="1">
                                     Linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#script" title="script" rel="2">
+                				<a href="/tags/#script" title="script" rel="2">
                                     script
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#linux" title="linux" rel="1">
+                				<a href="/tags/#linux" title="linux" rel="1">
                                     linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#读书笔记" title="读书笔记" rel="1">
+                				<a href="/tags/#读书笔记" title="读书笔记" rel="1">
                                     读书笔记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Bash" title="Bash" rel="1">
+                				<a href="/tags/#Bash" title="Bash" rel="1">
                                     Bash
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#科学上网" title="科学上网" rel="1">
+                				<a href="/tags/#科学上网" title="科学上网" rel="1">
                                     科学上网
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#ShadowSocks" title="ShadowSocks" rel="1">
+                				<a href="/tags/#ShadowSocks" title="ShadowSocks" rel="1">
                                     ShadowSocks
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#安全" title="安全" rel="1">
+                				<a href="/tags/#安全" title="安全" rel="1">
                                     安全
                                 </a>
                             
-                        
-                    </div>
+        				
+        			</div>
                 </section>
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-                        
-                            <img src="/img/avatar-echo.jpg" />
-                        
-                        
-                            <p>你好，我是 Echo，我是一名运维工程师/奶爸/Ruby 爱好者。</p>
-                        
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            <li>
-                                <a href="https://twitter.com/echo_hon">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://github.com/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </section>
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -609,10 +422,67 @@ Bash 风格指南
                     
                 </ul>
                 
-    		</div>
-        
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "/2016/09/22/hit-the-pit-after-updated-osx-to-sierra";
+    var disqus_url = "http://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->

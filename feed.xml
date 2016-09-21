@@ -5,66 +5,82 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 22 Sep 2016 06:10:19 +0800</pubDate>
-    <lastBuildDate>Thu, 22 Sep 2016 06:10:19 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Sep 2016 06:42:55 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Sep 2016 06:42:55 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
     
       <item>
-        <title>升级到 macOS Sierra 之后踩到的坑</title>
-        <description>&lt;p&gt;本来没想这么早升级的，主要是之前看相关的消息，以为新版本 GateKeeper 无法关闭了，怕很多应用用不了。&lt;/p&gt;
+        <title>升级到 macOS Sierra 之后踩到的坑 (持续更新)</title>
+        <description>&lt;p&gt;本来没想这么早升级的，主要是之前看相关的消息，我以为新版本 GateKeeper 无法关闭，怕很多应用无法使用了。&lt;/p&gt;
 
-&lt;p&gt;之后看到这篇&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22537236&quot;&gt;《macOS Sierra 正式版升级须知一览》&lt;/a&gt;发现 GateKeeper 仍是可以通过命令进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。&lt;/p&gt;
+&lt;p&gt;之后看到&lt;a href=&quot;https://zhuanlan.zhihu.com/p/22537236&quot;&gt;《macOS Sierra 正式版升级须知一览》&lt;/a&gt;发现 GateKeeper 仍是可以通过命令行进行关闭的，这才放下心兴致勃勃的点了 Sierra 的下载。&lt;/p&gt;
 
-&lt;p&gt;安装过程一切顺利，安装完之后直接重置了 NVRAM 。启动之后没有发现大的问题，比如 Homebrew 无法使用之类的。但仍然发现了一些小的问题。&lt;/p&gt;
+&lt;p&gt;安装过程一切顺利，完成之后直接重置了 NVRAM。&lt;/p&gt;
+
+&lt;p&gt;正常启动之后没有发现大的问题，比如 Homebrew 无法使用之类的。&lt;/p&gt;
+
+&lt;p&gt;但仍然发现了一些小问题。&lt;/p&gt;
 
 &lt;h2 id=&quot;finder-&quot;&gt;坚果云导致 Finder 使用右键菜单时崩溃(已解决)&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/in-post/sierra-finder-crash.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;起初我直觉以为是杀毒软件 ESET Cyber Security 引起的，因为 ESET 开启后明确提示不支持 Sierra ，在我删除 ESET 套件后也突然发现 Finder 右键可用了，但是重启后发现问题仍在。&lt;/p&gt;
+&lt;p&gt;起初我直觉以为是杀毒软件 ESET Cyber Security 引起的，因为 ESET 启动后明确提示不支持 Sierra ，并且在我删除 ESET 套件后也突然发现 Finder 右键可用了，但是重启后发现问题仍在。&lt;/p&gt;
 
-&lt;p&gt;后来仔细看了看详细信息，发现崩溃信息中提到 NutstorePlugin 才确定是由坚果云导致的崩溃。&lt;/p&gt;
+&lt;p&gt;仔细看了看详细信息，发现崩溃信息中提到 NutstorePlugin，才确定是由坚果云导致的崩溃。&lt;/p&gt;
 
-&lt;p&gt;在坚果云论坛搜到了这篇&lt;a href=&quot;http://bbs.jianguoyun.com/topic.php?id=6553&quot;&gt;帖子&lt;/a&gt;，其中客服人员提到可&lt;a href=&quot;https://www.jianguoyun.com/p/DTLhAzEQjof1BRjTohU&quot;&gt;下载最新的测试版本Mac客户端&lt;/a&gt; 。我更新之后问题解决。&lt;/p&gt;
+&lt;p&gt;在坚果云论坛搜到了这篇&lt;a href=&quot;http://bbs.jianguoyun.com/topic.php?id=6553&quot;&gt;帖子&lt;/a&gt;，其中官方提到可&lt;a href=&quot;https://www.jianguoyun.com/p/DTLhAzEQjof1BRjTohU&quot;&gt;下载最新的测试版本Mac客户端&lt;/a&gt; 。&lt;/p&gt;
+
+&lt;p&gt;更新之后问题解决。&lt;/p&gt;
 
 &lt;h2 id=&quot;xtrafinder--finder-&quot;&gt;XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）&lt;/h2&gt;
 
-&lt;p&gt;在升级完 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。&lt;/p&gt;
+&lt;p&gt;在升级 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。&lt;/p&gt;
 
-&lt;p&gt;这时候需要开机 Command + R 进入恢复模式部分关闭 SIP（System Integrity Protection）。&lt;/p&gt;
+&lt;p&gt;仍然是 SIP（System Integrity Protection）的问题。&lt;/p&gt;
 
-&lt;p&gt;进入恢复模式后点击实用工具打开终端，执行命令：&lt;/p&gt;
+&lt;p&gt;解决方法是开机 Command + R 进入恢复模式。&lt;/p&gt;
+
+&lt;p&gt;点击实用工具打开终端，执行命令：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;csrutil enable --without debug
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来还是在与 Sierra 兼容性上存在问题。于是只能卸载 XtraFinder 等待更新了。&lt;/p&gt;
+&lt;p&gt;重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来 XtraFinder 还是与 Sierra 兼容性上存在问题。于是&lt;/p&gt;
+
+&lt;p&gt;只能卸载 XtraFinder 等待更新了。&lt;/p&gt;
 
 &lt;h2 id=&quot;bartender-&quot;&gt;Bartender 图标位置错乱（待解决）&lt;/h2&gt;
 
-&lt;p&gt;每次重启之后，发现菜单栏的图标位置都不一样，这个问题据说是由于 Sierra 也支持按住 Command 键拖动图标了引起的，只能等 Bartender 更新了。&lt;/p&gt;
+&lt;p&gt;发现本由 Bartender 掌管的菜单栏图标位置，在每次重启之后，都不大一样。&lt;/p&gt;
+
+&lt;p&gt;据说这是由于 Sierra 也支持按住 Command 键拖动图标了引起的问题。&lt;/p&gt;
+
+&lt;p&gt;只能等 Bartender 更新了。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;升级之后的感受&lt;/h2&gt;
 
-&lt;p&gt;这次升级让我惊喜的功能有剪切板同步、存储优化、和完全支持了 ES 6 的 Safari 10 。&lt;/p&gt;
+&lt;p&gt;这次升级，外观上几乎没有变化。&lt;/p&gt;
 
-&lt;p&gt;其他功能我没有太多感受，可能因为很多功能已经有很好的解决方案了。&lt;/p&gt;
+&lt;p&gt;（后续更新：刚发现通知中心变丑了。。。）&lt;/p&gt;
 
-&lt;p&gt;Siri 除了记录提醒事项外，其他功能的效率并不比 Alfred 更高，而且中英文混说的时候识别率不高。&lt;/p&gt;
+&lt;p&gt;剪切板同步、存储优化、和完全支持了 ES 6 的 Safari 10，都是让我特别惊喜的功能。&lt;/p&gt;
+
+&lt;p&gt;部分功能没有想象中的好用，可能因为很多功能已经有很好的解决方案了。&lt;/p&gt;
+
+&lt;p&gt;比如 Siri 除了记录提醒事项外，其他功能的效率并不比 Alfred 更高，而且中英文混说的时候识别率不高。&lt;/p&gt;
 
 &lt;p&gt;中文输入法仍然不支持自定义双拼方案。&lt;/p&gt;
 
-&lt;p&gt;自动解锁我之前一直用 Near Lock ，嗯，如果我有 Apple Watch 的话也会觉得这个很酷吧。&lt;/p&gt;
+&lt;p&gt;自动解锁我之前一直用 Near Lock ，嗯，可能如果我有 Apple Watch 的话，也会觉得这个很酷吧。&lt;/p&gt;
 
-&lt;p&gt;还有那个巨丑的通知中心是什么鬼。。。&lt;/p&gt;
-
-&lt;p&gt;等我发现了其他问题，再继续更新吧。&lt;/p&gt;
+&lt;p&gt;等我发现了其他问题，再继续更新这篇文章吧。&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 22 Sep 2016 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2016/09/22/hit-the-pit-after-update-osx-to-sierra/</guid>
+        <link>http://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/</guid>
         
         <category>Mac</category>
         
