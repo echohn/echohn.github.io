@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="严重的拖延症患者  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content="杂记 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="使用 cloc 统计你的代码量  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="cloc Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>严重的拖延症患者</title>
+    <title>使用 cloc 统计你的代码量</title>
 
-    <link rel="canonical" href="http://echohn.github.io/2015/02/16/hello-world/">
+    <link rel="canonical" href="http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -158,13 +158,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-design.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg.jpg')
+        background-image: url('/img/post-bg-design.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -180,15 +180,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#杂记" title="杂记">杂记</a>
+                        <a class="tag" href="/tags/#工具" title="工具">工具</a>
                         
                     </div>
-                    <h1>严重的拖延症患者</h1>
+                    <h1>使用 cloc 统计你的代码量</h1>
                     
                     
                     <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo's Blog on February 16, 2015</span>
+                    <span class="meta">Posted by Echo on September 24, 2016</span>
                 </div>
             </div>
         </div>
@@ -206,13 +206,146 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>从买这个虚机，搭建完 jekyll 到现在已经足足8个月了。开始的新鲜劲过后，又被其他的东西吸引了目光。如若不是今天听 podcast 到相关话题，绝难想起还有这个东西。</p>
+				<p>今天发现一个特别好用的工具 <a href="https://github.com/AlDanial/cloc">cloc</a>，可以用它统计代码的行数。它可以识别多种开发语言，并在计算的时候忽略掉注释和空行。</p>
 
-<p>回想这8个月来，生活发生了太多太多的改变。还好的是，经历了紧张、焦虑、忙碌、烦躁之后，我的生活又重新回到了与以往相似的情形。现在我休假回到老家，又可以轻松的做自己喜欢的事。</p>
+<p>我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 <code class="highlighter-rouge">find xxx -prune xxx | xargs grep -vE xxx | wc -l</code> 的超长命令。</p>
 
-<p>不多说了，2015，新年新气象！仅以此 post 作为一个开始，记录我的崭新生活。</p>
+<p>每年写年终总结统计工作量的时候，我也常常会用到类似的命令。</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">puts</span> <span class="s2">"Hello new world!"</span></code></pre></figure>
+<p>所以我今天突然发现这个工具的时候，还是很惊喜的。</p>
+
+<p>在 macOS 上，可以通过 <code class="highlighter-rouge">brew install cloc</code> 来安装它，它支持包括 Windows 在内的多个系统。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g cloc                    <span class="c"># https://www.npmjs.com/package/cloc</span>
+sudo apt-get install cloc              <span class="c"># Debian, Ubuntu</span>
+sudo yum install cloc                  <span class="c"># Red Hat, Fedora</span>
+sudo dnf install cloc                  <span class="c"># Fedora 22 or later</span>
+sudo pacman -S cloc                    <span class="c"># Arch</span>
+sudo pkg install cloc                  <span class="c"># FreeBSD</span>
+sudo port install cloc                 <span class="c"># Mac OS X with MacPorts</span>
+brew install cloc                      <span class="c"># Mac OS X with Homebrew</span>
+choco install cloc                     <span class="c"># Windows with Chocolatey</span></code></pre></figure>
+
+<p>它有诸多优点：</p>
+
+<ol>
+  <li>下载安装方便。</li>
+  <li>能识别多种语言。</li>
+  <li>允许通过项目或语言等多种方式来输出统计结果。</li>
+  <li>多种输出格式，包括纯文本、SQL、JSON、XML、YAML 等。</li>
+  <li>能直接从压缩包里统计代码。</li>
+  <li>多种排错选项。</li>
+  <li>识别含有非常用字符和空格的文件、目录名。</li>
+  <li>没有外部依赖。</li>
+  <li>可在多种系统上运行。</li>
+</ol>
+
+<p>由于它出色的灵活性，可以和多种工具结合使用。</p>
+
+<p>比如写一个 <a href="http://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository">cloc-git</a> 的脚本，用来统计 git 远程项目的代码量。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/usr/bin/env bash</span>
+git clone --depth 1 <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> temp-linecount-repo <span class="o">&amp;&amp;</span>
+  <span class="nb">printf</span> <span class="s2">"('temp-linecount-repo' will be deleted automatically)</span><span class="se">\n\n\n</span><span class="s2">"</span> <span class="o">&amp;&amp;</span>
+  cloc temp-linecount-repo <span class="o">&amp;&amp;</span>
+  rm -rf temp-linecount-repo</code></pre></figure>
+
+<p>运行结果如下：</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>cloc-git https://github.com/rails/rails.git
+Cloning into <span class="s1">'temp-linecount-repo'</span>...
+remote: Counting objects: 3615, <span class="k">done</span>.
+remote: Compressing objects: 100% <span class="o">(</span>3048/3048<span class="o">)</span>, <span class="k">done</span>.
+remote: Total 3615 <span class="o">(</span>delta 174<span class="o">)</span>, reused 1576 <span class="o">(</span>delta 52<span class="o">)</span>, pack-reused 0
+Receiving objects: 100% <span class="o">(</span>3615/3615<span class="o">)</span>, 6.08 MiB | 2.28 MiB/s, <span class="k">done</span>.
+Resolving deltas: 100% <span class="o">(</span>174/174<span class="o">)</span>, <span class="k">done</span>.
+Checking connectivity... <span class="k">done</span>.
+<span class="o">(</span><span class="s1">'temp-linecount-repo'</span> will be deleted automatically<span class="o">)</span>
+
+
+    3043 text files.
+    2893 unique files.
+     309 files ignored.
+
+github.com/AlDanial/cloc v 1.70  <span class="nv">T</span><span class="o">=</span>19.61 s <span class="o">(</span>141.1 files/s, 18560.1 lines/s<span class="o">)</span>
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Ruby                          2152          47525          41996         213275
+Markdown                        74          13832              0          34880
+JavaScript                      23            732            747           3385
+YAML                           144            307            584           2505
+ERB                            318            248             11           1736
+CSS                             20            157            120           1105
+CoffeeScript                    11             87            104            318
+HTML                            19             15              3            198
+yacc                             1              4              0             45
+SQL                              1              6              0             43
+JSON                             1              0              0             24
+builder                          2              0              0              6
+DTD                              1              0              0              1
+-------------------------------------------------------------------------------
+SUM:                          2767          62913          43565         257521
+-------------------------------------------------------------------------------</code></pre></figure>
+
+<p>cloc 也支持使用 <code class="highlighter-rouge">--diff</code> 选项对两个版本的代码量进行比较。</p>
+
+<p>但是在我尝试 cloc 使用 <code class="highlighter-rouge">--diff</code> 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="nn">---</span>
+<span class="c1"># github.com/AlDanial/cloc</span>
+<span class="s">header</span> <span class="pi">:</span> 
+<span class="nn">...</span>
+
+<span class="s">same</span> <span class="pi">:</span> 
+    <span class="s">language</span> <span class="pi">:</span> <span class="s">CSS</span>
+    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">3</span>
+    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
+    <span class="s">comment</span> <span class="pi">:</span> <span class="s">25</span>
+    <span class="s">code</span> <span class="pi">:</span> <span class="s">2</span>
+    <span class="s">language</span> <span class="pi">:</span> <span class="s">JavaScript</span>
+    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">38</span>
+    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
+    <span class="s">comment</span> <span class="pi">:</span> <span class="s">131</span>
+    <span class="s">code</span> <span class="pi">:</span> <span class="s">2177</span>
+    <span class="s">language</span> <span class="pi">:</span> <span class="s">HTML</span>
+    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">3</span>
+    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
+    <span class="s">comment</span> <span class="pi">:</span> <span class="s">3</span>
+    <span class="s">code</span> <span class="pi">:</span> <span class="s">182</span>
+<span class="nn">...</span></code></pre></figure>
+
+<p>这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。</p>
+
+<p>这个问题我已经向作者提交了 Issue 。</p>
+
+<p>最后统计了一下我最近在做的项目。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ cloc .
+     365 text files.
+     339 unique files.
+     225 files ignored.
+
+github.com/AlDanial/cloc v 1.70  T=9.31 s (16.3 files/s, 2338.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+YAML                             7             13             47          14366
+JavaScript                      38              1            131           2177
+Ruby                            72            396            728           1281
+CoffeeScript                     7            148             29           1192
+SASS                             4             34             19            347
+ERB                             16             60              0            250
+Markdown                         2            143              0            182
+HTML                             3             15              3            182
+CSS                              3              2             25              2
+-------------------------------------------------------------------------------
+SUM:                           152            812            982          19979
+-------------------------------------------------------------------------------
+</code></pre>
+</div>
+
+<p>最多的 YAML 代码是从业务库导出的基线数据。由于这是个基于 echarts 的业务数据可视化的项目，前端代码占的比重稍大了一点。</p>
 
 
 
@@ -223,10 +356,10 @@
 
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/2015/04/19/search_ip_location_alfred/" data-toggle="tooltip" data-placement="top" title="查询 IP 地址位置的 Alfred Workflow">Next Post &rarr;</a>
+                    <li class="previous">
+                        <a href="/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/" data-toggle="tooltip" data-placement="top" title="升级到 macOS Sierra 之后踩到的坑 (持续更新)">&larr; Previous Post</a>
                     </li>
+                    
                     
                 </ul>
 
@@ -383,8 +516,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/2015/02/16/hello-world";
-    var disqus_url = "http://echohn.github.io/2015/02/16/hello-world/";
+    var disqus_identifier = "/2016/09/24/use-cloc-to-count-your-code";
+    var disqus_url = "http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

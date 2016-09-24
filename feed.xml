@@ -5,9 +5,162 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 24 Sep 2016 17:39:27 +0800</pubDate>
-    <lastBuildDate>Sat, 24 Sep 2016 17:39:27 +0800</lastBuildDate>
+    <pubDate>Sun, 25 Sep 2016 00:42:04 +0800</pubDate>
+    <lastBuildDate>Sun, 25 Sep 2016 00:42:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>使用 cloc 统计你的代码量</title>
+        <description>&lt;p&gt;今天发现一个特别好用的工具 &lt;a href=&quot;https://github.com/AlDanial/cloc&quot;&gt;cloc&lt;/a&gt;，可以用它统计代码的行数。它可以识别多种开发语言，并在计算的时候忽略掉注释和空行。&lt;/p&gt;
+
+&lt;p&gt;我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 &lt;code class=&quot;highlighter-rouge&quot;&gt;find xxx -prune xxx | xargs grep -vE xxx | wc -l&lt;/code&gt; 的超长命令。&lt;/p&gt;
+
+&lt;p&gt;每年写年终总结统计工作量的时候，我也常常会用到类似的命令。&lt;/p&gt;
+
+&lt;p&gt;所以我今天突然发现这个工具的时候，还是很惊喜的。&lt;/p&gt;
+
+&lt;p&gt;在 macOS 上，可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;brew install cloc&lt;/code&gt; 来安装它，它支持包括 Windows 在内的多个系统。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;npm install -g cloc                    &lt;span class=&quot;c&quot;&gt;# https://www.npmjs.com/package/cloc&lt;/span&gt;
+sudo apt-get install cloc              &lt;span class=&quot;c&quot;&gt;# Debian, Ubuntu&lt;/span&gt;
+sudo yum install cloc                  &lt;span class=&quot;c&quot;&gt;# Red Hat, Fedora&lt;/span&gt;
+sudo dnf install cloc                  &lt;span class=&quot;c&quot;&gt;# Fedora 22 or later&lt;/span&gt;
+sudo pacman -S cloc                    &lt;span class=&quot;c&quot;&gt;# Arch&lt;/span&gt;
+sudo pkg install cloc                  &lt;span class=&quot;c&quot;&gt;# FreeBSD&lt;/span&gt;
+sudo port install cloc                 &lt;span class=&quot;c&quot;&gt;# Mac OS X with MacPorts&lt;/span&gt;
+brew install cloc                      &lt;span class=&quot;c&quot;&gt;# Mac OS X with Homebrew&lt;/span&gt;
+choco install cloc                     &lt;span class=&quot;c&quot;&gt;# Windows with Chocolatey&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;它有诸多优点：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;下载安装方便。&lt;/li&gt;
+  &lt;li&gt;能识别多种语言。&lt;/li&gt;
+  &lt;li&gt;允许通过项目或语言等多种方式来输出统计结果。&lt;/li&gt;
+  &lt;li&gt;多种输出格式，包括纯文本、SQL、JSON、XML、YAML 等。&lt;/li&gt;
+  &lt;li&gt;能直接从压缩包里统计代码。&lt;/li&gt;
+  &lt;li&gt;多种排错选项。&lt;/li&gt;
+  &lt;li&gt;识别含有非常用字符和空格的文件、目录名。&lt;/li&gt;
+  &lt;li&gt;没有外部依赖。&lt;/li&gt;
+  &lt;li&gt;可在多种系统上运行。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;由于它出色的灵活性，可以和多种工具结合使用。&lt;/p&gt;
+
+&lt;p&gt;比如写一个 &lt;a href=&quot;http://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository&quot;&gt;cloc-git&lt;/a&gt; 的脚本，用来统计 git 远程项目的代码量。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
+git clone --depth 1 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;(&#39;temp-linecount-repo&#39; will be deleted automatically)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  cloc temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  rm -rf temp-linecount-repo&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;运行结果如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cloc-git https://github.com/rails/rails.git
+Cloning into &lt;span class=&quot;s1&quot;&gt;&#39;temp-linecount-repo&#39;&lt;/span&gt;...
+remote: Counting objects: 3615, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3048/3048&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+remote: Total 3615 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 1576 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 0
+Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3615/3615&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 6.08 MiB | 2.28 MiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;174/174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+Checking connectivity... &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;temp-linecount-repo&#39;&lt;/span&gt; will be deleted automatically&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+
+    3043 text files.
+    2893 unique files.
+     309 files ignored.
+
+github.com/AlDanial/cloc v 1.70  &lt;span class=&quot;nv&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;19.61 s &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;141.1 files/s, 18560.1 lines/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Ruby                          2152          47525          41996         213275
+Markdown                        74          13832              0          34880
+JavaScript                      23            732            747           3385
+YAML                           144            307            584           2505
+ERB                            318            248             11           1736
+CSS                             20            157            120           1105
+CoffeeScript                    11             87            104            318
+HTML                            19             15              3            198
+yacc                             1              4              0             45
+SQL                              1              6              0             43
+JSON                             1              0              0             24
+builder                          2              0              0              6
+DTD                              1              0              0              1
+-------------------------------------------------------------------------------
+SUM:                          2767          62913          43565         257521
+-------------------------------------------------------------------------------&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;cloc 也支持使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项对两个版本的代码量进行比较。&lt;/p&gt;
+
+&lt;p&gt;但是在我尝试 cloc 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# github.com/AlDanial/cloc&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;same&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CSS&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JavaScript&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;38&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;131&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2177&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;HTML&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;182&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。&lt;/p&gt;
+
+&lt;p&gt;这个问题我已经向作者提交了 Issue 。&lt;/p&gt;
+
+&lt;p&gt;最后统计了一下我最近在做的项目。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cloc .
+     365 text files.
+     339 unique files.
+     225 files ignored.
+
+github.com/AlDanial/cloc v 1.70  T=9.31 s (16.3 files/s, 2338.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+YAML                             7             13             47          14366
+JavaScript                      38              1            131           2177
+Ruby                            72            396            728           1281
+CoffeeScript                     7            148             29           1192
+SASS                             4             34             19            347
+ERB                             16             60              0            250
+Markdown                         2            143              0            182
+HTML                             3             15              3            182
+CSS                              3              2             25              2
+-------------------------------------------------------------------------------
+SUM:                           152            812            982          19979
+-------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;最多的 YAML 代码是从业务库导出的基线数据。由于这是个基于 echarts 的业务数据可视化的项目，前端代码占的比重稍大了一点。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 24 Sep 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/</guid>
+        
+        <category>工具</category>
+        
+        
+      </item>
     
       <item>
         <title>升级到 macOS Sierra 之后踩到的坑 (持续更新)</title>
@@ -1451,60 +1604,6 @@ Host *
         <guid isPermaLink="true">http://echohn.github.io/2016/05/09/smart-questions-mindmap/</guid>
         
         <category>读书笔记</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>How to run a script after network interface up</title>
-        <description>&lt;p&gt;我懒，我喜欢让自己的工作环境变得轻松，喜欢 Automate Everything 。&lt;/p&gt;
-
-&lt;p&gt;今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个&lt;code class=&quot;highlighter-rouge&quot;&gt;ip a&lt;/code&gt;看一下 ip 地址，再 &lt;code class=&quot;highlighter-rouge&quot;&gt;⌃&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;⌘&lt;/code&gt; 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是射手）！&lt;/p&gt;
-
-&lt;p&gt;所以就想，干脆启动虚机的时候能看到 ip 地址就好啦。&lt;/p&gt;
-
-&lt;p&gt;虽然 /etc/issue 是纯文本，可是这怎么能难住哥，我很快就写好了一个在 /etc/issue 显示 ip 地址的小脚本。&lt;/p&gt;
-
-&lt;p&gt;然后正当习惯性想把脚本加到 rc.local 的时候，突然想到，这样岂不是只能开机启动了才生效？IP 地址是与网卡绑定的，得随网卡启动才好吧。&lt;/p&gt;
-
-&lt;p&gt;我之前虽然试过在网卡启动后自动添加路由，可是还没试过在网卡启动之后自动运行脚本呢。&lt;/p&gt;
-
-&lt;p&gt;直接 google，找到了&lt;a href=&quot;http://xmodulo.com/how-to-run-startup-script-automatically-after-network-interface-is-up-on-centos.html&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;嗯，ifup-post 脚本里真有下面这么一句呢（其实没有自己手动添也行）。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; -x /sbin/ifup-local &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
-    /sbin/ifup-local &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DEVICE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;于是就写了 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sbin/ifup-local&lt;/code&gt; 这么个脚本。&lt;/p&gt;
-
-&lt;p&gt;因为这个脚本是每启动一个网卡就要执行一次，我嫌麻烦还要判断网卡，干脆就直接都写一样的了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;addr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ip a | awk &lt;span class=&quot;s1&quot;&gt;&#39;/scope global/{print $NF&quot; ipaddress : &quot;$2}&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/etc/issue&quot;&lt;/span&gt;
-
-sed -i &lt;span class=&quot;s1&quot;&gt;&#39;/ipaddress/d&#39;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
-sed -i &lt;span class=&quot;s1&quot;&gt;&#39;/^$/d&#39;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
-
-mv &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.bak
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$addr&lt;/span&gt; &amp;gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
-cat &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.bak &amp;gt;&amp;gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;最后新建一台虚机看一下效果，完美~！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 30 Apr 2016 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2016/04/30/how-to-run-a-script-after-network-interface-up/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2016/04/30/how-to-run-a-script-after-network-interface-up/</guid>
-        
-        <category>script</category>
-        
-        <category>linux</category>
         
         
       </item>

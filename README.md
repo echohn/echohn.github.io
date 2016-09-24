@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/09/24: <a href="http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/">「使用 cloc 统计你的代码量」</a></p>
+  </li>
+  <li>
     <p>2016/09/22: <a href="http://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/">「升级到 macOS Sierra 之后踩到的坑 (持续更新)」</a></p>
   </li>
   <li>
