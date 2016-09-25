@@ -294,10 +294,10 @@ SUM:                          2767          62913          43565         257521
 
 <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="nn">---</span>
 <span class="c1"># github.com/AlDanial/cloc</span>
-<span class="s">header</span> <span class="pi">:</span> 
+<span class="s">header</span> <span class="pi">:</span>
 <span class="nn">...</span>
 
-<span class="s">same</span> <span class="pi">:</span> 
+<span class="s">same</span> <span class="pi">:</span>
     <span class="s">language</span> <span class="pi">:</span> <span class="s">CSS</span>
     <span class="s">files_count</span> <span class="pi">:</span> <span class="s">3</span>
     <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
@@ -317,7 +317,7 @@ SUM:                          2767          62913          43565         257521
 
 <p>这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。</p>
 
-<p>这个问题我已经向作者提交了 Issue 。</p>
+<p>这个问题我已经在项目提交了<a href="https://github.com/AlDanial/cloc/issues/127">Issue</a>，作者说过几天就将修复这个问题。</p>
 
 <p>最后统计了一下我最近在做的项目。</p>
 

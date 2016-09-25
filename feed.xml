@@ -5,8 +5,8 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 25 Sep 2016 00:42:04 +0800</pubDate>
-    <lastBuildDate>Sun, 25 Sep 2016 00:42:04 +0800</lastBuildDate>
+    <pubDate>Sun, 25 Sep 2016 13:06:10 +0800</pubDate>
+    <lastBuildDate>Sun, 25 Sep 2016 13:06:10 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
     
       <item>
@@ -99,10 +99,10 @@ SUM:                          2767          62913          43565         257521
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# github.com/AlDanial/cloc&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+&lt;span class=&quot;s&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
 &lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;s&quot;&gt;same&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+&lt;span class=&quot;s&quot;&gt;same&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CSS&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
@@ -122,7 +122,7 @@ SUM:                          2767          62913          43565         257521
 
 &lt;p&gt;这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。&lt;/p&gt;
 
-&lt;p&gt;这个问题我已经向作者提交了 Issue 。&lt;/p&gt;
+&lt;p&gt;这个问题我已经在项目提交了&lt;a href=&quot;https://github.com/AlDanial/cloc/issues/127&quot;&gt;Issue&lt;/a&gt;，作者说过几天就将修复这个问题。&lt;/p&gt;
 
 &lt;p&gt;最后统计了一下我最近在做的项目。&lt;/p&gt;
 
