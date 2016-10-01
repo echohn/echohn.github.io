@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="How to run a script after network interface up 顺便还有怎么不登录系统就能看到 ip 地址 | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content="Linux VMWare 虚拟机 网卡 路由 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="「时间管理」读书笔记  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="时间管理 Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>How to run a script after network interface up</title>
+    <title>「时间管理」读书笔记</title>
 
-    <link rel="canonical" href="http://echohn.github.io/2016/04/30/how-to-run-a-script-after-network-interface-up/">
+    <link rel="canonical" href="http://echohn.github.io/2016/10/01/the-reading-note-of-time-management/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -158,13 +158,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-time.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg.jpg')
+        background-image: url('/img/post-bg-time.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -180,17 +180,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#script" title="script">script</a>
-                        
-                        <a class="tag" href="/tags/#linux" title="linux">linux</a>
+                        <a class="tag" href="/tags/#时间管理" title="时间管理">时间管理</a>
                         
                     </div>
-                    <h1>How to run a script after network interface up</h1>
+                    <h1>「时间管理」读书笔记</h1>
                     
                     
-                    <h2 class="subheading">顺便还有怎么不登录系统就能看到 ip 地址</h2>
+                    <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo's Blog on April 30, 2016</span>
+                    <span class="meta">Posted by Echo on October 1, 2016</span>
                 </div>
             </div>
         </div>
@@ -208,45 +206,13 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>我懒，我喜欢让自己的工作环境变得轻松，喜欢 Automate Everything 。</p>
+				<p>今天读了「<a href="https://zhuanlan.zhihu.com/p/22494362">你知道吗？每个时间管理方法都只适合解决某一类问题</a>」这篇文章，觉得很受用。</p>
 
-<p>今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个<code class="highlighter-rouge">ip a</code>看一下 ip 地址，再 <code class="highlighter-rouge">⌃</code> + <code class="highlighter-rouge">⌘</code> 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是射手）！</p>
+<p>正好我正想系统化的梳理一下之前学习过的时间管理相关资料，就以此文章为基础，先做一篇读书笔记。</p>
 
-<p>所以就想，干脆启动虚机的时候能看到 ip 地址就好啦。</p>
+<p>以后如果有时间，我再把之前学过的其他时间管理的知识总结到这里。</p>
 
-<p>虽然 /etc/issue 是纯文本，可是这怎么能难住哥，我很快就写好了一个在 /etc/issue 显示 ip 地址的小脚本。</p>
-
-<p>然后正当习惯性想把脚本加到 rc.local 的时候，突然想到，这样岂不是只能开机启动了才生效？IP 地址是与网卡绑定的，得随网卡启动才好吧。</p>
-
-<p>我之前虽然试过在网卡启动后自动添加路由，可是还没试过在网卡启动之后自动运行脚本呢。</p>
-
-<p>直接 google，找到了<a href="http://xmodulo.com/how-to-run-startup-script-automatically-after-network-interface-is-up-on-centos.html">这篇文章</a>。</p>
-
-<p>嗯，ifup-post 脚本里真有下面这么一句呢（其实没有自己手动添也行）。</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> -x /sbin/ifup-local <span class="o">]</span>; <span class="k">then</span>
-    /sbin/ifup-local <span class="k">${</span><span class="nv">DEVICE</span><span class="k">}</span></code></pre></figure>
-
-<p>于是就写了 <code class="highlighter-rouge">/sbin/ifup-local</code> 这么个脚本。</p>
-
-<p>因为这个脚本是每启动一个网卡就要执行一次，我嫌麻烦还要判断网卡，干脆就直接都写一样的了。</p>
-
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
-
-<span class="nv">addr</span><span class="o">=</span><span class="k">$(</span>ip a | awk <span class="s1">'/scope global/{print $NF" ipaddress : "$2}'</span><span class="k">)</span>
-<span class="nv">file</span><span class="o">=</span><span class="s2">"/etc/issue"</span>
-
-sed -i <span class="s1">'/ipaddress/d'</span> <span class="nv">$file</span>
-sed -i <span class="s1">'/^$/d'</span> <span class="nv">$file</span>
-
-mv <span class="nv">$file</span> <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak
-<span class="nb">echo</span> <span class="nv">$addr</span> &gt; <span class="nv">$file</span>
-<span class="nb">echo</span> &gt;&gt; <span class="nv">$file</span>
-cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak &gt;&gt; <span class="nv">$file</span></code></pre></figure>
-
-<p>最后新建一台虚机看一下效果，完美~！</p>
-
-<p><img src="/img/in-post/3.png" alt="" /></p>
+<p><a href="https://github.com/echohn/my-mindmap/blob/master/时间管理.pdf">点击这里查看</a></p>
 
 
 
@@ -258,13 +224,9 @@ cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/" data-toggle="tooltip" data-placement="top" title="服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？">&larr; Previous Post</a>
+                        <a href="/2016/09/24/use-cloc-to-count-your-code/" data-toggle="tooltip" data-placement="top" title="使用 cloc 统计你的代码量">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/05/09/smart-questions-mindmap/" data-toggle="tooltip" data-placement="top" title="「提问的智慧」读书笔记">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -427,8 +389,8 @@ cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/2016/04/30/how-to-run-a-script-after-network-interface-up";
-    var disqus_url = "http://echohn.github.io/2016/04/30/how-to-run-a-script-after-network-interface-up/";
+    var disqus_identifier = "/2016/10/01/the-reading-note-of-time-management";
+    var disqus_url = "http://echohn.github.io/2016/10/01/the-reading-note-of-time-management/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

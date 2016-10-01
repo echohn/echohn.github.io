@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/10/01: <a href="http://echohn.github.io/2016/10/01/the-reading-note-of-time-management/">「「时间管理」读书笔记」</a></p>
+  </li>
+  <li>
     <p>2016/09/24: <a href="http://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/">「使用 cloc 统计你的代码量」</a></p>
   </li>
   <li>
