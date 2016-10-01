@@ -5,9 +5,88 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 01 Oct 2016 23:31:11 +0800</pubDate>
-    <lastBuildDate>Sat, 01 Oct 2016 23:31:11 +0800</lastBuildDate>
+    <pubDate>Sun, 02 Oct 2016 01:30:07 +0800</pubDate>
+    <lastBuildDate>Sun, 02 Oct 2016 01:30:07 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>尝试提高 ZSH 的响应速度</title>
+        <description>&lt;p&gt;事情的起因是某一天我突然发现，我的 zsh 怎么这么卡？&lt;/p&gt;
+
+&lt;p&gt;以前实在没在意 zsh 的响应速度，但是一旦注意到，就开始各种接受不了。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;打开一个 iTerm 标签页需要十几秒？&lt;/li&gt;
+  &lt;li&gt;cd 一个目录需要一到两秒才有响应？&lt;/li&gt;
+  &lt;li&gt;ls 一个目录要返回结果一两秒后才能操作？&lt;/li&gt;
+  &lt;li&gt;^C 结束进程反而卡在这不动？&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;我想到最近机器做过的变更实在太多。升级 macOS Sierra，iTerm 升级，oh-my-zsh 更新，实在有太多东西可能导致速度下降了。&lt;/p&gt;
+
+&lt;p&gt;然而 Google 实在搜不到相关升级会导致 zsh 卡顿的结果。&lt;/p&gt;
+
+&lt;p&gt;甚至我还想到可能是本子用的时间太长，ssd 读写速度下降导致的 zsh 卡顿。。。&lt;/p&gt;
+
+&lt;p&gt;我怎么用怎么觉得不爽，再也无心他事，直接扑在了改进 zsh 的速度上面。&lt;/p&gt;
+
+&lt;p&gt;我谷歌了很多资料，zsh 太慢的问题被很多人抱怨过，在此过程中我也学会了使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 。&lt;/p&gt;
+
+&lt;p&gt;我发现启动和运行过慢的原因有四点。&lt;/p&gt;
+
+&lt;p&gt;第一，加载过多了插件。&lt;/p&gt;
+
+&lt;p&gt;可能当我刚开始尝试用 oh-my-zsh 的时候，我参考了网上许多文章，加载了很多我用不到的插件。比如我同时开启了 z 和 autojump ，这两个插件的作用是一样的。在每次切换目录的时候，它们都会分别将切换的信息记入自己的数据库以进行权重统计，所以同时开启在一定程度上影响着 prompt 的响应速度。&lt;/p&gt;
+
+&lt;p&gt;在我关闭了许多自己用不到的插件之后， 明显速度提升了一些，但还不是非常明显。&lt;/p&gt;
+
+&lt;p&gt;第二，某些响应卡顿的命令明显影响 zsh 启动速度。&lt;/p&gt;
+
+&lt;p&gt;我使用&lt;code class=&quot;highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 的时候发现，每次启动当加载到了某些插件，比如 autojump，执行到&lt;code class=&quot;highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;命令的时候会有非常明显的卡顿。 而在加载过程中，不止一次会调用到这个命令。&lt;/p&gt;
+
+&lt;p&gt;所以我将所有插件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;都替换回了它的结果&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local&lt;/code&gt;，我觉得我并不会轻易改动 brew 的安装目录。修改之后，zsh 的启动时间从十几秒直接缩减到了 3.5 秒。&lt;/p&gt;
+
+&lt;p&gt;可以用下面这条命令测量 zsh 的启动时间。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;usr/bin/time /bin/zsh -i -c exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;第三，所用主题的 prompt 功能会非常影响 prompt 的响应速度，尤其是 git prompt&lt;/p&gt;
+
+&lt;p&gt;我根据自己的使用习惯，在 &lt;code class=&quot;highlighter-rouge&quot;&gt;agnoster&lt;/code&gt; 主题之上做了一些修改，添加了一些逻辑。在这次事件发生后，我读了一下主题的源码，做了一些优化。&lt;/p&gt;
+
+&lt;p&gt;比如，把类似 &lt;code class=&quot;highlighter-rouge&quot;&gt;echo $var |sed ...&lt;/code&gt; 等造成多进程开销的命令都使用 Bash 内部替换代替（详见&lt;a href=&quot;http://echohn.github.io/2016/05/21/bash-style-guide-cn/&quot;&gt;我翻译的这篇文章&lt;/a&gt;）。&lt;/p&gt;
+
+&lt;p&gt;而且这次我发现主题中的 git prompt 逻辑会非常影响 prompt 的响应速度。尤其是判断 git 中的版本有没有未提交的文件等状态的相关命令。我在测试的时候，将其替换成一个只显示 git 分支，不显示其他状态的 git prompt，其响应速度直接提升到让我满意的程度。&lt;/p&gt;
+
+&lt;p&gt;在这次 zsh 的卡顿事件中，在功能和性能之间，我最终做出了妥协，去掉了一些用不到功能和插件，换来一个我能接受的性能提升。&lt;/p&gt;
+
+&lt;p&gt;至于为什么不切换成速度更快的 fish，我考虑到我毕竟是做运维的，还是使用跟服务器上自带的 Bash 更相似一些的 zsh 为好。&lt;/p&gt;
+
+&lt;p&gt;这次我顺便还了解了 Antigen 、Antibody 等工具，和几个很实用、有意思的插件。&lt;/p&gt;
+
+&lt;p&gt;但是我还是没有使用 Antibody，我感觉它能支持的插件还是太少，当然这也可能是我对其了解的太浅显了。&lt;/p&gt;
+
+&lt;p&gt;最后为了缓解自己在 zsh 加载时候的焦虑心情，我做了一个 Loading 的命令行动画。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/in-post/ScreenFlow.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;挺有意思的吧！&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 01 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/</guid>
+        
+        <category>mac</category>
+        
+        <category>zsh</category>
+        
+        <category>工具</category>
+        
+        
+      </item>
     
       <item>
         <title>「时间管理」读书笔记</title>
@@ -1546,68 +1625,6 @@ Host *
         <guid isPermaLink="true">http://echohn.github.io/2016/05/15/how-to-manage-your-servers/</guid>
         
         <category>运维</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>谁离开了，谁还在？</title>
-        <description>&lt;p&gt;今天想联系某个同事时，没找到他的电话，忽然发现我已经很久没有更新单位的通讯录了。&lt;/p&gt;
-
-&lt;p&gt;于是，下午不忙的时候，找出来以前写的导出单位通讯录的程序，从 OA 上下载了目前最新的通讯录。&lt;/p&gt;
-
-&lt;p&gt;在与自己的通讯录合并之前，突然想到，很久没用过了，还是比较一下差异吧。&lt;/p&gt;
-
-&lt;p&gt;随着键盘几个简单的敲击，屏幕中突然出现了一大片或熟悉、或陌生的名字……&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;我在 2012 年 9 月加入这家单位。&lt;/p&gt;
-
-&lt;p&gt;我还记得在上一家公司接到丽娜的电话，啊？事业单位？你没弄错吧，我是做游戏的……&lt;/p&gt;
-
-&lt;p&gt;我还记得刚入职的时候对这里到处都充满了好奇，那么多工会活动，还给钱……打完球之后总是被大睿拉着砸地摊子喝酒撸串，总是把我名字记错的门卫大爷，听着那些认识或不认识人的八卦……&lt;/p&gt;
-
-&lt;p&gt;突然有一天，我特别高兴，因为我能叫出所有人的名字啦！我写程序把单位 Excel 的通讯录转成 VCard，再把 VCard 跟好多熟悉的人分享……&lt;/p&gt;
-
-&lt;p&gt;偶尔食堂吃饭的时候，我也偷偷打量没见过的新人。跟部门的弟兄一起，看脸看胸看腿看屁股，他们告诉我，她叫什么，是哪个部门的。&lt;/p&gt;
-
-&lt;p&gt;可是渐渐地，所有人似乎变得都很忙很忙，再也聚不起一场球赛，再也没人组织一块儿聚餐，甚至，不知道从哪时起，就再也没见过那个人了。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;当我看到终端滚出的那些熟悉的名字，心里突然有点柔软。&lt;/p&gt;
-
-&lt;p&gt;看到它们，就仿佛看到了那些曾经一起加班、一起打球、一起开过玩笑、聊过心事的，却已经再也看不到了的身影。&lt;/p&gt;
-
-&lt;p&gt;我把名单截图给博学看，博学说，「嗯，还有我的女神。」&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;可能生活就是这样，我们渐渐与一些人相遇，又与一些人分离。&lt;/p&gt;
-
-&lt;p&gt;我还记得那天在楼下突然看到离职的安冬，她从远处走来，带着笑容，喊我的名字，一如昨日。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;偶尔就会缅怀。&lt;/p&gt;
-
-&lt;p&gt;但是，也只是偶尔罢了。&lt;/p&gt;
-
-&lt;p&gt;因为，非常非常幸运的，&lt;/p&gt;
-
-&lt;p&gt;那些与我信念相同的兄弟们，&lt;/p&gt;
-
-&lt;p&gt;仍与我并肩站在一起，&lt;/p&gt;
-
-&lt;p&gt;从未离开。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 11 May 2016 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2016/05/11/who-were-left-who-were-stay/</guid>
-        
-        <category>杂记</category>
         
         
       </item>

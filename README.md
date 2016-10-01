@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/10/01: <a href="http://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/">「尝试提高 ZSH 的响应速度 – 」</a></p>
+  </li>
+  <li>
     <p>2016/10/01: <a href="http://echohn.github.io/2016/10/01/the-reading-note-of-time-management/">「「时间管理」读书笔记」</a></p>
   </li>
   <li>
