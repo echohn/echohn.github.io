@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/10/23: <a href="http://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/">「解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误」</a></p>
+  </li>
+  <li>
     <p>2016/10/22: <a href="http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/">「批量导入密码到 iTerm 密码管理器」</a></p>
   </li>
   <li>

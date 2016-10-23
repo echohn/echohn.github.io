@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="About  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content=" Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="Confluence Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>About</title>
+    <title>解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误</title>
 
-    <link rel="canonical" href="http://echohn.github.io/about/">
+    <link rel="canonical" href="http://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,305 +156,279 @@
 </script>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/about-bg.jpg')">
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-unix-linux.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-unix-linux.jpg')
+    }
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, 0.3);
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">Hey, this is Echo.</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Confluence" title="Confluence">Confluence</a>
+                        
+                    </div>
+                    <h1>解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by Echo on October 23, 2016</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
-        
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
-    		<div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-    			<!-- Language Selector -->
-<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-    <option value="0" selected> 中文 Chinese </option>
-    <option value="1"> 英语 English </option>
-</select>
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-<!-- Chinese Version -->
-<div class="zh post-container">
-    <blockquote>
-        我把桃花切两斤，且与时光炖了。
-    </blockquote>
-    <p>
-        我是韩啸 (Echo)。我是一名运维工程师。
-    </p>
+				<p>最近把公司原来用的 Confluence 从 3.4.5 升到了 5.10.7 。</p>
 
-</div>
+<p>虽然这两个版本跨了六年，但是整个升级过程还是挺顺利的，就是麻烦了一些，根据官网要求，要按照 3.4.5 =&gt; 3.5 =&gt; 5.0 =&gt; 5.10 这样一步步进行升级。</p>
 
-<!-- English Version -->
-<div class="en post-container">
-    <blockquote>
-        Designer or Engineer, things in between.
-    </blockquote>
+<p>然后在使用的时候发现了一些问题，花了不少时间排错。</p>
 
-    <p>
-        Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven’t found it yet, keep looking. Don’t settle. As with all matters of the heart, you’ll know when you find it.
-    </p>
+<p>起初是发现无法发送通知邮件，虽然测试邮件可以成功发送，但是一直收不到通知邮件。</p>
 
-    <p>
-    If you want to live your life in a creative way, as an artist, you have to not look back too much. You have to be willing to take whatever you’ve done and whoever you were and throw them away.
-    </p>
+<p>后来 Google 了一下，大概了解是中文补丁导致的，卸载了中文补丁，果然可以收到邮件了。</p>
 
-    <p style="text-align:right;">
-    -- Steve Jobs
-    </p>
+<p>当时那个中文补丁是上网随便下的，于是我又从<a href="https://translations.atlassian.com/dashboard/dashboard?lang=zh_CN">官网</a>下了一个，直接在插件页面上传上去，发现可以收到通知邮件了。</p>
 
-</div>
+<p>但是发现首页的布局却出现了问题。</p>
 
-<!-- Handle Language Change -->
-<script type="text/javascript">
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    function onLanChange(index){
-        if(index == 0){
-            $zh.style.display = "block";
-            $en.style.display = "none";
-        }else{
-            $en.style.display = "block";
-            $zh.style.display = "none";
-        }
-    }
-    onLanChange(0);
-</script>
+<p><img src="/img/in-post/confluence-ui-error.jpg" alt="" /></p>
 
+<p>打开 web 控制台，发现报了一个错误。</p>
+
+<blockquote>
+  <p>[Error] SyntaxError: Unexpected EOF
+	（匿名函数） (batch.js:392)</p>
+</blockquote>
+
+<p>跳到源代码看了一下，非常明显，那行多了一个换行符导致了代码解析出现了问题。</p>
+
+<p>既然是中文补丁导致的，那出错的代码肯定是在中文补丁里了。</p>
+
+<p>我打开了补丁包，试着过滤了一下代码的关键字。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>unzip Confluence-5.10.0-rc1-language-pack-zh_CN.jar
+<span class="gp">$ </span>grep -r start ./
+.//atlassian-plugin.xml:    &lt;resource <span class="nv">name</span><span class="o">=</span><span class="s2">"i18n-101"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"i18n"</span> <span class="nv">location</span><span class="o">=</span><span class="s2">"com/atlassian/confluence/plugins/gettingstarted/i18n"</span>/&gt;
+.//com/atlassian/confluence/plugins/gettingstarted/i18n_zh_CN.properties:confluence.gettingstarted.movie<span class="o">=</span>//www.atlassian.com/software/confluence/videos/<span class="o">{</span>0<span class="o">}</span>.html<span class="se">\n</span>
+...</code></pre></figure>
+
+<p>果然发现了问题所在。</p>
+
+<p>于是将文件中多余的换行符去掉，重新打包。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>jar cvf ../Confluence-5.10.0-rc1-language-pack-zh_CN.jar ./</code></pre></figure>
+
+<p>将修改后的中文补丁传上去，刷新主页面，咦，居然错误还在？</p>
+
+<p>不应该啊。。。尝试停用了浏览器的缓存。</p>
+
+<p>刷新页面，果然，恢复正常！</p>
+
+
+
+                <hr>
 
                 
 
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2016/10/22/import-passwords-to-iterm-password-management/" data-toggle="tooltip" data-placement="top" title="批量导入密码到 iTerm 密码管理器">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
 
                 
                 <!-- disqus 评论框 start -->
                 <div class="comment">
-                    <div id="disqus_thread" class="disqus-thread">
-
-                    </div>
+                    <div id="disqus_thread" class="disqus-thread"></div>
                 </div>
                 <!-- disqus 评论框 end -->
-
-                <!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-                <script type="text/javascript">
-                    /* * * CONFIGURATION VARIABLES * * */
-                    var disqus_shortname = "echohn";
-                    var disqus_identifier = "echohn//about/";
-                    var disqus_url = "http://echohn.github.io/about/";
-
-                    (function() {
-                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                </script>
-                <!-- disqus 公共JS代码 end -->
                 
+
+            </div>
+            <div class="col-lg-2 col-lg-offset-0 visible-lg-block sidebar-container catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5 id="catalog">
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+
             </div>
 
     <!-- Sidebar Container -->
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <hr class="hidden-sm hidden-xs">
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                        
+        				
                             
-                                <a href="/tags/#杂记" title="杂记" rel="3">
+                				<a href="/tags/#杂记" title="杂记" rel="3">
                                     杂记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Mac" title="Mac" rel="8">
+                				<a href="/tags/#Mac" title="Mac" rel="8">
                                     Mac
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Alfred" title="Alfred" rel="4">
+                				<a href="/tags/#Alfred" title="Alfred" rel="4">
                                     Alfred
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="3">
                                     Ruby
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Safari" title="Safari" rel="2">
+                				<a href="/tags/#Safari" title="Safari" rel="2">
                                     Safari
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#运维" title="运维" rel="3">
+                				<a href="/tags/#运维" title="运维" rel="3">
                                     运维
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Linux" title="Linux" rel="1">
+                				<a href="/tags/#Linux" title="Linux" rel="1">
                                     Linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#script" title="script" rel="2">
+                				<a href="/tags/#script" title="script" rel="2">
                                     script
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#linux" title="linux" rel="1">
+                				<a href="/tags/#linux" title="linux" rel="1">
                                     linux
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#读书笔记" title="读书笔记" rel="1">
+                				<a href="/tags/#读书笔记" title="读书笔记" rel="1">
                                     读书笔记
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Bash" title="Bash" rel="1">
+                				<a href="/tags/#Bash" title="Bash" rel="1">
                                     Bash
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#科学上网" title="科学上网" rel="1">
+                				<a href="/tags/#科学上网" title="科学上网" rel="1">
                                     科学上网
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#ShadowSocks" title="ShadowSocks" rel="1">
+                				<a href="/tags/#ShadowSocks" title="ShadowSocks" rel="1">
                                     ShadowSocks
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#安全" title="安全" rel="1">
+                				<a href="/tags/#安全" title="安全" rel="1">
                                     安全
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#工具" title="工具" rel="2">
+                				<a href="/tags/#工具" title="工具" rel="2">
                                     工具
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#时间管理" title="时间管理" rel="1">
+                				<a href="/tags/#时间管理" title="时间管理" rel="1">
                                     时间管理
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#mac" title="mac" rel="1">
+                				<a href="/tags/#mac" title="mac" rel="1">
                                     mac
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#zsh" title="zsh" rel="1">
+                				<a href="/tags/#zsh" title="zsh" rel="1">
                                     zsh
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#iTerm" title="iTerm" rel="1">
+                				<a href="/tags/#iTerm" title="iTerm" rel="1">
                                     iTerm
                                 </a>
                             
-                        
+        				
                             
-                                <a href="/tags/#Confluence" title="Confluence" rel="1">
+                				<a href="/tags/#Confluence" title="Confluence" rel="1">
                                     Confluence
                                 </a>
                             
-                        
-                    </div>
+        				
+        			</div>
                 </section>
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-                        
-                            <img src="/img/avatar-echo.jpg" />
-                        
-                        
-                            <p>你好，我是 Echo，我是一名运维工程师/奶爸/Ruby 爱好者。</p>
-                        
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            <li>
-                                <a href="https://twitter.com/echo_hon">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://github.com/echohn">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </section>
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -465,10 +439,67 @@
                     
                 </ul>
                 
-    		</div>
-        
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "echohn";
+    var disqus_identifier = "/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error";
+    var disqus_url = "http://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
