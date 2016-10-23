@@ -5,9 +5,94 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>http://echohn.github.io/</link>
     <atom:link href="http://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Oct 2016 01:30:07 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Oct 2016 01:30:07 +0800</lastBuildDate>
+    <pubDate>Sun, 23 Oct 2016 22:06:45 +0800</pubDate>
+    <lastBuildDate>Sun, 23 Oct 2016 22:06:45 +0800</lastBuildDate>
     <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>批量导入密码到 iTerm 密码管理器</title>
+        <description>&lt;p&gt;定期修改密码是非常常见的安全策略，我们这每隔几个月会将所有线上服务器的密码统一更新。&lt;/p&gt;
+
+&lt;p&gt;起初我是将服务器密码直接存储在 Keychain 里。&lt;/p&gt;
+
+&lt;p&gt;每次要登录服务器的时候，打开 Keychain，搜索相关服务器的信息，然后点击「将密码复制到剪贴板」，再回到终端里粘贴。&lt;/p&gt;
+
+&lt;p&gt;当时觉得「诶呀，虽然不太方便，但是不比那帮从加密的 Excel 里复制粘贴密码的强吗？嘻~嘻~😌」&lt;/p&gt;
+
+&lt;p&gt;后来，iTerm 升到 3，多了一项密码管理器的功能，身为 iTerm 的重度使用者，我彻底爱上了这个功能。&lt;/p&gt;
+
+&lt;p&gt;正当啪啪啪敲命令敲的正爽的时候，需要输入密码，只要快捷键 ⌘ + P 一敲，biu~ 弹出一个窗口，关键字一输，回车一按，「啪！」就已经 sudo 成功，这种快感，真是让人陶醉啊。&lt;/p&gt;
+
+&lt;p&gt;所以在我试用了这个功能之后，我立刻就把 Keychain 里所有服务器密码都一条条粘到了 iTerm 里。&lt;/p&gt;
+
+&lt;p&gt;然而，到了这个更新密码的季节，当系统组的哥们拿着 U 盘过来找我的时候，我的内心其实是拒绝的。&lt;/p&gt;
+
+&lt;p&gt;我没有 Google 到特别好的方法，于是我去 iTerm 的论坛发了&lt;a href=&quot;https://groups.google.com/forum/#!topic/iterm2-discuss/hrfJL7GA4ZA&quot;&gt;一贴求助&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;很快就有人回复了，是通过命令行访问 Keychain 的方法：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;On Wednesday, October 19, 2016 at 9:10:07 PM UTC-4, Flare Han wrote:
+Is there any way to import a lot of passwords to the Password Manager?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;While googling a similar topic a couple months ago, I found&lt;/p&gt;
+
+&lt;p&gt;Save the password in keychain, either by the GUI (see https://www.netmeister.org/blog/keychain-passwords.html) or:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;your-password-goes-here&amp;gt;&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The thing I was playing with at the time would have used the above via something like this in my .bashrc:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;LDAP_PW&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;security find-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;I also found you can use variations of the security command to list and see what passwords iTerm2 has created.
+From that, you can figure out how to use a security command to create/update what iTerm2 uses.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;hostname&amp;gt; &amp;lt;userid&amp;gt;&#39;&lt;/span&gt; -w &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;userid&#39;&lt;/span&gt;s password&amp;gt;&lt;span class=&quot;s1&quot;&gt;&#39; -l &#39;&lt;/span&gt;a label&lt;span class=&quot;s1&quot;&gt;&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.&lt;/p&gt;
+
+&lt;p&gt;于是我写了个脚本将密码表中的密码导进 iTerm，问题解决！&lt;/p&gt;
+
+&lt;p&gt;ps: 因为密码管理器不支持全文匹配，也不能跳着输入，所以要输入 ops@zone-application-server 这种服务器名字很长的会很麻烦，所以我给每组账号都设置了一个短名字放在名字的最前面用来进行快速输入，比如只要输入 zasop 就代表是上面那条记录了。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env ruby&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# data csv format&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# jcjz,bj,ops,opspassword,rootpassword,dbuser,dbpassword&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# command&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &#39;user&#39; -w &#39;password&#39;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;create_command_prefix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;data_file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;r&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each_line&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;short&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;chomp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;,&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_command_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;short&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;op &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39; -w &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_command_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;short&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ro root@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39; -w &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root_pass&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&quot;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_command_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;short&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;or &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;long&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39; -w &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root_pass&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&quot;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;input error!&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Sat, 22 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/</link>
+        <guid isPermaLink="true">http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/</guid>
+        
+        <category>Mac</category>
+        
+        <category>iTerm</category>
+        
+        
+      </item>
     
       <item>
         <title>尝试提高 ZSH 的响应速度</title>
@@ -1460,171 +1545,6 @@ rm file       &lt;span class=&quot;c&quot;&gt;# 如果 cd 失败我在哪？我�
         <guid isPermaLink="true">http://echohn.github.io/2016/05/21/bash-style-guide-cn/</guid>
         
         <category>Bash</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>如何在 Mac 上管理你经常变化的服务器列表？</title>
-        <description>&lt;p&gt;相比传统运维「日久不变」的服务器运维，步入云时代之后，虚拟机创建和销毁频率比之前不知高了多少个量级，原本几年前想象中的可以根据日常负载自动添加机器什么的，已经完全变成了现实。现在想要找几台机器搭个小架构测试点什么东西，也不必像从前那样拉网线改 BIOS 装系统初始化一忙一上午了。&lt;/p&gt;
-
-&lt;p&gt;所以，如果工程师们还是按照原有的传统运维理念去进行运维，基本上就是嫌自己不够忙作死了。&lt;/p&gt;
-
-&lt;p&gt;虽然我非常认同云时代不登录虚拟机运维的理念（注1），但是我们单位目前还做不到如此高效的自动化，我们还是经常需要登服务器看看的。&lt;/p&gt;
-
-&lt;p&gt;注1：具体出处是看过的某一个技术视频，标题忘记了，主要是说在版本上线之前做好自动化，版本与虚拟机状态版本相对应，应用版本的切换就对应着上个版本的虚拟机销毁，下个版本虚拟机创建的过程，上线之后不给运维工程师登录服务器的权限，以防止误操作引起应用问题。&lt;/p&gt;
-
-&lt;p&gt;面对经常变化的服务器列表，身为一个懒人，怎么不会想出一个途径自动地管理这些东西？&lt;/p&gt;
-
-&lt;h2 id=&quot;saltmaster--id-&quot;&gt;1. 在 SaltMaster 上自动生成服务器 ID 列表&lt;/h2&gt;
-
-&lt;p&gt;我们每台虚机在创建之后，都会分配到一个 Salt Minion ID，并连接到 SaltMaster 进行自身的配置变更。&lt;/p&gt;
-
-&lt;p&gt;利用这一点，SaltMaster 上是最清楚机器的实际变化了。&lt;/p&gt;
-
-&lt;p&gt;所以这里很简单，定期在 SaltMaster 上生成一份 Minions ID 列表，并放在本地的 HTTP 服务上提供下载。&lt;/p&gt;
-
-&lt;p&gt;我在 SaltMaster 上也做了一份对 salt 命令的 ZSH 补全规则。这样我本地执行 salt 命令就能自动补全常用命令和 ID 啦。&lt;/p&gt;
-
-&lt;p&gt;补全脚本是酱婶儿的：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt; cat ~/.zsh/completion/_salt
-
-&lt;span class=&quot;c&quot;&gt;#compdef salt&lt;/span&gt;
-_arguments  &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-  &lt;span class=&quot;s2&quot;&gt;&quot;1:keys:(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;ruby -ryaml -e &lt;span class=&quot;s1&quot;&gt;&#39;puts YAML.load(IO.read(&quot;/var/www/html/salt_keys.yml&quot;))[&quot;minions&quot;]&#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;)&quot;&lt;/span&gt;   &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-  &lt;span class=&quot;s2&quot;&gt;&quot;2:commands:(test.ping cmd.run cmd.all cmd.exec_code state.sls pip.install saltutil.kill_job cp.get_file cp.get_dir)&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;id--hosts-&quot;&gt;2. 本地根据网络和计划任务定时下载 ID 列表自动更新到自己的 hosts 文件&lt;/h2&gt;
-
-&lt;p&gt;有了服务器提供的 ID 列表，本地下载读取更新自己的 hosts 文件就可以啦。&lt;/p&gt;
-
-&lt;p&gt;不过，我 Mac 的 hosts 有一些我的云主机、常用公网服务器配置，要自动更新 hosts 文件可以，可不能把我自己的配置给覆盖了，因此我在 hosts 文件里添加了一行特殊的注释行，为了分隔开我自己的 hosts 和自动生成的 hosts。&lt;/p&gt;
-
-&lt;p&gt;我平时要抱着我的 MBP 跑来跑去，不是所有时间都能连到运维网络上的。如果能根据我在哪判断出要不要连服务器下载 ID 列表岂不是很酷？其实可以使用 Mac 的网络位置非常容易的实现这个功能。&lt;/p&gt;
-
-&lt;p&gt;Mac 的网络位置是一个 Apple 自带的功能，你可以在 Mac 上任意设置你处在的不同网络配置，包括 IP 地址、网卡、DNS、WIFI 网络的优先级、VPN等等。配合 Alfred 快速切换网络位置的 Workflow，非常适合我这种经常处于家、办公网、运维网、VPN、设备调试网络等各种网络之间游荡的人。&lt;/p&gt;
-
-&lt;p&gt;所以我在脚本里增加了对网络的判断，当我处于 office_production 和 office_vpn 的网络位置就会下载 Salt Minion ID 文件。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# encoding: utf-8&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;open-uri&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;yaml&#39;&lt;/span&gt;
-
-&lt;span class=&quot;vg&quot;&gt;$location_title_regexp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/office_(production|vpn)/&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;salt_file_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;http://xxx.xx.xx.xx/salt_keys.yml&#39;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;in_the_location?&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;current_location&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`/usr/sbin/scselect`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/^ \*\s+[\w\-]+\s+\((.*)\)/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;current_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$location_title_regexp&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;download_and_parse_salt_keys_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:open_timeout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;YAML&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;minions&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Cannot download the Salt Key Files.&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;format_to_hosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t\t\t\t&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/[\w\-]+\-(\d+\.\d+\.\d+\.\d+)/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_myself_hosts&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;hosts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;/etc/hosts&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;lines&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;my_self_hosts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;hosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/##### Auto Generate id: (\d+)/&lt;/span&gt;
-      &lt;span class=&quot;vg&quot;&gt;$count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;vg&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_i&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;my_self_hosts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;my_self_hosts&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;merge_the_lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auto_generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;myself&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;##### Auto Generate id: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;auto_generate&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write_to_hosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;/etc/hosts&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;w&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in_the_location?&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;salt_hosts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;download_and_parse_salt_keys_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salt_file_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;auto_generate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;format_to_hosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salt_hosts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;myself&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_myself_hosts&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;hosts_lines&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merge_the_lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myself&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auto_generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;write_to_hosts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hosts_lines&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在，只有把这个脚本扔在计划任务里，每个小时自动跑上一次就好啦。&lt;/p&gt;
-
-&lt;h2 id=&quot;ssh-&quot;&gt;3. SSH 客户端的登录简化&lt;/h2&gt;
-
-&lt;p&gt;因为我们这服务器的安全级别不同，也有很多历史遗留原因，造成很多不同业务系统的服务器登录用户，key、密码都是不同的，要一一记住这些，对我来说也是蛮烦的一件事。不过可以通过 ~/.ssh/config 文件对 ssh 客户端进行自动匹配，从而简化还要想用户名、用哪个 key 这样的操作。&lt;/p&gt;
-
-&lt;p&gt;这个文件大致是这样的：&lt;/p&gt;
-
-&lt;p&gt;在 Host 设置中可以使用通配符，这里是我服务器的 Salt Minion ID。因为我们 Salt Minion ID 的规则是从左自右依次减小范围的，所以写成&lt;code class=&quot;highlighter-rouge&quot;&gt;ops-*&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;User 设置登录用户，Port 设置端口，IdentifiFile 设置你要登录使用的 ssh key。&lt;/p&gt;
-
-&lt;p&gt;Host * 是默认配置，在这里可以使用 ControlMaster 选项设置 ssh 共享多个连接，只要连接文件（ControlPath 中定义）存在且服务器没有主动断开，你就可以一直不用密码地快速访问啦。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host ops-*
-  User ops
-
-
-Host app1-*
-  User app1user
-  Port 22
-  IdentityFile ~/.ssh/id_app1_serverkey
-
-
-Host app2-*
-  User app2user
-  Port 30022
-  IdentityFile ~/.ssh/id_app2_serverkey
-
-Host *
-  User root
-  Port 22
-  CheckHostIP yes
-  Compression yes
-  ForwardAgent yes
-  IdentityFile ~/.ssh/id_rsa
-  ControlMaster auto
-  ControlPath ~/.ssh/%h-%p-%r
-  ControlPersist 4h
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;zsh-&quot;&gt;4. ZSH 的自动补全&lt;/h2&gt;
-
-&lt;p&gt;在这里我使用的是 oh-my-zsh 的自动 ssh 补全，本身没有做任何修改。&lt;/p&gt;
-
-&lt;p&gt;好啦，上述都配置好了之后，就可以不用再每天想着登服务器的时候发现IP、用户名、端口、ssh key 不对怎么办啦，不用再辛苦的去问同事哪里做了变更，还要再自己维护这些信息了。&lt;/p&gt;
-
-&lt;p&gt;有这时间，喝一杯咖啡，看看知乎岂不是更好。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 15 May 2016 00:00:00 +0800</pubDate>
-        <link>http://echohn.github.io/2016/05/15/how-to-manage-your-servers/</link>
-        <guid isPermaLink="true">http://echohn.github.io/2016/05/15/how-to-manage-your-servers/</guid>
-        
-        <category>运维</category>
         
         
       </item>

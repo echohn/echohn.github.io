@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="搜索 rubygems 并安装的 Alfred Workflow  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
-    <meta name="keyword"  content="mac ruby alfred gem rubygems Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
+    <meta name="description" content="批量导入密码到 iTerm 密码管理器  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="Mac iTerm Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>搜索 rubygems 并安装的 Alfred Workflow</title>
+    <title>批量导入密码到 iTerm 密码管理器</title>
 
-    <link rel="canonical" href="http://echohn.github.io/2015/10/17/rubygems-workflow/">
+    <link rel="canonical" href="http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -158,13 +158,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+<!-- <img src="/img/in-post/pass.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg.jpg')
+        background-image: url('/img/in-post/pass.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -182,17 +182,15 @@
                         
                         <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
                         
-                        <a class="tag" href="/tags/#Ruby" title="Ruby">Ruby</a>
-                        
-                        <a class="tag" href="/tags/#Alfred" title="Alfred">Alfred</a>
+                        <a class="tag" href="/tags/#iTerm" title="iTerm">iTerm</a>
                         
                     </div>
-                    <h1>搜索 rubygems 并安装的 Alfred Workflow</h1>
+                    <h1>批量导入密码到 iTerm 密码管理器</h1>
                     
                     
                     <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo's Blog on October 17, 2015</span>
+                    <span class="meta">Posted by Echo on October 22, 2016</span>
                 </div>
             </div>
         </div>
@@ -210,19 +208,76 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>有时候，我会打开 <a href="https://rubygems.org">rubygems.org</a> 去搜一个 gem 包。 一般是打开它的 GitHub 主页去查看文档，或是其他一些信息，也有的时候去搜索相关的 gem 进行安装使用。</p>
+				<p>定期修改密码是非常常见的安全策略，我们这每隔几个月会将所有线上服务器的密码统一更新。</p>
 
-<p>但是对于懒人来说，还是 Alfred 好用呀，所以十一放假穷极无聊的时候我写了一个 Workflow 用于搜索和安装 gem 。</p>
+<p>起初我是将服务器密码直接存储在 Keychain 里。</p>
 
-<p>使用方法：</p>
+<p>每次要登录服务器的时候，打开 Keychain，搜索相关服务器的信息，然后点击「将密码复制到剪贴板」，再回到终端里粘贴。</p>
 
-<p>使用 gem 关键字，后接 gem 名进行搜索。待列表出来后，可选择需要的 gem ，enter，即可选择安装或是打开 gem 的相关链接。</p>
+<p>当时觉得「诶呀，虽然不太方便，但是不比那帮从加密的 Excel 里复制粘贴密码的强吗？嘻~嘻~😌」</p>
 
-<p><img src="/img/in-post/1.png" alt="" /></p>
+<p>后来，iTerm 升到 3，多了一项密码管理器的功能，身为 iTerm 的重度使用者，我彻底爱上了这个功能。</p>
 
-<p><img src="/img/in-post/2.png" alt="" /></p>
+<p>正当啪啪啪敲命令敲的正爽的时候，需要输入密码，只要快捷键 ⌘ + P 一敲，biu~ 弹出一个窗口，关键字一输，回车一按，「啪！」就已经 sudo 成功，这种快感，真是让人陶醉啊。</p>
 
-<p><a href="https://github.com/echohn/ruby_gems_org_alfred_workflow/raw/master/RubyGems.alfredworkflow">点击这里下载</a></p>
+<p>所以在我试用了这个功能之后，我立刻就把 Keychain 里所有服务器密码都一条条粘到了 iTerm 里。</p>
+
+<p>然而，到了这个更新密码的季节，当系统组的哥们拿着 U 盘过来找我的时候，我的内心其实是拒绝的。</p>
+
+<p>我没有 Google 到特别好的方法，于是我去 iTerm 的论坛发了<a href="https://groups.google.com/forum/#!topic/iterm2-discuss/hrfJL7GA4ZA">一贴求助</a>。</p>
+
+<p>很快就有人回复了，是通过命令行访问 Keychain 的方法：</p>
+
+<blockquote>
+  <p>On Wednesday, October 19, 2016 at 9:10:07 PM UTC-4, Flare Han wrote:
+Is there any way to import a lot of passwords to the Password Manager?</p>
+</blockquote>
+
+<p>While googling a similar topic a couple months ago, I found</p>
+
+<p>Save the password in keychain, either by the GUI (see https://www.netmeister.org/blog/keychain-passwords.html) or:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> -s LDAPbindPW -w <span class="s1">'&lt;your-password-goes-here&gt;'</span></code></pre></figure>
+
+<p>The thing I was playing with at the time would have used the above via something like this in my .bashrc:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">LDAP_PW</span><span class="o">=</span><span class="k">$(</span>security find-generic-password -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> -s LDAPbindPW -w<span class="k">)</span></code></pre></figure>
+
+<p>I also found you can use variations of the security command to list and see what passwords iTerm2 has created.
+From that, you can figure out how to use a security command to create/update what iTerm2 uses.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a <span class="s1">'&lt;hostname&gt; &lt;userid&gt;'</span> -w <span class="s1">'&lt;userid'</span>s password&gt;<span class="s1">' -l '</span>a label<span class="s1">'</span></code></pre></figure>
+
+<p>iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.</p>
+
+<p>于是我写了个脚本将密码表中的密码导进 iTerm，问题解决！</p>
+
+<p>ps: 因为密码管理器不支持全文匹配，也不能跳着输入，所以要输入 ops@zone-application-server 这种服务器名字很长的会很麻烦，所以我给每组账号都设置了一个短名字放在名字的最前面用来进行快速输入，比如只要输入 zasop 就代表是上面那条记录了。</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+
+<span class="c1"># data csv format</span>
+<span class="c1"># jcjz,bj,ops,opspassword,rootpassword,dbuser,dbpassword</span>
+
+<span class="c1"># command</span>
+<span class="c1"># security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a 'user' -w 'password'</span>
+<span class="n">create_command_prefix</span> <span class="o">=</span> <span class="s2">"security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app"</span>
+
+<span class="k">if</span> <span class="no">ARGV</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="n">and</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="no">ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">data_file</span> <span class="o">=</span> <span class="no">ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span><span class="s1">'r'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">each_line</span> <span class="k">do</span> <span class="o">|</span><span class="n">l</span><span class="o">|</span>
+      <span class="n">long</span><span class="p">,</span><span class="n">short</span><span class="p">,</span><span class="n">user_name</span><span class="p">,</span><span class="n">user_pass</span><span class="p">,</span><span class="n">root_pass</span><span class="p">,</span><span class="n">db_name</span><span class="p">,</span><span class="n">db_pass</span> <span class="o">=</span> <span class="n">l</span><span class="p">.</span><span class="nf">chomp</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
+      <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">op </span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">user_pass</span><span class="si">}</span><span class="s2">'"</span>
+      <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">ro root@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">root_pass</span><span class="si">}</span><span class="s2">'"</span>
+      <span class="k">if</span> <span class="n">db_name</span>
+        <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">or </span><span class="si">#{</span><span class="n">db_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">root_pass</span><span class="si">}</span><span class="s2">'"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">else</span>
+  <span class="nb">puts</span> <span class="s2">"input error!"</span>
+<span class="k">end</span></code></pre></figure>
 
 
 
@@ -234,13 +289,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2015/10/17/ruby-destructuring/" data-toggle="tooltip" data-placement="top" title="Ruby 强制解构">&larr; Previous Post</a>
+                        <a href="/2016/10/01/about-improve-zsh-response-speed/" data-toggle="tooltip" data-placement="top" title="尝试提高 ZSH 的响应速度">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2015/12/06/analyse_my_safari_history/" data-toggle="tooltip" data-placement="top" title="看看自己平时上网都在干嘛？">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -421,8 +472,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/2015/10/17/rubygems-workflow";
-    var disqus_url = "http://echohn.github.io/2015/10/17/rubygems-workflow/";
+    var disqus_identifier = "/2016/10/22/import-passwords-to-iterm-password-management";
+    var disqus_url = "http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2016/10/22: <a href="http://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/">「批量导入密码到 iTerm 密码管理器」</a></p>
+  </li>
+  <li>
     <p>2016/10/01: <a href="http://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/">「尝试提高 ZSH 的响应速度 – 」</a></p>
   </li>
   <li>
