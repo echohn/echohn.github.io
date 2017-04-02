@@ -214,19 +214,23 @@
 
 <p>每次要登录服务器的时候，打开 Keychain，搜索相关服务器的信息，然后点击「将密码复制到剪贴板」，再回到终端里粘贴。</p>
 
-<p>当时觉得「诶呀，虽然不太方便，但是不比那帮从加密的 Excel 里复制粘贴密码的强吗？嘻~嘻~😌」</p>
+<p>当时觉得虽然不太方便，但是总比从 Excel 里粘密码要好吧。</p>
 
-<p>后来，iTerm 升到 3，多了一项密码管理器的功能，身为 iTerm 的重度使用者，我彻底爱上了这个功能。</p>
+<p>后来，iTerm 升到 3，多了一项密码管理器的功能。</p>
 
-<p>正当啪啪啪敲命令敲的正爽的时候，需要输入密码，只要快捷键 ⌘ + P 一敲，biu~ 弹出一个窗口，关键字一输，回车一按，「啪！」就已经 sudo 成功，这种快感，真是让人陶醉啊。</p>
+<p>身为 iTerm 的重度使用者，我觉得这项功能真的超级实用。</p>
 
-<p>所以在我试用了这个功能之后，我立刻就把 Keychain 里所有服务器密码都一条条粘到了 iTerm 里。</p>
+<p>只要按下快捷键 ⌘ + P ，设定的关键字一输，密码就可以直接上屏。</p>
 
-<p>然而，到了这个更新密码的季节，当系统组的哥们拿着 U 盘过来找我的时候，我的内心其实是拒绝的。</p>
+<p>所以在我发现这个功能之后，我就把 Keychain 里所有常用服务器的密码都一条条粘到了 iTerm 里。</p>
 
-<p>我没有 Google 到特别好的方法，于是我去 iTerm 的论坛发了<a href="https://groups.google.com/forum/#!topic/iterm2-discuss/hrfJL7GA4ZA">一贴求助</a>。</p>
+<p>然而，最近到了公司定期修改密码的日子，当系统组的同事拿着 U 盘过来找我的时候，想到又要一条条的粘，我的内心其实是崩溃的。</p>
 
-<p>很快就有人回复了，是通过命令行访问 Keychain 的方法：</p>
+<p>我试着 Google ，但是并没有发现特别好将密码导入到 iTerm 的方法，于是我去 iTerm 的论坛发了<a href="https://groups.google.com/forum/#!topic/iterm2-discuss/hrfJL7GA4ZA">一张求助帖</a>。</p>
+
+<p>很快就有人回复了。</p>
+
+<p>因为 iTerm 中的密码也是存在 Keychain 的，可以通过命令行将密码添加到 Keychain ：</p>
 
 <blockquote>
   <p>On Wednesday, October 19, 2016 at 9:10:07 PM UTC-4, Flare Han wrote:
@@ -250,34 +254,52 @@ From that, you can figure out how to use a security command to create/update wha
 
 <p>iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.</p>
 
-<p>于是我写了个脚本将密码表中的密码导进 iTerm，问题解决！</p>
+<p>于是我写了个脚本将密码表导进了 iTerm 。</p>
 
-<p>ps: 因为密码管理器不支持全文匹配，也不能跳着输入，所以要输入 ops@zone-application-server 这种服务器名字很长的会很麻烦，所以我给每组账号都设置了一个短名字放在名字的最前面用来进行快速输入，比如只要输入 zasop 就代表是上面那条记录了。</p>
+<p>其实 iTerm 的密码管理器仍有需要改进的地方，比如它不支持类似 Sublime Text 中的全文匹配，不能跳着输入，所以要输入 ops@zone-application-server 这种名字很长的超麻烦。</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+<p>我只能给每组账号都设置了一个关键字用来进行快速输入，比如上面这条记录可缩写为 zasop 。</p>
 
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#!/usr/bin/env ruby -w</span>
+<span class="c1"># encoding: utf-8</span>
 <span class="c1"># data csv format</span>
-<span class="c1"># jcjz,bj,ops,opspassword,rootpassword,dbuser,dbpassword</span>
+<span class="c1"># jcjz,bj,user1,user1_password,user2,user2_password,...</span>
 
 <span class="c1"># command</span>
 <span class="c1"># security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a 'user' -w 'password'</span>
-<span class="n">create_command_prefix</span> <span class="o">=</span> <span class="s2">"security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app"</span>
 
-<span class="k">if</span> <span class="no">ARGV</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="n">and</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="no">ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-  <span class="n">data_file</span> <span class="o">=</span> <span class="no">ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-  <span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span><span class="s1">'r'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
-    <span class="n">f</span><span class="p">.</span><span class="nf">each_line</span> <span class="k">do</span> <span class="o">|</span><span class="n">l</span><span class="o">|</span>
-      <span class="n">long</span><span class="p">,</span><span class="n">short</span><span class="p">,</span><span class="n">user_name</span><span class="p">,</span><span class="n">user_pass</span><span class="p">,</span><span class="n">root_pass</span><span class="p">,</span><span class="n">db_name</span><span class="p">,</span><span class="n">db_pass</span> <span class="o">=</span> <span class="n">l</span><span class="p">.</span><span class="nf">chomp</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)</span>
-      <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">op </span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">user_pass</span><span class="si">}</span><span class="s2">'"</span>
-      <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">ro root@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">root_pass</span><span class="si">}</span><span class="s2">'"</span>
-      <span class="k">if</span> <span class="n">db_name</span>
-        <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="n">create_command_prefix</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="n">short</span><span class="si">}</span><span class="s2">or </span><span class="si">#{</span><span class="n">db_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="n">long</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">root_pass</span><span class="si">}</span><span class="s2">'"</span>
-      <span class="k">end</span>
+<span class="nb">require</span> <span class="s1">'pathname'</span>
+<span class="nb">require</span> <span class="s1">'csv'</span>
+
+<span class="k">class</span> <span class="nc">ItermPassword</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="vi">@long_name</span>  <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">shift</span>
+    <span class="n">short_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">shift</span>
+    <span class="vi">@short_name</span> <span class="o">=</span> <span class="n">short_name</span><span class="p">.</span><span class="nf">nil?</span> <span class="p">?</span> <span class="vi">@long_name</span><span class="p">[</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="n">short_name</span>
+    <span class="vi">@users_and_passwordes</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="no">COMMAND_PREFIX</span> <span class="o">=</span> <span class="s2">"security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app"</span>
+
+  <span class="k">def</span> <span class="nf">write_password</span><span class="p">(</span><span class="n">user_name</span><span class="p">,</span><span class="n">user_pass</span><span class="p">)</span>
+    <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="no">COMMAND_PREFIX</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="vi">@short_name</span><span class="si">}#{</span><span class="n">user_name</span><span class="p">[</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="vi">@long_name</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">user_pass</span><span class="p">.</span><span class="nf">gsub</span><span class="p">(</span><span class="sr">/'/</span><span class="p">,</span><span class="s2">"'</span><span class="se">\"</span><span class="s2">'</span><span class="se">\"</span><span class="s2">'"</span><span class="p">)</span><span class="si">}</span><span class="s2">'"</span> <span class="k">if</span> <span class="n">user_name</span> <span class="o">&amp;&amp;</span> <span class="n">user_pass</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">write</span>
+    <span class="vi">@users_and_passwordes</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="p">,</span><span class="n">pass</span><span class="o">|</span>
+      <span class="n">write_password</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="n">pass</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
-<span class="k">else</span>
-  <span class="nb">puts</span> <span class="s2">"input error!"</span>
+<span class="k">end</span>
+
+<span class="n">data_file</span> <span class="o">=</span> <span class="no">Pathname</span><span class="p">(</span><span class="no">ARGV</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="no">CSV</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
+  <span class="n">iterm_passes</span> <span class="o">=</span> <span class="no">ItermPassword</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">)</span>
+  <span class="n">iterm_passes</span><span class="p">.</span><span class="nf">write</span>
 <span class="k">end</span></code></pre></figure>
+
+<p>（修改于 2017.04.02）</p>
 
 
 
