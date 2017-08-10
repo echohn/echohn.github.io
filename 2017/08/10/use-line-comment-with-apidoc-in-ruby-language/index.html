@@ -218,7 +218,7 @@
 
 <p>然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="cm">=begin
+<div class="highlighter-rouge"><pre class="highlight"><code>=begin
 @api {get} /user/:id Request User information
 @apiName GetUser
 @apiGroup User
@@ -227,7 +227,9 @@
 
 @apiSuccess {String} firstname Firstname of the User.
 @apiSuccess {String} lastname  Lastname of the User.
-=end</span></code></pre></figure>
+=end
+</code></pre>
+</div>
 
 <p>但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在<a href="https://ruby-china.org/wiki/coding-style">Ruby 风格指南</a>中不推荐使用，也不符合我们团队的开发规范。</p>
 

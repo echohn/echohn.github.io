@@ -5,8 +5,8 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>https://echohn.github.io/</link>
     <atom:link href="https://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 10 Aug 2017 17:44:56 +0800</pubDate>
-    <lastBuildDate>Thu, 10 Aug 2017 17:44:56 +0800</lastBuildDate>
+    <pubDate>Thu, 10 Aug 2017 17:51:04 +0800</pubDate>
+    <lastBuildDate>Thu, 10 Aug 2017 17:51:04 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
     
       <item>
@@ -21,7 +21,7 @@
 
 &lt;p&gt;然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;cm&quot;&gt;=begin
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=begin
 @api {get} /user/:id Request User information
 @apiName GetUser
 @apiGroup User
@@ -30,7 +30,9 @@
 
 @apiSuccess {String} firstname Firstname of the User.
 @apiSuccess {String} lastname  Lastname of the User.
-=end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+=end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在&lt;a href=&quot;https://ruby-china.org/wiki/coding-style&quot;&gt;Ruby 风格指南&lt;/a&gt;中不推荐使用，也不符合我们团队的开发规范。&lt;/p&gt;
 
