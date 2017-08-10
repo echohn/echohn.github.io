@@ -222,7 +222,7 @@
 
 <p>扯远了，今天我就介绍一下，如何把 FastNetMon 与 <a href="http://grafana.org">Grafana</a> 结合起来，打造一个可视化的 DDoS 安全预警系统。</p>
 
-<h2 id="fastnetmon">1. 安装 FastNetMon</h2>
+<h2 id="1-安装-fastnetmon">1. 安装 FastNetMon</h2>
 
 <p>由于只是搭建一个实验环境，我把所有相关的组件都安装在一台 CentOS 6 的虚拟机上。</p>
 
@@ -273,7 +273,7 @@ perl fastnetmon_install.pl</code></pre></figure>
 
 <p>由于 netmap 需要单独安装。在这里我将介绍使用 pf_ring 作为抓包引擎进行实验。你也可以选择 pcap，如果作为实验环境，它的兼容性是最好的。</p>
 
-<h2 id="pfring--fastnetmon-">2. 使用 pf_ring 作为 FastNetMon 的抓包引擎</h2>
+<h2 id="2-使用-pf_ring-作为-fastnetmon-的抓包引擎">2. 使用 pf_ring 作为 FastNetMon 的抓包引擎</h2>
 
 <p><em>这部分是讲我是怎么填坑的。如果你只是做测试，可以选择 pcap 引擎，忽略这一部分。</em></p>
 
@@ -371,7 +371,7 @@ pf_ring               691861  2</code></pre></figure>
 
 <p>现在重新启动 fastnetmon，就能够成功启动了。</p>
 
-<h2 id="ddos--fastnetmon">3. 模拟 DDoS 攻击测试 FastNetMon</h2>
+<h2 id="3-模拟-ddos-攻击测试-fastnetmon">3. 模拟 DDoS 攻击测试 FastNetMon</h2>
 
 <p>接下来我们测试 fastnetmon 是否能正确识别 DDoS 攻击。</p>
 
@@ -436,7 +436,7 @@ Ban list:
 
 <p>FastNetMon 确实触发了通知的操作。</p>
 
-<h2 id="fastnetmon--influxdb">4. FastNetMon 集成 InfluxDB</h2>
+<h2 id="4-fastnetmon-集成-influxdb">4. FastNetMon 集成 InfluxDB</h2>
 
 <p>InfluxDB 是一款开源的分布式时钟、事件和指标数据库。使用 Go 语言编写，它易于分布式和水平伸缩扩展。 InfluxDB 本身提供了非常简单易用的 HTTP API，因此它经常用于监控程序的后端数据存储，Grafana 对它就有非常好的支持。</p>
 
@@ -457,13 +457,13 @@ yum localinstall influxdb</code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="nn">[[graphite]</span><span class="err">]</span>
   <span class="py">enabled</span> <span class="p">=</span> <span class="s">true</span>
-  <span class="err">bind-</span><span class="py">address</span> <span class="p">=</span> <span class="s">":2003"</span>
+  <span class="py">bind-address</span> <span class="p">=</span> <span class="s">":2003"</span>
   <span class="py">protocol</span> <span class="p">=</span> <span class="s">"tcp"</span>
-  <span class="err">consistency-</span><span class="py">level</span> <span class="p">=</span> <span class="s">"one"</span>
+  <span class="py">consistency-level</span> <span class="p">=</span> <span class="s">"one"</span>
 
 
-  <span class="err">batch-</span><span class="py">size</span> <span class="p">=</span> <span class="s">5000</span>
-  <span class="err">batch-</span><span class="py">timeout</span> <span class="p">=</span> <span class="s">"1s"</span> 
+  <span class="py">batch-size</span> <span class="p">=</span> <span class="s">5000</span>
+  <span class="py">batch-timeout</span> <span class="p">=</span> <span class="s">"1s"</span> 
   <span class="s">separator = "."</span>
 
   <span class="py">templates</span> <span class="p">=</span> <span class="s">[</span>
@@ -587,7 +587,7 @@ time			value
 
 <p>InfluxDB 不仅提供了 shell ，同时也提供了 WEB 管理接口（端口 8083）和 HTTP API 接口（端口 8086）。接下来，我将配置 Grafana 与它的 HTTP API 端口进行交互。</p>
 
-<h2 id="grafana">5. 安装配置 Grafana</h2>
+<h2 id="5-安装配置-grafana">5. 安装配置 Grafana</h2>
 
 <p>Grafana 目前已经<a href="http://grafana.org/blog/2016/05/11/grafana-3-0-stable-released.html">更新到 3.0 </a>版本了，新增了许多特性。哈哈，好激动，我终于可以把 Kibana 难看的图表给扔掉了。</p>
 
@@ -647,7 +647,7 @@ time			value
 
 <p>今天这篇帖子就讲完了，不知道你是不是已经学会使用 FastNetMon 集成 Grafana 搭建这个 DDoS 安全预警平台了，如果你有任何想法，欢迎你与我交流。</p>
 
-<h2 id="section">参考资料</h2>
+<h2 id="参考资料">参考资料</h2>
 
 <p>https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL.md</p>
 
@@ -718,7 +718,7 @@ time			value
                             
         				
                             
-                				<a href="/tags/#Mac" title="Mac" rel="8">
+                				<a href="/tags/#Mac" title="Mac" rel="9">
                                     Mac
                                 </a>
                             
@@ -730,7 +730,7 @@ time			value
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="4">
                                     Ruby
                                 </a>
                             
@@ -808,14 +808,8 @@ time			value
                             
         				
                             
-                				<a href="/tags/#mac" title="mac" rel="1">
-                                    mac
-                                </a>
-                            
-        				
-                            
-                				<a href="/tags/#zsh" title="zsh" rel="1">
-                                    zsh
+                				<a href="/tags/#ZSH" title="ZSH" rel="1">
+                                    ZSH
                                 </a>
                             
         				
@@ -828,6 +822,12 @@ time			value
                             
                 				<a href="/tags/#Confluence" title="Confluence" rel="1">
                                     Confluence
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
+                                    apiDoc
                                 </a>
                             
         				

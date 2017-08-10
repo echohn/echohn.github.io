@@ -60,7 +60,7 @@ task :s do
 end
 
 # Usage: rake post title="A Title" [date="2014-04-14"]
-desc "Create a new post"
+desc "[title] [date] Create a new post"
 task :new do
   unless FileTest.directory?('./_posts')
     abort("rake aborted: '_posts' directory not found.")
@@ -103,7 +103,7 @@ task :new do
 end
 
 # Usage: rake post title="A Title" [date="2014-04-14"]
-desc "Create a new slide"
+desc "[title] [date] Create a new slide"
 task :slide do
   unless FileTest.directory?('./_slides')
     abort("rake aborted: '_slides' directory not found.")

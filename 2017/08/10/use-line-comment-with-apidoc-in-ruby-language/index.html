@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="uXxmVx_s5NWbdIPpt-HXHgVgVQ--UqZwGZgiqq0xHfg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Hi,I'm Echo Han.">
-    <meta name="keyword"  content="">
+    <meta name="description" content="在 Ruby 中使用行注释生成 apiDoc  | 你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。">
+    <meta name="keyword"  content="Ruby apiDoc Echo Han Hon echohn ops mac ruby 运维 开发 博客 网络日志">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>看看自己平时上网都在干嘛？ - Echo 的网络日志 | Echo's Blog</title>
+    <title>在 Ruby 中使用行注释生成 apiDoc</title>
 
-    <link rel="canonical" href="http://echohn.github.io/mac/2015/12/06/analyse_my_safari_history/">
+    <link rel="canonical" href="https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -22,6 +22,7 @@
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/echo.css">
 
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
@@ -83,7 +84,15 @@
                     </li>
                     
                     <li>
+                        <a href="/slides/">SILDES</a>
+                    </li>
+                    
+                    <li>
                         <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tools/">TOOLS</a>
                     </li>
                     
                 </ul>
@@ -149,13 +158,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-unix-linux.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg.jpg')
+        background-image: url('/img/post-bg-unix-linux.jpg')
     }
     header.intro-header .header-mask{
         width: 100%;
@@ -171,17 +180,17 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#Mac" title="Mac">Mac</a>
+                        <a class="tag" href="/tags/#Ruby" title="Ruby">Ruby</a>
                         
-                        <a class="tag" href="/tags/#Safari" title="Safari">Safari</a>
+                        <a class="tag" href="/tags/#apiDoc" title="apiDoc">apiDoc</a>
                         
                     </div>
-                    <h1>看看自己平时上网都在干嘛？</h1>
+                    <h1>在 Ruby 中使用行注释生成 apiDoc</h1>
                     
                     
-                    <h2 class="subheading">分析自己的 Safari 历史记录</h2>
+                    <h2 class="subheading"></h2>
                     
-                    <span class="meta">Posted by Echo's Blog on December 6, 2015</span>
+                    <span class="meta">Posted by Echo on August 10, 2017</span>
                 </div>
             </div>
         </div>
@@ -199,129 +208,87 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<p>昨天在知乎逛，看到一个问题<a href="http://www.zhihu.com/question/21395276">可以用 Python 编程语言做哪些神奇好玩的事情？</a>,其中有一个人写了一个脚本统计自己 chrome 浏览记录的 Top 10，我就在想，诶，这个好玩好玩好玩，我也想看看我平时都看嘛了，虽然心中早有猜测，也看看实际情况跟自己心中所想是不是一样。</p>
+				<p>以前我试过很多生成 api 文档的方法。</p>
 
-<p>于是查了一下，Safari 的历史记录文件是<code class="highlighter-rouge">~/Library/Safari/History.db</code>，file 了一下这个文件，原来它是个 SQLite 数据库哈哈哈，苹果还真是贴心……</p>
+<p>起初使用过 Markdown 独自维护一份文档，但是文档和代码不同步的话，会经常忘记更新。</p>
 
-<p>于是写了一条 sql 来查：</p>
+<p>后来尝试过使用 rDoc、<a href="http://sphinx-doc.org">Sphinx</a> 等工具对代码注释进行解析直接生成 api 文档，Sphinx 是一种基于 reStructuredText 格式的文档生成工具。</p>
 
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">domain_expansion</span><span class="p">,</span><span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">from</span> <span class="nv">"main"</span><span class="p">.</span><span class="nv">"history_items"</span>  <span class="k">group</span> <span class="k">by</span> <span class="n">domain_expansion</span>  <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span><span class="p">(</span><span class="n">domain_expansion</span><span class="p">)</span> <span class="k">desc</span> <span class="k">limit</span> <span class="mi">0</span><span class="p">,</span><span class="mi">20</span></code></pre></figure>
+<p>最近发现了 <a href="http://apidocjs.com">apiDoc</a> ，它相对于 Sphinx 来说，不用学习 rst 语法，学习成本更低，因此在新的项目中，我尝试使用 apiDoc 生成 api 文档。</p>
 
-<p>结果是这样的，还真的有点出乎意料。</p>
+<p>然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>domain_expansion</th>
-      <th>count(domain_expansion)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>baidu</td>
-      <td>8645</td>
-    </tr>
-    <tr>
-      <td>m.baidu</td>
-      <td>2588</td>
-    </tr>
-    <tr>
-      <td>zhihu</td>
-      <td>1339</td>
-    </tr>
-    <tr>
-      <td>github</td>
-      <td>1126</td>
-    </tr>
-    <tr>
-      <td>image.baidu</td>
-      <td>824</td>
-    </tr>
-    <tr>
-      <td>bbs.feng</td>
-      <td>642</td>
-    </tr>
-    <tr>
-      <td>m.qb5</td>
-      <td>544</td>
-    </tr>
-    <tr>
-      <td>baike.baidu</td>
-      <td>476</td>
-    </tr>
-    <tr>
-      <td>detail.tmall</td>
-      <td>470</td>
-    </tr>
-    <tr>
-      <td>zhidao.baidu</td>
-      <td>458</td>
-    </tr>
-    <tr>
-      <td>s.taobao</td>
-      <td>455</td>
-    </tr>
-    <tr>
-      <td>dashubao</td>
-      <td>448</td>
-    </tr>
-    <tr>
-      <td>item.jd</td>
-      <td>414</td>
-    </tr>
-    <tr>
-      <td>pan.baidu</td>
-      <td>397</td>
-    </tr>
-    <tr>
-      <td>item.taobao</td>
-      <td>383</td>
-    </tr>
-    <tr>
-      <td>v2ex</td>
-      <td>339</td>
-    </tr>
-    <tr>
-      <td>bttiantang</td>
-      <td>336</td>
-    </tr>
-    <tr>
-      <td>tieba.baidu</td>
-      <td>321</td>
-    </tr>
-    <tr>
-      <td>waitsun</td>
-      <td>292</td>
-    </tr>
-    <tr>
-      <td>google</td>
-      <td>213</td>
-    </tr>
-  </tbody>
-</table>
+<div class="highlighter-rouge"><pre class="highlight"><code>=begin
+@api {get} /user/:id Request User information
+@apiName GetUser
+@apiGroup User
 
-<p>一条条来分析：</p>
+@apiParam {Number} id Users unique ID.
 
-<ol>
-  <li>百度是我的默认搜索引擎。俗话说内事问百度，外事问 Google 。虽然我平时开着 ss，但是由于普遍通过 ss 访问还是比较慢，所以除了查技术资料走 google 外，平时百度我确实用的不少，百度能登顶在意料之中。但是 image.baidu，zhidao.baidu 居然都能进前 20 是个什么鬼？我又分别对这两个搜了一下，随便点了一些例如 qq 表情、Macbook Pro 15’(怨念啊。。。)、龙庆峡等等的图片；以及貂绒大衣为什么比羽绒服暖和，关于吉列温和型剃须啫哩香味等等的问题，我也给自己跪了。。。</li>
-  <li>知乎、v2ex 是平时娱乐两大网站、能在 Top 20 我也不意外。</li>
-  <li>github 作为全球最大同性交友网站我就不说什么了。</li>
-  <li>bbs.feng 估计是 IOS 9 越狱那阵给闹的。</li>
-  <li>qb5 和 大书包 ╮(╯_╰)╭ 好吧，我承认我上班时候看网络小说来着……</li>
-  <li>tmall、taobao、jd：嗯，双十一我真的没买东西，真的……这都是平时网购积累的。</li>
-  <li>pan.baidu：现在分享个东西都走它，它能上榜也算积少成多吧。</li>
-  <li>bttiantang：是我平时网上找电影的第一选择。</li>
-  <li>tieba.baidu：这都能上榜，只能说贴吧的圈子真的很大。</li>
-  <li>waitsun：我为我用了不少盗版软件而羞愧。</li>
-</ol>
+@apiSuccess {String} firstname Firstname of the User.
+@apiSuccess {String} lastname  Lastname of the User.
+=end
+</code></pre>
+</div>
 
-<h2 id="section">总结</h2>
+<p>但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在<a href="https://ruby-china.org/wiki/coding-style">Ruby 风格指南</a>中不推荐使用，也不符合我们团队的开发规范。</p>
 
-<p>首先感慨一下，百度的生态圈子确实大，虽然我平时没少跟人黑它，但是由于 Google 访问慢，我确实每天也很依赖它。</p>
+<p>于是我查看了 apiDoc 的源码，想看能否对其进行修改。很开心的是，我看到了它在源码中是这样进行的匹配。</p>
 
-<p>其次，我以后一定少看小说，有时间还是多扫扫 Pocket，刚打开手机看了一下，未读又堆到快700了。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>/**
+ * apidoc-core/lib/languages/rb.js
+ */
+module.exports = {
+    // find document blocks between '=begin' and '=end'
+    docBlocksRegExp: /#\*\*\uffff?(.+?)\uffff?(?:\s*)?#\*|=begin\uffff?(.+?)\uffff?(?:\s*)?=end/g,
+    // remove not needed ' # ' and tabs at the beginning
+    inlineRegExp: /^(\s*)?(#)[ ]?/gm
+};
+</code></pre>
+</div>
 
-<p>最近开始读李笑来的《把时间当做朋友》，感觉很有收获，希望真能开启心智，发扬精神，好好治一治我的精神病。</p>
+<p>这个正则看起来有点乱，分析一下。</p>
+
+<iframe frameborder="0" width="100%" height="283" src="https://jex.im/regulex/#!embed=true&amp;flags=m&amp;re=%23%5C*%5C*%5Cuffff%3F(.%2B%3F)%5Cuffff%3F(%3F%3A%5Cs*)%3F%23%5C*%7C%3Dbegin%5Cuffff%3F(.%2B%3F)%5Cuffff%3F(%3F%3A%5Cs*)%3F%3Dend"></iframe>
+
+<p>可以看到，它在支持多行注释的同时，也支持另外一种行注释的方式。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#**
+# @api {get} /user/:id Request User information
+# @apiName GetUser
+# @apiGroup User
+
+# @apiParam {Number} id Users unique ID.
+
+# @apiSuccess {String} firstname Firstname of the User.
+# @apiSuccess {String} lastname  Lastname of the User.
+#*
+</code></pre>
+</div>
+
+<p>因此问题解决。</p>
+
+<p><strong><em>PS：</em></strong> 在看到这个正则的时候，字符<code class="highlighter-rouge">\uFFFF</code>引起了我的注意。我在 Unicode 码表中并未查到这个字符，于是我以为这个字符在 Javascript 中代表了某种特殊的涵义，但是查了一下，也没有查到结果。</p>
+
+<p>直到我在看到一篇<a href="https://gxnotes.com/article/178667.html">文章</a>中引用的一段文字：</p>
+
+<blockquote>
+  <p>In effect, noncharacters can be thought of as application-internal private-use code points. Unlike the private-use characters discussed in Section 16.5, Private-Use Characters, which are assigned characters and which are intended for use in open interchange, subject to interpretation by private agreement, noncharacters are permanently reserved (unassigned) and have no interpretation whatsoever outside of their possible application-internal private uses.</p>
+</blockquote>
+
+<blockquote>
+  <p>U+FFFF and U+10FFFF. These two noncharacter code points have the attribute of being associated with the largest code unit values for particular Unicode encoding forms. In UTF-16, U+FFFF is associated with the largest 16-bit code unit value, FFFF16. U+10FFFF is associated with the largest legal UTF-32 32-bit code unit value, 10FFFF16. This attribute renders these two noncharacter code points useful for internal purposes as sentinels. For example, they might be used to indicate the end of a list, to represent a value in an index guaranteed to be higher than any valid character value, and so on.</p>
+</blockquote>
+
+<p>又看了一下代码：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Replace Linebreak with Unicode
+src = src.replace(/\n/g, '\uffff');
+</code></pre>
+</div>
+
+<p>于是真相大白。</p>
+
 
 
                 <hr>
@@ -332,13 +299,9 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2015/10/17/rubygems-workflow/" data-toggle="tooltip" data-placement="top" title="搜索 rubygems 并安装的 Alfred Workflow">&larr; Previous Post</a>
+                        <a href="/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/" data-toggle="tooltip" data-placement="top" title="解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误">&larr; Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/" data-toggle="tooltip" data-placement="top" title="服务器操作系统应该选择 RHEL/CentOS 还是 Debian/Ubuntu ？">Next Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
@@ -379,37 +342,37 @@
                     <div class="tags">
         				
                             
-                				<a href="/tags/#杂记" title="杂记" rel="2">
+                				<a href="/tags/#杂记" title="杂记" rel="3">
                                     杂记
                                 </a>
                             
         				
                             
-                				<a href="/tags/#Mac" title="Mac" rel="4">
+                				<a href="/tags/#Mac" title="Mac" rel="9">
                                     Mac
                                 </a>
                             
         				
                             
-                				<a href="/tags/#Alfred" title="Alfred" rel="3">
+                				<a href="/tags/#Alfred" title="Alfred" rel="4">
                                     Alfred
                                 </a>
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="4">
                                     Ruby
                                 </a>
                             
         				
                             
-                				<a href="/tags/#Safari" title="Safari" rel="1">
+                				<a href="/tags/#Safari" title="Safari" rel="2">
                                     Safari
                                 </a>
                             
         				
                             
-                				<a href="/tags/#运维" title="运维" rel="2">
+                				<a href="/tags/#运维" title="运维" rel="3">
                                     运维
                                 </a>
                             
@@ -421,7 +384,7 @@
                             
         				
                             
-                				<a href="/tags/#script" title="script" rel="1">
+                				<a href="/tags/#script" title="script" rel="2">
                                     script
                                 </a>
                             
@@ -444,6 +407,60 @@
                                 </a>
                             
         				
+                            
+                				<a href="/tags/#科学上网" title="科学上网" rel="1">
+                                    科学上网
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#ShadowSocks" title="ShadowSocks" rel="1">
+                                    ShadowSocks
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#安全" title="安全" rel="1">
+                                    安全
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#工具" title="工具" rel="2">
+                                    工具
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#时间管理" title="时间管理" rel="1">
+                                    时间管理
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#ZSH" title="ZSH" rel="1">
+                                    ZSH
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#iTerm" title="iTerm" rel="1">
+                                    iTerm
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Confluence" title="Confluence" rel="1">
+                                    Confluence
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
+                                    apiDoc
+                                </a>
+                            
+        				
         			</div>
                 </section>
                 
@@ -454,7 +471,7 @@
                 <h5>FRIENDS</h5>
                 <ul class="list-inline">
                     
-                        <li><a href="http://echohn.github.io">Echo's Blog</a></li>
+                        <li><a href="http://mickhan.com">Mick's Blog</a></li>
                     
                 </ul>
                 
@@ -471,8 +488,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "echohn";
-    var disqus_identifier = "/mac/2015/12/06/analyse_my_safari_history";
-    var disqus_url = "http://echohn.github.io/mac/2015/12/06/analyse_my_safari_history/";
+    var disqus_identifier = "/2017/08/10/use-line-comment-with-apidoc-in-ruby-language";
+    var disqus_url = "https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -566,7 +583,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2016
+                    Copyright &copy; Echo's Blog 2017
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

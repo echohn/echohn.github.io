@@ -216,7 +216,7 @@
 
 <p>面对经常变化的服务器列表，身为一个懒人，怎么不会想出一个途径自动地管理这些东西？</p>
 
-<h2 id="saltmaster--id-">1. 在 SaltMaster 上自动生成服务器 ID 列表</h2>
+<h2 id="1-在-saltmaster-上自动生成服务器-id-列表">1. 在 SaltMaster 上自动生成服务器 ID 列表</h2>
 
 <p>我们每台虚机在创建之后，都会分配到一个 Salt Minion ID，并连接到 SaltMaster 进行自身的配置变更。</p>
 
@@ -235,7 +235,7 @@ _arguments  <span class="se">\</span>
   <span class="s2">"1:keys:(</span><span class="k">$(</span>ruby -ryaml -e <span class="s1">'puts YAML.load(IO.read("/var/www/html/salt_keys.yml"))["minions"]'</span><span class="k">)</span><span class="s2">)"</span>   <span class="se">\</span>
   <span class="s2">"2:commands:(test.ping cmd.run cmd.all cmd.exec_code state.sls pip.install saltutil.kill_job cp.get_file cp.get_dir)"</span></code></pre></figure>
 
-<h2 id="id--hosts-">2. 本地根据网络和计划任务定时下载 ID 列表自动更新到自己的 hosts 文件</h2>
+<h2 id="2-本地根据网络和计划任务定时下载-id-列表自动更新到自己的-hosts-文件">2. 本地根据网络和计划任务定时下载 ID 列表自动更新到自己的 hosts 文件</h2>
 
 <p>有了服务器提供的 ID 列表，本地下载读取更新自己的 hosts 文件就可以啦。</p>
 
@@ -311,7 +311,7 @@ _arguments  <span class="se">\</span>
 
 <p>现在，只有把这个脚本扔在计划任务里，每个小时自动跑上一次就好啦。</p>
 
-<h2 id="ssh-">3. SSH 客户端的登录简化</h2>
+<h2 id="3-ssh-客户端的登录简化">3. SSH 客户端的登录简化</h2>
 
 <p>因为我们这服务器的安全级别不同，也有很多历史遗留原因，造成很多不同业务系统的服务器登录用户，key、密码都是不同的，要一一记住这些，对我来说也是蛮烦的一件事。不过可以通过 ~/.ssh/config 文件对 ssh 客户端进行自动匹配，从而简化还要想用户名、用哪个 key 这样的操作。</p>
 
@@ -351,7 +351,7 @@ Host *
 </code></pre>
 </div>
 
-<h2 id="zsh-">4. ZSH 的自动补全</h2>
+<h2 id="4-zsh-的自动补全">4. ZSH 的自动补全</h2>
 
 <p>在这里我使用的是 oh-my-zsh 的自动 ssh 补全，本身没有做任何修改。</p>
 
@@ -422,7 +422,7 @@ Host *
                             
         				
                             
-                				<a href="/tags/#Mac" title="Mac" rel="8">
+                				<a href="/tags/#Mac" title="Mac" rel="9">
                                     Mac
                                 </a>
                             
@@ -434,7 +434,7 @@ Host *
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="4">
                                     Ruby
                                 </a>
                             
@@ -512,14 +512,8 @@ Host *
                             
         				
                             
-                				<a href="/tags/#mac" title="mac" rel="1">
-                                    mac
-                                </a>
-                            
-        				
-                            
-                				<a href="/tags/#zsh" title="zsh" rel="1">
-                                    zsh
+                				<a href="/tags/#ZSH" title="ZSH" rel="1">
+                                    ZSH
                                 </a>
                             
         				
@@ -532,6 +526,12 @@ Host *
                             
                 				<a href="/tags/#Confluence" title="Confluence" rel="1">
                                     Confluence
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
+                                    apiDoc
                                 </a>
                             
         				

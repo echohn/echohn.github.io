@@ -1,13 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Echo&#39;s Blog</title>
+    <title>Echo's Blog</title>
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>https://echohn.github.io/</link>
     <atom:link href="https://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Apr 2017 21:14:36 +0800</pubDate>
-    <lastBuildDate>Sun, 02 Apr 2017 21:14:36 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.3</generator>
+    <pubDate>Thu, 10 Aug 2017 17:40:48 +0800</pubDate>
+    <lastBuildDate>Thu, 10 Aug 2017 17:40:48 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.1</generator>
+    
+      <item>
+        <title>在 Ruby 中使用行注释生成 apiDoc</title>
+        <description>&lt;p&gt;以前我试过很多生成 api 文档的方法。&lt;/p&gt;
+
+&lt;p&gt;起初使用过 Markdown 独自维护一份文档，但是文档和代码不同步的话，会经常忘记更新。&lt;/p&gt;
+
+&lt;p&gt;后来尝试过使用 rDoc、&lt;a href=&quot;http://sphinx-doc.org&quot;&gt;Sphinx&lt;/a&gt; 等工具对代码注释进行解析直接生成 api 文档，Sphinx 是一种基于 reStructuredText 格式的文档生成工具。&lt;/p&gt;
+
+&lt;p&gt;最近发现了 &lt;a href=&quot;http://apidocjs.com&quot;&gt;apiDoc&lt;/a&gt; ，它相对于 Sphinx 来说，不用学习 rst 语法，学习成本更低，因此在新的项目中，我尝试使用 apiDoc 生成 api 文档。&lt;/p&gt;
+
+&lt;p&gt;然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=begin
+@api {get} /user/:id Request User information
+@apiName GetUser
+@apiGroup User
+
+@apiParam {Number} id Users unique ID.
+
+@apiSuccess {String} firstname Firstname of the User.
+@apiSuccess {String} lastname  Lastname of the User.
+=end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在&lt;a href=&quot;https://ruby-china.org/wiki/coding-style&quot;&gt;Ruby 风格指南&lt;/a&gt;中不推荐使用，也不符合我们团队的开发规范。&lt;/p&gt;
+
+&lt;p&gt;于是我查看了 apiDoc 的源码，想看能否对其进行修改。很开心的是，我看到了它在源码中是这样进行的匹配。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
+ * apidoc-core/lib/languages/rb.js
+ */
+module.exports = {
+    // find document blocks between '=begin' and '=end'
+    docBlocksRegExp: /#\*\*\uffff?(.+?)\uffff?(?:\s*)?#\*|=begin\uffff?(.+?)\uffff?(?:\s*)?=end/g,
+    // remove not needed ' # ' and tabs at the beginning
+    inlineRegExp: /^(\s*)?(#)[ ]?/gm
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这个正则看起来有点乱，分析一下。&lt;/p&gt;
+
+&lt;iframe frameborder=&quot;0&quot; width=&quot;100%&quot; height=&quot;283&quot; src=&quot;https://jex.im/regulex/#!embed=true&amp;amp;flags=m&amp;amp;re=%23%5C*%5C*%5Cuffff%3F(.%2B%3F)%5Cuffff%3F(%3F%3A%5Cs*)%3F%23%5C*%7C%3Dbegin%5Cuffff%3F(.%2B%3F)%5Cuffff%3F(%3F%3A%5Cs*)%3F%3Dend&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;可以看到，它在支持多行注释的同时，也支持另外一种行注释的方式。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#**
+# @api {get} /user/:id Request User information
+# @apiName GetUser
+# @apiGroup User
+
+# @apiParam {Number} id Users unique ID.
+
+# @apiSuccess {String} firstname Firstname of the User.
+# @apiSuccess {String} lastname  Lastname of the User.
+#*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;因此问题解决。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;PS：&lt;/em&gt;&lt;/strong&gt; 在看到这个正则的时候，字符&lt;code class=&quot;highlighter-rouge&quot;&gt;\uFFFF&lt;/code&gt;引起了我的注意。我在 Unicode 码表中并未查到这个字符，于是我以为这个字符在 Javascript 中代表了某种特殊的涵义，但是查了一下，也没有查到结果。&lt;/p&gt;
+
+&lt;p&gt;直到我在看到一篇&lt;a href=&quot;https://gxnotes.com/article/178667.html&quot;&gt;文章&lt;/a&gt;中引用的一段文字：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In effect, noncharacters can be thought of as application-internal private-use code points. Unlike the private-use characters discussed in Section 16.5, Private-Use Characters, which are assigned characters and which are intended for use in open interchange, subject to interpretation by private agreement, noncharacters are permanently reserved (unassigned) and have no interpretation whatsoever outside of their possible application-internal private uses.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;U+FFFF and U+10FFFF. These two noncharacter code points have the attribute of being associated with the largest code unit values for particular Unicode encoding forms. In UTF-16, U+FFFF is associated with the largest 16-bit code unit value, FFFF16. U+10FFFF is associated with the largest legal UTF-32 32-bit code unit value, 10FFFF16. This attribute renders these two noncharacter code points useful for internal purposes as sentinels. For example, they might be used to indicate the end of a list, to represent a value in an index guaranteed to be higher than any valid character value, and so on.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;又看了一下代码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Replace Linebreak with Unicode
+src = src.replace(/\n/g, '\uffff');
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;于是真相大白。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 10 Aug 2017 00:00:00 +0800</pubDate>
+        <link>https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/</link>
+        <guid isPermaLink="true">https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/</guid>
+        
+        <category>Ruby</category>
+        
+        <category>apiDoc</category>
+        
+        
+      </item>
     
       <item>
         <title>解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误</title>
@@ -103,7 +198,7 @@ Is there any way to import a lot of passwords to the Password Manager?&lt;/p&gt;
 
 &lt;p&gt;Save the password in keychain, either by the GUI (see https://www.netmeister.org/blog/keychain-passwords.html) or:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;your-password-goes-here&amp;gt;&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w &lt;span class=&quot;s1&quot;&gt;'&amp;lt;your-password-goes-here&amp;gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The thing I was playing with at the time would have used the above via something like this in my .bashrc:&lt;/p&gt;
 
@@ -112,7 +207,7 @@ Is there any way to import a lot of passwords to the Password Manager?&lt;/p&gt;
 &lt;p&gt;I also found you can use variations of the security command to list and see what passwords iTerm2 has created.
 From that, you can figure out how to use a security command to create/update what iTerm2 uses.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;hostname&amp;gt; &amp;lt;userid&amp;gt;&#39;&lt;/span&gt; -w &lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;userid&#39;&lt;/span&gt;s password&amp;gt;&lt;span class=&quot;s1&quot;&gt;&#39; -l &#39;&lt;/span&gt;a label&lt;span class=&quot;s1&quot;&gt;&#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &lt;span class=&quot;s1&quot;&gt;'&amp;lt;hostname&amp;gt; &amp;lt;userid&amp;gt;'&lt;/span&gt; -w &lt;span class=&quot;s1&quot;&gt;'&amp;lt;userid'&lt;/span&gt;s password&amp;gt;&lt;span class=&quot;s1&quot;&gt;' -l '&lt;/span&gt;a label&lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.&lt;/p&gt;
 
@@ -128,10 +223,10 @@ From that, you can figure out how to use a security command to create/update wha
 &lt;span class=&quot;c1&quot;&gt;# jcjz,bj,user1,user1_password,user2,user2_password,...&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;# command&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &#39;user&#39; -w &#39;password&#39;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a 'user' -w 'password'&lt;/span&gt;
 
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;pathname&#39;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;csv&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pathname'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'csv'&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ItermPassword&lt;/span&gt;
 
@@ -145,7 +240,7 @@ From that, you can figure out how to use a security command to create/update wha
   &lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app&quot;&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write_password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39; -w &#39;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gsub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&#39;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&#39;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' -w '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gsub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/'/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;
@@ -245,9 +340,9 @@ From that, you can figure out how to use a security command to create/update wha
         <link>https://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/</link>
         <guid isPermaLink="true">https://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/</guid>
         
-        <category>mac</category>
+        <category>Mac</category>
         
-        <category>zsh</category>
+        <category>ZSH</category>
         
         <category>工具</category>
         
@@ -318,21 +413,21 @@ choco install cloc                     &lt;span class=&quot;c&quot;&gt;# Windows
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
 git clone --depth 1 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;(&#39;temp-linecount-repo&#39; will be deleted automatically)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;('temp-linecount-repo' will be deleted automatically)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
   cloc temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
   rm -rf temp-linecount-repo&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;运行结果如下：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cloc-git https://github.com/rails/rails.git
-Cloning into &lt;span class=&quot;s1&quot;&gt;&#39;temp-linecount-repo&#39;&lt;/span&gt;...
+Cloning into &lt;span class=&quot;s1&quot;&gt;'temp-linecount-repo'&lt;/span&gt;...
 remote: Counting objects: 3615, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3048/3048&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 remote: Total 3615 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 1576 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 0
 Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3615/3615&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 6.08 MiB | 2.28 MiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;174/174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
 Checking connectivity... &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;temp-linecount-repo&#39;&lt;/span&gt; will be deleted automatically&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'temp-linecount-repo'&lt;/span&gt; will be deleted automatically&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 
     3043 text files.
@@ -441,7 +536,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;但仍然发现了一些小问题。&lt;/p&gt;
 
-&lt;h2 id=&quot;finder-&quot;&gt;坚果云导致 Finder 使用右键菜单时崩溃(已解决)&lt;/h2&gt;
+&lt;h2 id=&quot;坚果云导致-finder-使用右键菜单时崩溃已解决&quot;&gt;坚果云导致 Finder 使用右键菜单时崩溃(已解决)&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/in-post/sierra-finder-crash.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -453,7 +548,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;更新之后问题解决。&lt;/p&gt;
 
-&lt;h2 id=&quot;xtrafinder--finder-&quot;&gt;XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）&lt;/h2&gt;
+&lt;h2 id=&quot;xtrafinder-剪切文件时候导致-finder-崩溃待解决&quot;&gt;XtraFinder 剪切文件时候导致 Finder 崩溃（待解决）&lt;/h2&gt;
 
 &lt;p&gt;在升级 Sierra 之后，发现 Bartender 中的 Spotlight 图标无法隐藏（我还是习惯用 Alfred），并且打开 Finder 后发现 XtraFinder 没有加载。&lt;/p&gt;
 
@@ -471,7 +566,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;只能卸载 XtraFinder 等待更新了。&lt;/p&gt;
 
-&lt;h2 id=&quot;bartender-&quot;&gt;Bartender 图标位置错乱（待解决）&lt;/h2&gt;
+&lt;h2 id=&quot;bartender-图标位置错乱待解决&quot;&gt;Bartender 图标位置错乱（待解决）&lt;/h2&gt;
 
 &lt;p&gt;发现本由 Bartender 掌管的菜单栏图标位置，在每次重启之后，都不大一样。&lt;/p&gt;
 
@@ -479,7 +574,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;只能等 Bartender 更新了。&lt;/p&gt;
 
-&lt;h2 id=&quot;sar-&quot;&gt;sar 命令被移除（待解决）&lt;/h2&gt;
+&lt;h2 id=&quot;sar-命令被移除待解决&quot;&gt;sar 命令被移除（待解决）&lt;/h2&gt;
 
 &lt;p&gt;这个还是在 &lt;a href=&quot;https://www.v2ex.com/t/308007&quot;&gt;V2EX&lt;/a&gt; 上看到的。&lt;/p&gt;
 
@@ -489,13 +584,13 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;用 Google 搜索，发现已有人在项目 Issue 里提出&lt;a href=&quot;https://github.com/sysstat/sysstat/issues/74&quot;&gt;如何在 mac 上编译 sysstat&lt;/a&gt; ，但是开发者说因为他没用 mac ，所以也帮不上忙。&lt;/p&gt;
 
-&lt;h2 id=&quot;itunes--dynamiclyrics-&quot;&gt;iTunes 桌面歌词插件 DynamicLyrics 无法使用（已解决）&lt;/h2&gt;
+&lt;h2 id=&quot;itunes-桌面歌词插件-dynamiclyrics-无法使用已解决&quot;&gt;iTunes 桌面歌词插件 DynamicLyrics 无法使用（已解决）&lt;/h2&gt;
 
 &lt;p&gt;我看该项目的 Github 中已经有人提了相关的 Issue, 等待作者更新吧。&lt;/p&gt;
 
 &lt;p&gt;（2016年09月25日项目已更新，已可正常使用。）&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;升级之后的感受&lt;/h2&gt;
+&lt;h2 id=&quot;升级之后的感受&quot;&gt;升级之后的感受&lt;/h2&gt;
 
 &lt;p&gt;这次升级，外观上几乎没有变化。&lt;/p&gt;
 
@@ -541,7 +636,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;然而，我在这个项目中思考了一些以往自己可能没那么在意的事情。&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;对于我对项目把控的缺点&lt;/h2&gt;
+&lt;h2 id=&quot;对于我对项目把控的缺点&quot;&gt;对于我对项目把控的缺点&lt;/h2&gt;
 
 &lt;p&gt;我对项目把控属于典型的虎头蛇尾型。&lt;/p&gt;
 
@@ -555,7 +650,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;而且，我身为项目负责人，理应每周向上级汇报进度的，我后来也懒了。&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;对于与需求方沟通&lt;/h2&gt;
+&lt;h2 id=&quot;对于与需求方沟通&quot;&gt;对于与需求方沟通&lt;/h2&gt;
 
 &lt;p&gt;这次，真的体会到了研发同事的苦。&lt;/p&gt;
 
@@ -577,7 +672,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;因为不喜欢什么，自己通常是很了解的，我觉得是一样的道理。&lt;/p&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;对于接受与思考&lt;/h2&gt;
+&lt;h2 id=&quot;对于接受与思考&quot;&gt;对于接受与思考&lt;/h2&gt;
 
 &lt;p&gt;我是想事情想的很少那种人。&lt;/p&gt;
 
@@ -697,7 +792,7 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;扯远了，今天我就介绍一下，如何把 FastNetMon 与 &lt;a href=&quot;http://grafana.org&quot;&gt;Grafana&lt;/a&gt; 结合起来，打造一个可视化的 DDoS 安全预警系统。&lt;/p&gt;
 
-&lt;h2 id=&quot;fastnetmon&quot;&gt;1. 安装 FastNetMon&lt;/h2&gt;
+&lt;h2 id=&quot;1-安装-fastnetmon&quot;&gt;1. 安装 FastNetMon&lt;/h2&gt;
 
 &lt;p&gt;由于只是搭建一个实验环境，我把所有相关的组件都安装在一台 CentOS 6 的虚拟机上。&lt;/p&gt;
 
@@ -748,7 +843,7 @@ perl fastnetmon_install.pl&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;由于 netmap 需要单独安装。在这里我将介绍使用 pf_ring 作为抓包引擎进行实验。你也可以选择 pcap，如果作为实验环境，它的兼容性是最好的。&lt;/p&gt;
 
-&lt;h2 id=&quot;pfring--fastnetmon-&quot;&gt;2. 使用 pf_ring 作为 FastNetMon 的抓包引擎&lt;/h2&gt;
+&lt;h2 id=&quot;2-使用-pf_ring-作为-fastnetmon-的抓包引擎&quot;&gt;2. 使用 pf_ring 作为 FastNetMon 的抓包引擎&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;这部分是讲我是怎么填坑的。如果你只是做测试，可以选择 pcap 引擎，忽略这一部分。&lt;/em&gt;&lt;/p&gt;
 
@@ -784,25 +879,25 @@ mirror = on
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel
 
-make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;&#39;
+make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;'
 ********** WARNING WARNING WARNING **********
 *
 * Compiling PF_RING as root might lead you to compile errors
 * Please compile PF_RING as unpriviliged user
 *
 *********************************************
-make -C /lib/modules/2.6.32-573.22.1.el6.x86_64/build SUBDIRS=/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel EXTRA_CFLAGS=&#39;&lt;/span&gt;-I/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel -DSVN_REV&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;已导出 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39; modules
+make -C /lib/modules/2.6.32-573.22.1.el6.x86_64/build SUBDIRS=/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel EXTRA_CFLAGS='&lt;/span&gt;-I/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel -DSVN_REV&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;已导出 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' modules
 make: Entering an unknown directory
 make: Leaving an unknown directory
-make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&#39;&lt;/span&gt;
+make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel'&lt;/span&gt;
 Command finished with code 512
 
 We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel install
 
-make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;&#39;
+make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;'
 mkdir -p /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
 cp *.ko /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
-make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&#39;&lt;/span&gt;
+make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel'&lt;/span&gt;
 Command finished with code 512
 
 We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: rmmod pf_ring 2&amp;gt;/dev/null
@@ -846,7 +941,7 @@ pf_ring               691861  2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;现在重新启动 fastnetmon，就能够成功启动了。&lt;/p&gt;
 
-&lt;h2 id=&quot;ddos--fastnetmon&quot;&gt;3. 模拟 DDoS 攻击测试 FastNetMon&lt;/h2&gt;
+&lt;h2 id=&quot;3-模拟-ddos-攻击测试-fastnetmon&quot;&gt;3. 模拟 DDoS 攻击测试 FastNetMon&lt;/h2&gt;
 
 &lt;p&gt;接下来我们测试 fastnetmon 是否能正确识别 DDoS 攻击。&lt;/p&gt;
 
@@ -911,7 +1006,7 @@ Ban list:
 
 &lt;p&gt;FastNetMon 确实触发了通知的操作。&lt;/p&gt;
 
-&lt;h2 id=&quot;fastnetmon--influxdb&quot;&gt;4. FastNetMon 集成 InfluxDB&lt;/h2&gt;
+&lt;h2 id=&quot;4-fastnetmon-集成-influxdb&quot;&gt;4. FastNetMon 集成 InfluxDB&lt;/h2&gt;
 
 &lt;p&gt;InfluxDB 是一款开源的分布式时钟、事件和指标数据库。使用 Go 语言编写，它易于分布式和水平伸缩扩展。 InfluxDB 本身提供了非常简单易用的 HTTP API，因此它经常用于监控程序的后端数据存储，Grafana 对它就有非常好的支持。&lt;/p&gt;
 
@@ -932,13 +1027,13 @@ yum localinstall influxdb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[[graphite]&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;]&lt;/span&gt;
   &lt;span class=&quot;py&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;err&quot;&gt;bind-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:2003&quot;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;bind-address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:2003&quot;&lt;/span&gt;
   &lt;span class=&quot;py&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;tcp&quot;&lt;/span&gt;
-  &lt;span class=&quot;err&quot;&gt;consistency-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;level&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;one&quot;&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;consistency-level&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;one&quot;&lt;/span&gt;
 
 
-  &lt;span class=&quot;err&quot;&gt;batch-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5000&lt;/span&gt;
-  &lt;span class=&quot;err&quot;&gt;batch-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1s&quot;&lt;/span&gt; 
+  &lt;span class=&quot;py&quot;&gt;batch-size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5000&lt;/span&gt;
+  &lt;span class=&quot;py&quot;&gt;batch-timeout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1s&quot;&lt;/span&gt; 
   &lt;span class=&quot;s&quot;&gt;separator = &quot;.&quot;&lt;/span&gt;
 
   &lt;span class=&quot;py&quot;&gt;templates&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[&lt;/span&gt;
@@ -1062,7 +1157,7 @@ time			value
 
 &lt;p&gt;InfluxDB 不仅提供了 shell ，同时也提供了 WEB 管理接口（端口 8083）和 HTTP API 接口（端口 8086）。接下来，我将配置 Grafana 与它的 HTTP API 端口进行交互。&lt;/p&gt;
 
-&lt;h2 id=&quot;grafana&quot;&gt;5. 安装配置 Grafana&lt;/h2&gt;
+&lt;h2 id=&quot;5-安装配置-grafana&quot;&gt;5. 安装配置 Grafana&lt;/h2&gt;
 
 &lt;p&gt;Grafana 目前已经&lt;a href=&quot;http://grafana.org/blog/2016/05/11/grafana-3-0-stable-released.html&quot;&gt;更新到 3.0 &lt;/a&gt;版本了，新增了许多特性。哈哈，好激动，我终于可以把 Kibana 难看的图表给扔掉了。&lt;/p&gt;
 
@@ -1122,7 +1217,7 @@ time			value
 
 &lt;p&gt;今天这篇帖子就讲完了，不知道你是不是已经学会使用 FastNetMon 集成 Grafana 搭建这个 DDoS 安全预警平台了，如果你有任何想法，欢迎你与我交流。&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;参考资料&lt;/h2&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
 &lt;p&gt;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL.md&lt;/p&gt;
 
@@ -1138,151 +1233,6 @@ time			value
         <category>安全</category>
         
         <category>运维</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具</title>
-        <description>&lt;p&gt;最近不知道为什么，&lt;a href=&quot;https://www.getlantern.org&quot;&gt;蓝灯（Lantern）&lt;/a&gt;用着经常出问题，要么非常慢，要么报错。&lt;/p&gt;
-
-&lt;p&gt;说实话 Lantern 正常的时候，真是要比我放在东京的 SS (ShadowSocks) VPS 快出很多的。看片一点都不费劲。&lt;/p&gt;
-
-&lt;p&gt;没办法之下，我切换回了 SS。还好我之前配置的 SS 直接可以拿来用，自动更新脚本也一直运行着。在这里记录一下我之前 Mac 配置 SS 等相关翻墙工具的过程。&lt;/p&gt;
-
-&lt;p&gt;你可能会疑惑，我写的全栈式科学上网工具是什么？&lt;/p&gt;
-
-&lt;p&gt;好吧，其实，我就是一个标题党……&lt;/p&gt;
-
-&lt;p&gt;我们知道，ShadowSocks 主要用于浏览网页，也可以用于一些支持 Socks 代理的应用（比如 Dropbox）。但是如果想让命令行工具也走 SS 代理，虽然也可以打开 SS 的全局模式临时用一下，但是如果命令执行的时间过长，在全局模式下还是很影响上网体验的。&lt;/p&gt;
-
-&lt;p&gt;所以，我今天所谓的全栈式科学上网不仅包括 SS 的配置，也包括了命令行代理工具 ProxyChains 的配置部分，以及如何自动更新 GFWList 。只要照着配下来，以后基本就不用再折腾翻墙的事了。&lt;/p&gt;
-
-&lt;h2 id=&quot;ss-&quot;&gt;SS 的原理&lt;/h2&gt;
-
-&lt;p&gt;我推荐 vc2tea 的这篇介绍原理的文章：&lt;a href=&quot;http://vc2tea.com/whats-shadowsocks/&quot;&gt;写给非专业人士看的 Shadowsocks 简介&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;shadowsocks-server-&quot;&gt;ShadowSocks Server 端的搭建&lt;/h2&gt;
-
-&lt;p&gt;嗯，SS 搭服务器是蛮简单的，前提是你要有一台国外的 VPS 来做中转。 VPS 我个人之前一直在用 &lt;a href=&quot;https://www.digitalocean.com&quot;&gt;DigitalOcean&lt;/a&gt;，当年觉得它每月 $5 的 VPS 实在是便宜。不过感觉近些年大家都在降价，DO 现在没有什么价格优势了。而且我测试过 DO 各机房到我家（北京联通）的网络质量，普遍不佳，最终矬子里拔大个，选了 Toronto 机房，网络质量相比其他机房稍微好一点。&lt;/p&gt;
-
-&lt;p&gt;最近看到 AWS 的推广，可以有 12 个月的免费体验，我又注册了 AWS ，暂停了 DO 的 VPS 。 AWS 的东京机房到我这的网络质量还蛮不错，至少比 DO 强太多了。&lt;/p&gt;
-
-&lt;p&gt;下面简单介绍一下在 VPS 上如何装 ShadowSocks Server 端。&lt;/p&gt;
-
-&lt;p&gt;安装依赖。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get install build-essential autoconf libtool libssl-dev&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;下载并编译安装。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git clone https://github.com/shadowsocks/shadowsocks-libev.git
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;shadowsocks-libev/
-./configure --prefix&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/shadowsocks
-make
-sudo make install&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;启动 ShadowSocks Server 。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/opt/shadowsocks/bin/ss-server -p 10080 -k password -m aes-256-cfb --fast-open -f /tmp/shadowsocks.pid
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这里我指定的端口是 10080，密码是 password，加密方式是 aes-256-cfb，这几项信息在 SS 客户端中都是要填的。&lt;/p&gt;
-
-&lt;h2 id=&quot;shadowsocks-&quot;&gt;ShadowSocks 客户端的配置&lt;/h2&gt;
-
-&lt;p&gt;略。就照着上面服务器的信息配置就行了。&lt;/p&gt;
-
-&lt;p&gt;当你把客户端配置好，现在就可以在浏览器中体验科学上网了。&lt;/p&gt;
-
-&lt;h2 id=&quot;proxychains-&quot;&gt;ProxyChains 的配置&lt;/h2&gt;
-
-&lt;p&gt;如我们之前所说的，浏览器科学上网只是一部分，身为一名工程师或非 Windows 用户，我们经常会使用到一些命令行工具，想让命令行工具科学上网肿么办？&lt;/p&gt;
-
-&lt;p&gt;ProxyChains 就是一个这样用途的工具，它可以让你的其它工具通过 Socks 或 HTTP 代理访问网络。&lt;/p&gt;
-
-&lt;p&gt;首先从 Homebrew 安装 ProxyChains。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install proxychains-ng&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;然后做一些配置，它默认会读取安装目录下的 etc/proxychains.conf 配置文件，因为我想跟我其它的 dotfiles 一同管理，所以我把它放在了 ~/.proxychains.conf ,其文件内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;strict_chain
-proxy_dns
-remote_dns_subnet 224
-tcp_read_time_out 15000
-tcp_connect_time_out 8000
-localnet 127.0.0.0/255.0.0.0
-quiet_mode
-[ProxyList]
-socks5  127.0.0.1 1080
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;需要说明一点，在这里我配置的是 strict_chain。如果你有多重代理，类似我之前一样，比如让命令先通过 Lantern 代理出去，如果失败再走 SS 代理，可以配置成 dynamic_chain 模式。不过这超出今天的文章范畴了，我还是以 strict_chain 举例，如果你对 dynamic_chain 感兴趣，可以自行研究。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;因为指定了配置文件的路径，为了方便使用，我在 ~/.zshrc 里加一行 alias。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;pc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;proxychains4 -f ~/.proxychains.conf&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;在执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;source ~/.zshrc&lt;/code&gt; 重新加载环境变量之后，就可以尝试是否配置成功了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pc curl https://twitter.com&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h2 id=&quot;gfwlist&quot;&gt;自动更新 GFWList&lt;/h2&gt;
-
-&lt;p&gt;ShadowSocks 客户端自带有从 GFWList 更新 PAC 的功能，但是由于某个你懂的原因，自动更新基本都是失败的。&lt;/p&gt;
-
-&lt;p&gt;不过没关系，你可以下载这个&lt;a href=&quot;https://raw.githubusercontent.com/echohn/shadowsocks-alfred-workflow/master/update_gfwlist.sh&quot;&gt;update_gfwlist.sh 脚本&lt;/a&gt;来进行更新 GFWList 。&lt;/p&gt;
-
-&lt;p&gt;这个脚本的来源我忘记了，我只记得是之前我研究管理 dotfiles 的时候，从别人的 repo 里拷过来的。&lt;/p&gt;
-
-&lt;p&gt;我把这个脚本放在 ~/.ShadowsocksX/ 目录下，这样可以它随着我的 mackup 一同备份到 Dropbox 上了。&lt;/p&gt;
-
-&lt;p&gt;对了，别忘了给这个脚本赋执行权。&lt;/p&gt;
-
-&lt;p&gt;然后在 crontab 里添加一行计划任务：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;30 9 * * * /Users/Echo/.ShadowsocksX/update_gfwlist.sh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这样，每天早上 GFWList 会自动更新，你不用再去管它。&lt;/p&gt;
-
-&lt;h2 id=&quot;gfwlist-1&quot;&gt;手动添加域名至 GFWList&lt;/h2&gt;
-
-&lt;p&gt;可能会有这种情况：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;哪天上网的时候，突然发现想要访问的网站直连非常慢，希望通过 ss 进行代理访问。&lt;/li&gt;
-  &lt;li&gt;发现这个网站被墙了，但是还没收录在 GFWList 里。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;碰上以上这两种情况，你可以自己编辑 ~/.ShadowsocksX/user-rule.txt 文件。把每个网站的域名作为一行记录添加进去，再执行一次 update_gfwlist.sh 脚本以更新到 ShadowsSocks。这样做比直接在 gfwlist.js 里加记录要好一点，因为下次 GFWList 更新的时候，不会把你自己收录的域名覆盖掉。&lt;/p&gt;
-
-&lt;h2 id=&quot;shadowsocks--alfred-workflow&quot;&gt;ShadowSocks 的 Alfred Workflow&lt;/h2&gt;
-
-&lt;p&gt;如果你是 小帽子 &lt;a href=&quot;https://www.alfredapp.com&quot;&gt;Alfred&lt;/a&gt; 的用户，你可以直接使用我写的 &lt;a href=&quot;https://github.com/echohn/shadowsocks-alfred-workflow/raw/master/shadowsocks.alfredworkflow&quot;&gt;ShadowSocks-Workflow(点击下载)&lt;/a&gt;。在 Alfred 中执行 ssadd ，然后粘贴你准备加入 gfwlist 的 url，url 的域名就添加进 ShadowScoks 了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/ss.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;至此，我的全栈式科学上网工具就配置完了。现在不论是浏览器应用还是命令行，都实现了科学上网的功能，又提供了方便快捷的更新方式，对我来说，已经足够应付日常使用了。&lt;/p&gt;
-
-&lt;p&gt;如果你使用了其他好的工具与方法科学上网，也非常欢迎你与我交流。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 29 May 2016 00:00:00 +0800</pubDate>
-        <link>https://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/</link>
-        <guid isPermaLink="true">https://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/</guid>
-        
-        <category>Mac</category>
-        
-        <category>科学上网</category>
-        
-        <category>ShadowSocks</category>
-        
-        <category>Alfred</category>
         
         
       </item>

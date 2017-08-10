@@ -226,11 +226,11 @@
 
 <p>所以，我今天所谓的全栈式科学上网不仅包括 SS 的配置，也包括了命令行代理工具 ProxyChains 的配置部分，以及如何自动更新 GFWList 。只要照着配下来，以后基本就不用再折腾翻墙的事了。</p>
 
-<h2 id="ss-">SS 的原理</h2>
+<h2 id="ss-的原理">SS 的原理</h2>
 
 <p>我推荐 vc2tea 的这篇介绍原理的文章：<a href="http://vc2tea.com/whats-shadowsocks/">写给非专业人士看的 Shadowsocks 简介</a>。</p>
 
-<h2 id="shadowsocks-server-">ShadowSocks Server 端的搭建</h2>
+<h2 id="shadowsocks-server-端的搭建">ShadowSocks Server 端的搭建</h2>
 
 <p>嗯，SS 搭服务器是蛮简单的，前提是你要有一台国外的 VPS 来做中转。 VPS 我个人之前一直在用 <a href="https://www.digitalocean.com">DigitalOcean</a>，当年觉得它每月 $5 的 VPS 实在是便宜。不过感觉近些年大家都在降价，DO 现在没有什么价格优势了。而且我测试过 DO 各机房到我家（北京联通）的网络质量，普遍不佳，最终矬子里拔大个，选了 Toronto 机房，网络质量相比其他机房稍微好一点。</p>
 
@@ -258,13 +258,13 @@ sudo make install</code></pre></figure>
 
 <p>这里我指定的端口是 10080，密码是 password，加密方式是 aes-256-cfb，这几项信息在 SS 客户端中都是要填的。</p>
 
-<h2 id="shadowsocks-">ShadowSocks 客户端的配置</h2>
+<h2 id="shadowsocks-客户端的配置">ShadowSocks 客户端的配置</h2>
 
 <p>略。就照着上面服务器的信息配置就行了。</p>
 
 <p>当你把客户端配置好，现在就可以在浏览器中体验科学上网了。</p>
 
-<h2 id="proxychains-">ProxyChains 的配置</h2>
+<h2 id="proxychains-的配置">ProxyChains 的配置</h2>
 
 <p>如我们之前所说的，浏览器科学上网只是一部分，身为一名工程师或非 Windows 用户，我们经常会使用到一些命令行工具，想让命令行工具科学上网肿么办？</p>
 
@@ -298,7 +298,7 @@ socks5  127.0.0.1 1080
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">pc curl https://twitter.com</code></pre></figure>
 
-<h2 id="gfwlist">自动更新 GFWList</h2>
+<h2 id="自动更新-gfwlist">自动更新 GFWList</h2>
 
 <p>ShadowSocks 客户端自带有从 GFWList 更新 PAC 的功能，但是由于某个你懂的原因，自动更新基本都是失败的。</p>
 
@@ -318,7 +318,7 @@ socks5  127.0.0.1 1080
 
 <p>这样，每天早上 GFWList 会自动更新，你不用再去管它。</p>
 
-<h2 id="gfwlist-1">手动添加域名至 GFWList</h2>
+<h2 id="手动添加域名至-gfwlist">手动添加域名至 GFWList</h2>
 
 <p>可能会有这种情况：</p>
 
@@ -329,7 +329,7 @@ socks5  127.0.0.1 1080
 
 <p>碰上以上这两种情况，你可以自己编辑 ~/.ShadowsocksX/user-rule.txt 文件。把每个网站的域名作为一行记录添加进去，再执行一次 update_gfwlist.sh 脚本以更新到 ShadowsSocks。这样做比直接在 gfwlist.js 里加记录要好一点，因为下次 GFWList 更新的时候，不会把你自己收录的域名覆盖掉。</p>
 
-<h2 id="shadowsocks--alfred-workflow">ShadowSocks 的 Alfred Workflow</h2>
+<h2 id="shadowsocks-的-alfred-workflow">ShadowSocks 的 Alfred Workflow</h2>
 
 <p>如果你是 小帽子 <a href="https://www.alfredapp.com">Alfred</a> 的用户，你可以直接使用我写的 <a href="https://github.com/echohn/shadowsocks-alfred-workflow/raw/master/shadowsocks.alfredworkflow">ShadowSocks-Workflow(点击下载)</a>。在 Alfred 中执行 ssadd ，然后粘贴你准备加入 gfwlist 的 url，url 的域名就添加进 ShadowScoks 了。</p>
 
@@ -402,7 +402,7 @@ socks5  127.0.0.1 1080
                             
         				
                             
-                				<a href="/tags/#Mac" title="Mac" rel="8">
+                				<a href="/tags/#Mac" title="Mac" rel="9">
                                     Mac
                                 </a>
                             
@@ -414,7 +414,7 @@ socks5  127.0.0.1 1080
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="3">
+                				<a href="/tags/#Ruby" title="Ruby" rel="4">
                                     Ruby
                                 </a>
                             
@@ -492,14 +492,8 @@ socks5  127.0.0.1 1080
                             
         				
                             
-                				<a href="/tags/#mac" title="mac" rel="1">
-                                    mac
-                                </a>
-                            
-        				
-                            
-                				<a href="/tags/#zsh" title="zsh" rel="1">
-                                    zsh
+                				<a href="/tags/#ZSH" title="ZSH" rel="1">
+                                    ZSH
                                 </a>
                             
         				
@@ -512,6 +506,12 @@ socks5  127.0.0.1 1080
                             
                 				<a href="/tags/#Confluence" title="Confluence" rel="1">
                                     Confluence
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
+                                    apiDoc
                                 </a>
                             
         				

@@ -3,6 +3,21 @@
   
     
     <url>
+      <loc>https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/</loc>
+      
+        <lastmod>2017-08-10T00:00:00+08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>https://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/</loc>
       
         <lastmod>2016-10-23T00:00:00+08:00</lastmod>
@@ -340,7 +355,7 @@
     <url>
       <loc>https://echohn.github.io/404.html</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -363,7 +378,7 @@
     <url>
       <loc>https://echohn.github.io</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -386,7 +401,7 @@
     <url>
       <loc>https://echohn.github.io</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -419,7 +434,7 @@
     <url>
       <loc>https://echohn.github.io</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -442,7 +457,7 @@
     <url>
       <loc>https://echohn.github.io</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -460,7 +475,7 @@
     <url>
       <loc>https://echohn.github.io</loc>
       
-        <lastmod>2017-04-02T21:14:36+08:00</lastmod>
+        <lastmod>2017-08-10T17:40:48+08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -474,7 +489,323 @@
 
   
     
+      
+        <url>
+          <loc>https://echohn.github.io/2015/02/16/hello-world/</loc>
+          
+            <lastmod>2015-02-16T08:05:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2015/04/19/search_ip_location_alfred/</loc>
+          
+            <lastmod>2015-04-19T23:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2015/10/17/alfred_tips/</loc>
+          
+            <lastmod>2015-10-17T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2015/10/17/ruby-destructuring/</loc>
+          
+            <lastmod>2015-10-17T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2015/10/17/rubygems-workflow/</loc>
+          
+            <lastmod>2015-10-17T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2015/12/06/analyse_my_safari_history/</loc>
+          
+            <lastmod>2015-12-06T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/02/03/server-os-choose-rhel-cenos-or-debian-ubuntu/</loc>
+          
+            <lastmod>2016-02-03T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/04/30/how-to-run-a-script-after-network-interface-up/</loc>
+          
+            <lastmod>2016-04-30T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/05/09/smart-questions-mindmap/</loc>
+          
+            <lastmod>2016-05-09T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/05/11/who-were-left-who-were-stay/</loc>
+          
+            <lastmod>2016-05-11T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/05/15/how-to-manage-your-servers/</loc>
+          
+            <lastmod>2016-05-15T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/05/21/bash-style-guide-cn/</loc>
+          
+            <lastmod>2016-05-21T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/</loc>
+          
+            <lastmod>2016-05-29T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/</loc>
+          
+            <lastmod>2016-06-03T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/07/22/auto-backup-safari-bookmarks/</loc>
+          
+            <lastmod>2016-07-22T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/09/16/what-did-i-do-in-these-months/</loc>
+          
+            <lastmod>2016-09-16T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/09/22/hit-the-pit-after-updated-osx-to-sierra/</loc>
+          
+            <lastmod>2016-09-22T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/09/24/use-cloc-to-count-your-code/</loc>
+          
+            <lastmod>2016-09-24T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/10/01/the-reading-note-of-time-management/</loc>
+          
+            <lastmod>2016-10-01T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/10/01/about-improve-zsh-response-speed/</loc>
+          
+            <lastmod>2016-10-01T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/10/22/import-passwords-to-iterm-password-management/</loc>
+          
+            <lastmod>2016-10-22T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/</loc>
+          
+            <lastmod>2016-10-23T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+        <url>
+          <loc>https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/</loc>
+          
+            <lastmod>2017-08-10T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
+    
   
+    
+      
+        <url>
+          <loc>https://echohn.github.io/slides/2016/07/07/how-to-write-a-logstash-plugin/</loc>
+          
+            <lastmod>2016-07-07T00:00:00+08:00</lastmod>
+          
+          
+            <changefreq>monthly</changefreq>
+          
+          
+            <priority>0.3</priority>
+          
+        </url>
+      
     
   
 </urlset>

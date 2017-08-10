@@ -1,10 +1,13 @@
-<h1 id="echo---echos-bloghttpsechohngithubio"><a href="https://echohn.github.io">Echo 的网络日志 | Echo’s Blog</a></h1>
+<h1 id="echo-的网络日志--echos-blog"><a href="https://echohn.github.io">Echo 的网络日志 | Echo’s Blog</a></h1>
 
 <p>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</p>
 
 <p>我所有的日志如下:</p>
 
 <ul>
+  <li>
+    <p>2017/08/10: <a href="https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/">「在 Ruby 中使用行注释生成 apiDoc – 」</a></p>
+  </li>
   <li>
     <p>2016/10/23: <a href="https://echohn.github.io/2016/10/23/fix-confluence-chinese-pack-lead-to-web-ui-error/">「解决 Confluence 5.10 中文补丁导致的 web 界面 UI 错误」</a></p>
   </li>
