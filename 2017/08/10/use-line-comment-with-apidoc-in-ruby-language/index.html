@@ -218,7 +218,7 @@
 
 <p>然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>=begin
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="cm">=begin
 @api {get} /user/:id Request User information
 @apiName GetUser
 @apiGroup User
@@ -227,25 +227,21 @@
 
 @apiSuccess {String} firstname Firstname of the User.
 @apiSuccess {String} lastname  Lastname of the User.
-=end
-</code></pre>
-</div>
+=end</span></code></pre></figure>
 
 <p>但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在<a href="https://ruby-china.org/wiki/coding-style">Ruby 风格指南</a>中不推荐使用，也不符合我们团队的开发规范。</p>
 
 <p>于是我查看了 apiDoc 的源码，想看能否对其进行修改。很开心的是，我看到了它在源码中是这样进行的匹配。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/**
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/**
  * apidoc-core/lib/languages/rb.js
- */
-module.exports = {
-    // find document blocks between '=begin' and '=end'
-    docBlocksRegExp: /#\*\*\uffff?(.+?)\uffff?(?:\s*)?#\*|=begin\uffff?(.+?)\uffff?(?:\s*)?=end/g,
-    // remove not needed ' # ' and tabs at the beginning
-    inlineRegExp: /^(\s*)?(#)[ ]?/gm
-};
-</code></pre>
-</div>
+ */</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">// find document blocks between '=begin' and '=end'</span>
+    <span class="na">docBlocksRegExp</span><span class="p">:</span> <span class="sr">/#</span><span class="se">\*\*\u</span><span class="sr">ffff</span><span class="se">?(</span><span class="sr">.+</span><span class="se">?)\u</span><span class="sr">ffff</span><span class="se">?(?:\s</span><span class="sr">*</span><span class="se">)?</span><span class="sr">#</span><span class="se">\*</span><span class="sr">|=begin</span><span class="se">\u</span><span class="sr">ffff</span><span class="se">?(</span><span class="sr">.+</span><span class="se">?)\u</span><span class="sr">ffff</span><span class="se">?(?:\s</span><span class="sr">*</span><span class="se">)?</span><span class="sr">=end/g</span><span class="p">,</span>
+    <span class="c1">// remove not needed ' # ' and tabs at the beginning</span>
+    <span class="na">inlineRegExp</span><span class="p">:</span> <span class="sr">/^</span><span class="se">(\s</span><span class="sr">*</span><span class="se">)?(</span><span class="sr">#</span><span class="se">)[</span><span class="sr"> </span><span class="se">]?</span><span class="sr">/gm</span>
+<span class="p">};</span></code></pre></figure>
 
 <p>这个正则看起来有点乱，分析一下。</p>
 
@@ -253,18 +249,16 @@ module.exports = {
 
 <p>可以看到，它在支持多行注释的同时，也支持另外一种行注释的方式。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#**
-# @api {get} /user/:id Request User information
-# @apiName GetUser
-# @apiGroup User
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#**</span>
+<span class="c1"># @api {get} /user/:id Request User information</span>
+<span class="c1"># @apiName GetUser</span>
+<span class="c1"># @apiGroup User</span>
 
-# @apiParam {Number} id Users unique ID.
+<span class="c1"># @apiParam {Number} id Users unique ID.</span>
 
-# @apiSuccess {String} firstname Firstname of the User.
-# @apiSuccess {String} lastname  Lastname of the User.
-#*
-</code></pre>
-</div>
+<span class="c1"># @apiSuccess {String} firstname Firstname of the User.</span>
+<span class="c1"># @apiSuccess {String} lastname  Lastname of the User.</span>
+<span class="c1">#*</span></code></pre></figure>
 
 <p>因此问题解决。</p>
 
@@ -282,10 +276,8 @@ module.exports = {
 
 <p>又看了一下代码：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// Replace Linebreak with Unicode
-src = src.replace(/\n/g, '\uffff');
-</code></pre>
-</div>
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Replace Linebreak with Unicode</span>
+<span class="nx">src</span> <span class="o">=</span> <span class="nx">src</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\n</span><span class="sr">/g</span><span class="p">,</span> <span class="s1">'\uffff'</span><span class="p">);</span></code></pre></figure>
 
 <p>于是真相大白。</p>
 

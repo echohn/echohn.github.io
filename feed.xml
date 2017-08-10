@@ -5,8 +5,8 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>https://echohn.github.io/</link>
     <atom:link href="https://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 10 Aug 2017 17:40:48 +0800</pubDate>
-    <lastBuildDate>Thu, 10 Aug 2017 17:40:48 +0800</lastBuildDate>
+    <pubDate>Thu, 10 Aug 2017 17:44:56 +0800</pubDate>
+    <lastBuildDate>Thu, 10 Aug 2017 17:44:56 +0800</lastBuildDate>
     <generator>Jekyll v3.5.1</generator>
     
       <item>
@@ -21,7 +21,7 @@
 
 &lt;p&gt;然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=begin
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;cm&quot;&gt;=begin
 @api {get} /user/:id Request User information
 @apiName GetUser
 @apiGroup User
@@ -30,25 +30,21 @@
 
 @apiSuccess {String} firstname Firstname of the User.
 @apiSuccess {String} lastname  Lastname of the User.
-=end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+=end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在&lt;a href=&quot;https://ruby-china.org/wiki/coding-style&quot;&gt;Ruby 风格指南&lt;/a&gt;中不推荐使用，也不符合我们团队的开发规范。&lt;/p&gt;
 
 &lt;p&gt;于是我查看了 apiDoc 的源码，想看能否对其进行修改。很开心的是，我看到了它在源码中是这样进行的匹配。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;cm&quot;&gt;/**
  * apidoc-core/lib/languages/rb.js
- */
-module.exports = {
-    // find document blocks between '=begin' and '=end'
-    docBlocksRegExp: /#\*\*\uffff?(.+?)\uffff?(?:\s*)?#\*|=begin\uffff?(.+?)\uffff?(?:\s*)?=end/g,
-    // remove not needed ' # ' and tabs at the beginning
-    inlineRegExp: /^(\s*)?(#)[ ]?/gm
-};
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+ */&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// find document blocks between '=begin' and '=end'&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;docBlocksRegExp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/#&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\*\*\u&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;ffff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;.+&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?)\u&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;ffff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?(?:\s&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)?&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\*&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;|=begin&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;ffff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;.+&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?)\u&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;ffff&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;?(?:\s&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)?&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;=end/g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// remove not needed ' # ' and tabs at the beginning&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;inlineRegExp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/^&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;(\s&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)?(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt; &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;]?&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/gm&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;这个正则看起来有点乱，分析一下。&lt;/p&gt;
 
@@ -56,18 +52,16 @@ module.exports = {
 
 &lt;p&gt;可以看到，它在支持多行注释的同时，也支持另外一种行注释的方式。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#**
-# @api {get} /user/:id Request User information
-# @apiName GetUser
-# @apiGroup User
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#**&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# @api {get} /user/:id Request User information&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# @apiName GetUser&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# @apiGroup User&lt;/span&gt;
 
-# @apiParam {Number} id Users unique ID.
+&lt;span class=&quot;c1&quot;&gt;# @apiParam {Number} id Users unique ID.&lt;/span&gt;
 
-# @apiSuccess {String} firstname Firstname of the User.
-# @apiSuccess {String} lastname  Lastname of the User.
-#*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;c1&quot;&gt;# @apiSuccess {String} firstname Firstname of the User.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# @apiSuccess {String} lastname  Lastname of the User.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#*&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;因此问题解决。&lt;/p&gt;
 
@@ -85,10 +79,8 @@ module.exports = {
 
 &lt;p&gt;又看了一下代码：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Replace Linebreak with Unicode
-src = src.replace(/\n/g, '\uffff');
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Replace Linebreak with Unicode&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\uffff'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;于是真相大白。&lt;/p&gt;
 
