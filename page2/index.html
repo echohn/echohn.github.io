@@ -187,6 +187,30 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/">
+        <h2 class="post-title">
+            使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            昨天被安全部拉去开会，我被安利了好多安全工具。
+
+我很喜欢其中一个叫做 FastNetMon 的 DoS/DDoS 分析防御工具。
+
+它性能很高，支持多种抓包引擎。支持 ExaBGP 和外部脚本触发报警。FastNetMon 可以部署在旁路上，侦听从核心交换上镜像过来的流量（见下图）。当它发现受到攻击的时候，可以通过脚本通知管理员，在 BGP 上 Blocked 掉被攻击的 IP，或是通过脚...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Echo on June 3, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2016/05/29/to-build-the-fullstack-tools-for-over-the-wall/">
         <h2 class="post-title">
             打造基于 ShadowSocks + ProxyChains 的全栈式科学上网工具
@@ -400,29 +424,6 @@ Bash 风格指南
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2015/10/17/ruby-destructuring/">
-        <h2 class="post-title">
-            Ruby 强制解构
-        </h2>
-        
-        <div class="post-content-preview">
-            今天在写 Rakefile 的时候，突然想起之前看过 Ruby 的一个小技巧。
-
-我们经常使用 |x,y| 的形式在 block 中对传参的数组进行解构，那么在类似 reduce 的方法中，也可以使用 () 强制对参数进行解构。
-
-例如：
-
-[2] pry(main)&gt; a = [['foo1','bar1'],['foo2','bar2']]
-=&gt; [["foo1", "bar...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo's Blog on October 17, 2015
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -475,7 +476,7 @@ Bash 风格指南
                             
                         
                             
-                                <a href="/tags/#Ruby" title="Ruby" rel="4">
+                                <a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -573,6 +574,12 @@ Bash 风格指南
                             
                                 <a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
                         
@@ -689,7 +696,7 @@ Bash 风格指南
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

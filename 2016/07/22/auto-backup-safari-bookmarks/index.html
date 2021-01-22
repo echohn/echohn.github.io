@@ -224,15 +224,15 @@
 
 <p>(我写这个就是写着玩，我平时用 Time Capsule 做备份也用不着这个。。。)</p>
 
-<p>我尝试研究了一下，发现确实完全可行，但是发现了 Safari 的一个问题，Safari 在导入书签的时候，无法正确地识别<code class="highlighter-rouge">&lt;/dt&gt;</code>标签。而且只能解析与<code class="highlighter-rouge">&lt;dt&gt;</code>标签处在同一行的书签。</p>
+<p>我尝试研究了一下，发现确实完全可行，但是发现了 Safari 的一个问题，Safari 在导入书签的时候，无法正确地识别<code class="language-plaintext highlighter-rouge">&lt;/dt&gt;</code>标签。而且只能解析与<code class="language-plaintext highlighter-rouge">&lt;dt&gt;</code>标签处在同一行的书签。</p>
 
 <p>这么说可能不易理解，我举例解释一下。</p>
 
-<p>正常 HTML 生成的<code class="highlighter-rouge">&lt;dt&gt;</code>标签应该是闭合的。如果在输出后的 HTML 文件不换行，是下面的样式。</p>
+<p>正常 HTML 生成的<code class="language-plaintext highlighter-rouge">&lt;dt&gt;</code>标签应该是闭合的。如果在输出后的 HTML 文件不换行，是下面的样式。</p>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;DT&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://www.zhihu.com/"</span><span class="nt">&gt;</span>知乎<span class="nt">&lt;/a&gt;&lt;/DT&gt;</span></code></pre></figure>
 
-<p>这种情况下，Safari 会错误的把<code class="highlighter-rouge">&lt;/dt&gt;</code>前面的<code class="highlighter-rouge">&lt;/a&gt;</code>也解析成书签名，书签名会变成<code class="highlighter-rouge">知乎&lt;/a&gt;</code></p>
+<p>这种情况下，Safari 会错误的把<code class="language-plaintext highlighter-rouge">&lt;/dt&gt;</code>前面的<code class="language-plaintext highlighter-rouge">&lt;/a&gt;</code>也解析成书签名，书签名会变成<code class="language-plaintext highlighter-rouge">知乎&lt;/a&gt;</code></p>
 
 <p>如果输出允许 indent，例如下面的样式：</p>
 
@@ -242,17 +242,17 @@
 
 <p>。。。Safari 根本就认不出来这个书签啦。</p>
 
-<p>我试验出的结果是，Safari 在导入书签的时候，只能识别出非闭合的<code class="highlighter-rouge">&lt;dt&gt;</code>标签，并且需要把书签放置在<code class="highlighter-rouge">&lt;dt&gt;</code>标签的同一行中，例如下面这样才能够正常的解析。</p>
+<p>我试验出的结果是，Safari 在导入书签的时候，只能识别出非闭合的<code class="language-plaintext highlighter-rouge">&lt;dt&gt;</code>标签，并且需要把书签放置在<code class="language-plaintext highlighter-rouge">&lt;dt&gt;</code>标签的同一行中，例如下面这样才能够正常的解析。</p>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;DT&gt;&lt;a</span> <span class="na">href=</span><span class="s">"http://www.zhihu.com/"</span><span class="nt">&gt;</span>知乎<span class="nt">&lt;/a&gt;</span></code></pre></figure>
 
-<p>由于上面的问题，而且 xsltproc 将 xml 转换成 html 的时候，没法转换非闭合的标签，最后我在写脚本的时候，只能在导出 HTML 时，加了一个 sed 删除所有的<code class="highlighter-rouge">&lt;/dt&gt;</code>标签，这真让强迫症痛苦。。。</p>
+<p>由于上面的问题，而且 xsltproc 将 xml 转换成 html 的时候，没法转换非闭合的标签，最后我在写脚本的时候，只能在导出 HTML 时，加了一个 sed 删除所有的<code class="language-plaintext highlighter-rouge">&lt;/dt&gt;</code>标签，这真让强迫症痛苦。。。</p>
 
 <p>最后附上脚本。</p>
 
 <p>自动备份脚本的使用方法：</p>
 
-<p>将 「<a href="https://gist.github.com/echohn/eb8f31165aa288a3d0de115ac11ee543">备份脚本</a> 」与「 <a href="https://gist.github.com/echohn/4c5edcd8697b29cec9bafb36889e6953">转换模板</a> 」下载到同一目录，然后在 crontab 里添加执行 <code class="highlighter-rouge">SCRIPT_PATH/backup_safari_bookmarks.sh OUTPUT_PATH</code>即可,其中 OUTPUT_PATH 是书签备份将存放的目录，脚本执行之后，会在这个目录下生成一个文件名为当天日期的 HTML 书签文件。</p>
+<p>将 「<a href="https://gist.github.com/echohn/eb8f31165aa288a3d0de115ac11ee543">备份脚本</a> 」与「 <a href="https://gist.github.com/echohn/4c5edcd8697b29cec9bafb36889e6953">转换模板</a> 」下载到同一目录，然后在 crontab 里添加执行 <code class="language-plaintext highlighter-rouge">SCRIPT_PATH/backup_safari_bookmarks.sh OUTPUT_PATH</code>即可,其中 OUTPUT_PATH 是书签备份将存放的目录，脚本执行之后，会在这个目录下生成一个文件名为当天日期的 HTML 书签文件。</p>
 
 <p>导入备份书签的方法：</p>
 
@@ -333,7 +333,7 @@
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -431,6 +431,12 @@
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -556,7 +562,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

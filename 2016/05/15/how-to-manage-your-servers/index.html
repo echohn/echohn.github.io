@@ -228,11 +228,11 @@
 
 <p>补全脚本是酱婶儿的：</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"> cat ~/.zsh/completion/_salt
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"> <span class="nb">cat</span> ~/.zsh/completion/_salt
 
 <span class="c">#compdef salt</span>
 _arguments  <span class="se">\</span>
-  <span class="s2">"1:keys:(</span><span class="k">$(</span>ruby -ryaml -e <span class="s1">'puts YAML.load(IO.read("/var/www/html/salt_keys.yml"))["minions"]'</span><span class="k">)</span><span class="s2">)"</span>   <span class="se">\</span>
+  <span class="s2">"1:keys:(</span><span class="si">$(</span>ruby <span class="nt">-ryaml</span> <span class="nt">-e</span> <span class="s1">'puts YAML.load(IO.read("/var/www/html/salt_keys.yml"))["minions"]'</span><span class="si">)</span><span class="s2">)"</span>   <span class="se">\</span>
   <span class="s2">"2:commands:(test.ping cmd.run cmd.all cmd.exec_code state.sls pip.install saltutil.kill_job cp.get_file cp.get_dir)"</span></code></pre></figure>
 
 <h2 id="2-本地根据网络和计划任务定时下载-id-列表自动更新到自己的-hosts-文件">2. 本地根据网络和计划任务定时下载 ID 列表自动更新到自己的 hosts 文件</h2>
@@ -317,13 +317,13 @@ _arguments  <span class="se">\</span>
 
 <p>这个文件大致是这样的：</p>
 
-<p>在 Host 设置中可以使用通配符，这里是我服务器的 Salt Minion ID。因为我们 Salt Minion ID 的规则是从左自右依次减小范围的，所以写成<code class="highlighter-rouge">ops-*</code>。</p>
+<p>在 Host 设置中可以使用通配符，这里是我服务器的 Salt Minion ID。因为我们 Salt Minion ID 的规则是从左自右依次减小范围的，所以写成<code class="language-plaintext highlighter-rouge">ops-*</code>。</p>
 
 <p>User 设置登录用户，Port 设置端口，IdentifiFile 设置你要登录使用的 ssh key。</p>
 
 <p>Host * 是默认配置，在这里可以使用 ControlMaster 选项设置 ssh 共享多个连接，只要连接文件（ControlPath 中定义）存在且服务器没有主动断开，你就可以一直不用密码地快速访问啦。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Host ops-*
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ops-*
   User ops
 
 
@@ -348,8 +348,7 @@ Host *
   ControlMaster auto
   ControlPath ~/.ssh/%h-%p-%r
   ControlPersist 4h
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="4-zsh-的自动补全">4. ZSH 的自动补全</h2>
 
@@ -434,7 +433,7 @@ Host *
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -532,6 +531,12 @@ Host *
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -657,7 +662,7 @@ Host *
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

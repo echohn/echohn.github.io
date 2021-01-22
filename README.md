@@ -6,6 +6,9 @@
 
 <ul>
   <li>
+    <p>2021/01/23: <a href="https://echohn.github.io/2021/01/23/fix-rubymine-not-found-node/">「修复 RubyMine 在 Alfred workflow 打开项目时，出现 yarn packages are out of date 的错误 – 」</a></p>
+  </li>
+  <li>
     <p>2017/08/10: <a href="https://echohn.github.io/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/">「在 Ruby 中使用行注释生成 apiDoc – 」</a></p>
   </li>
   <li>

@@ -241,16 +241,16 @@ Is there any way to import a lot of passwords to the Password Manager?</p>
 
 <p>Save the password in keychain, either by the GUI (see https://www.netmeister.org/blog/keychain-passwords.html) or:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> -s LDAPbindPW -w <span class="s1">'&lt;your-password-goes-here&gt;'</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password <span class="nt">-a</span> <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> <span class="nt">-s</span> LDAPbindPW <span class="nt">-w</span> <span class="s1">'&lt;your-password-goes-here&gt;'</span></code></pre></figure>
 
 <p>The thing I was playing with at the time would have used the above via something like this in my .bashrc:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">LDAP_PW</span><span class="o">=</span><span class="k">$(</span>security find-generic-password -a <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> -s LDAPbindPW -w<span class="k">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">LDAP_PW</span><span class="o">=</span><span class="si">$(</span>security find-generic-password <span class="nt">-a</span> <span class="k">${</span><span class="nv">USER</span><span class="k">}</span> <span class="nt">-s</span> LDAPbindPW <span class="nt">-w</span><span class="si">)</span></code></pre></figure>
 
 <p>I also found you can use variations of the security command to list and see what passwords iTerm2 has created.
 From that, you can figure out how to use a security command to create/update what iTerm2 uses.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a <span class="s1">'&lt;hostname&gt; &lt;userid&gt;'</span> -w <span class="s1">'&lt;userid'</span>s password&gt;<span class="s1">' -l '</span>a label<span class="s1">'</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">security add-generic-password <span class="nt">-U</span> <span class="nt">-s</span> iTerm2 <span class="nt">-T</span> /Applications/iTerm.app <span class="nt">-a</span> <span class="s1">'&lt;hostname&gt; &lt;userid&gt;'</span> <span class="nt">-w</span> <span class="s1">'&lt;userid'</span>s password&gt;<span class="s1">' -l '</span>a label<span class="s1">'</span></code></pre></figure>
 
 <p>iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.</p>
 
@@ -276,14 +276,14 @@ From that, you can figure out how to use a security command to create/update wha
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="vi">@long_name</span>  <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">shift</span>
     <span class="n">short_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">shift</span>
-    <span class="vi">@short_name</span> <span class="o">=</span> <span class="n">short_name</span><span class="p">.</span><span class="nf">nil?</span> <span class="p">?</span> <span class="vi">@long_name</span><span class="p">[</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="n">short_name</span>
+    <span class="vi">@short_name</span> <span class="o">=</span> <span class="n">short_name</span><span class="p">.</span><span class="nf">nil?</span> <span class="p">?</span> <span class="vi">@long_name</span><span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="n">short_name</span>
     <span class="vi">@users_and_passwordes</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">]</span>
   <span class="k">end</span>
 
   <span class="no">COMMAND_PREFIX</span> <span class="o">=</span> <span class="s2">"security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app"</span>
 
   <span class="k">def</span> <span class="nf">write_password</span><span class="p">(</span><span class="n">user_name</span><span class="p">,</span><span class="n">user_pass</span><span class="p">)</span>
-    <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="no">COMMAND_PREFIX</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="vi">@short_name</span><span class="si">}#{</span><span class="n">user_name</span><span class="p">[</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="vi">@long_name</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">user_pass</span><span class="p">.</span><span class="nf">gsub</span><span class="p">(</span><span class="sr">/'/</span><span class="p">,</span><span class="s2">"'</span><span class="se">\"</span><span class="s2">'</span><span class="se">\"</span><span class="s2">'"</span><span class="p">)</span><span class="si">}</span><span class="s2">'"</span> <span class="k">if</span> <span class="n">user_name</span> <span class="o">&amp;&amp;</span> <span class="n">user_pass</span>
+    <span class="nb">system</span> <span class="s2">"</span><span class="si">#{</span><span class="no">COMMAND_PREFIX</span><span class="si">}</span><span class="s2"> -a '</span><span class="si">#{</span><span class="vi">@short_name</span><span class="si">}#{</span><span class="n">user_name</span><span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@</span><span class="si">#{</span><span class="vi">@long_name</span><span class="si">}</span><span class="s2">' -w '</span><span class="si">#{</span><span class="n">user_pass</span><span class="p">.</span><span class="nf">gsub</span><span class="p">(</span><span class="sr">/'/</span><span class="p">,</span><span class="s2">"'</span><span class="se">\"</span><span class="s2">'</span><span class="se">\"</span><span class="s2">'"</span><span class="p">)</span><span class="si">}</span><span class="s2">'"</span> <span class="k">if</span> <span class="n">user_name</span> <span class="o">&amp;&amp;</span> <span class="n">user_pass</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">write</span>
@@ -376,7 +376,7 @@ From that, you can figure out how to use a security command to create/update wha
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -474,6 +474,12 @@ From that, you can figure out how to use a security command to create/update wha
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -599,7 +605,7 @@ From that, you can figure out how to use a security command to create/update wha
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

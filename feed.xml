@@ -5,9 +5,35 @@
     <description>你好，我是 Echo Han。我是一名运维工程师/奶爸/Ruby 爱好者。我不时在这里记录一些自己的想法。欢迎你与我交流。</description>
     <link>https://echohn.github.io/</link>
     <atom:link href="https://echohn.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 10 Aug 2017 17:51:04 +0800</pubDate>
-    <lastBuildDate>Thu, 10 Aug 2017 17:51:04 +0800</lastBuildDate>
-    <generator>Jekyll v3.5.1</generator>
+    <pubDate>Sat, 23 Jan 2021 01:29:56 +0800</pubDate>
+    <lastBuildDate>Sat, 23 Jan 2021 01:29:56 +0800</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>修复 RubyMine 在 Alfred workflow 打开项目时，出现 yarn packages are out of date 的错误</title>
+        <description>&lt;p&gt;近来发现 RubyMine 在启动项目的服务时，有时正常，有时候异常，异常就如下图所示（启动 rails s）：
+&lt;img src=&quot;/img/in-post/16113234582855.jpg&quot; alt=&quot;16113234582855&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在直接启动 RubyMine 的时候是不会出现该问题的，但是通过 Alfred 的 jetbrains workflow 直接启动项目时会出现此现象。&lt;/p&gt;
+
+&lt;p&gt;排查中发现，我在项目中实际用到的是 node 12, 但是在服务启动时，总是在调用 node 14。然而在 RubyMine 的偏好设置中指定 node 解释器版本并不能解决此问题。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000160444-Wrong-node-version-used-when-running-from-run-after-update-to-Webstorm-2018-&quot;&gt;搜到一篇资料&lt;/a&gt;，在 RubyMine 启动时，它并不能加载到我配置在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.bash_profile&lt;/code&gt; 中的 PATH 信息。&lt;/p&gt;
+
+&lt;p&gt;于是我 debug jetbrains workflow，发现它实际调用的是 JetBrains Toolbox 生成的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.scripts/bin/rubymine&lt;/code&gt; 脚本。&lt;/p&gt;
+
+&lt;p&gt;因此只需要在这个脚本的 Shabang 下面添加 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;source ~/.bash_profile&lt;/code&gt; 就解决了问题。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 23 Jan 2021 00:00:00 +0800</pubDate>
+        <link>https://echohn.github.io/2021/01/23/fix-rubymine-not-found-node/</link>
+        <guid isPermaLink="true">https://echohn.github.io/2021/01/23/fix-rubymine-not-found-node/</guid>
+        
+        <category>Ruby</category>
+        
+        <category>RubyMine</category>
+        
+        
+      </item>
     
       <item>
         <title>在 Ruby 中使用行注释生成 apiDoc</title>
@@ -21,7 +47,7 @@
 
 &lt;p&gt;然而在 apiDoc 官网的示例中，Ruby 语言是通过多行注释的方式生成的的文档，如下面的例子。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=begin
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=begin
 @api {get} /user/:id Request User information
 @apiName GetUser
 @apiGroup User
@@ -31,8 +57,7 @@
 @apiSuccess {String} firstname Firstname of the User.
 @apiSuccess {String} lastname  Lastname of the User.
 =end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;但是多行注释有很多缺点，它必须顶格书写，不能缩进，在代码中也不容易辨认。在&lt;a href=&quot;https://ruby-china.org/wiki/coding-style&quot;&gt;Ruby 风格指南&lt;/a&gt;中不推荐使用，也不符合我们团队的开发规范。&lt;/p&gt;
 
@@ -67,7 +92,7 @@
 
 &lt;p&gt;因此问题解决。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;PS：&lt;/em&gt;&lt;/strong&gt; 在看到这个正则的时候，字符&lt;code class=&quot;highlighter-rouge&quot;&gt;\uFFFF&lt;/code&gt;引起了我的注意。我在 Unicode 码表中并未查到这个字符，于是我以为这个字符在 Javascript 中代表了某种特殊的涵义，但是查了一下，也没有查到结果。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;PS：&lt;/em&gt;&lt;/strong&gt; 在看到这个正则的时候，字符&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\uFFFF&lt;/code&gt;引起了我的注意。我在 Unicode 码表中并未查到这个字符，于是我以为这个字符在 Javascript 中代表了某种特殊的涵义，但是查了一下，也没有查到结果。&lt;/p&gt;
 
 &lt;p&gt;直到我在看到一篇&lt;a href=&quot;https://gxnotes.com/article/178667.html&quot;&gt;文章&lt;/a&gt;中引用的一段文字：&lt;/p&gt;
 
@@ -82,7 +107,7 @@
 &lt;p&gt;又看了一下代码：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Replace Linebreak with Unicode&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\uffff'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;uffff&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;于是真相大白。&lt;/p&gt;
 
@@ -129,8 +154,8 @@
 
 &lt;p&gt;我打开了补丁包，试着过滤了一下代码的关键字。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;unzip Confluence-5.10.0-rc1-language-pack-zh_CN.jar
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;grep -r start ./
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;unzip Confluence-5.10.0-rc1-language-pack-zh_CN.jar
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; start ./
 .//atlassian-plugin.xml:    &amp;lt;resource &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;i18n-101&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;i18n&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;location&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;com/atlassian/confluence/plugins/gettingstarted/i18n&quot;&lt;/span&gt;/&amp;gt;
 .//com/atlassian/confluence/plugins/gettingstarted/i18n_zh_CN.properties:confluence.gettingstarted.movie&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;//www.atlassian.com/software/confluence/videos/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.html&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;
 ...&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
@@ -139,7 +164,7 @@
 
 &lt;p&gt;于是将文件中多余的换行符去掉，重新打包。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;jar cvf ../Confluence-5.10.0-rc1-language-pack-zh_CN.jar ./&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;jar cvf ../Confluence-5.10.0-rc1-language-pack-zh_CN.jar ./&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;将修改后的中文补丁传上去，刷新主页面，咦，居然错误还在？&lt;/p&gt;
 
@@ -192,16 +217,16 @@ Is there any way to import a lot of passwords to the Password Manager?&lt;/p&gt;
 
 &lt;p&gt;Save the password in keychain, either by the GUI (see https://www.netmeister.org/blog/keychain-passwords.html) or:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w &lt;span class=&quot;s1&quot;&gt;'&amp;lt;your-password-goes-here&amp;gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; LDAPbindPW &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;your-password-goes-here&amp;gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The thing I was playing with at the time would have used the above via something like this in my .bashrc:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;LDAP_PW&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;security find-generic-password -a &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -s LDAPbindPW -w&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;LDAP_PW&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;security find-generic-password &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; LDAPbindPW &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;I also found you can use variations of the security command to list and see what passwords iTerm2 has created.
 From that, you can figure out how to use a security command to create/update what iTerm2 uses.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app -a &lt;span class=&quot;s1&quot;&gt;'&amp;lt;hostname&amp;gt; &amp;lt;userid&amp;gt;'&lt;/span&gt; -w &lt;span class=&quot;s1&quot;&gt;'&amp;lt;userid'&lt;/span&gt;s password&amp;gt;&lt;span class=&quot;s1&quot;&gt;' -l '&lt;/span&gt;a label&lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;security add-generic-password &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; iTerm2 &lt;span class=&quot;nt&quot;&gt;-T&lt;/span&gt; /Applications/iTerm.app &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;hostname&amp;gt; &amp;lt;userid&amp;gt;'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;userid'&lt;/span&gt;s password&amp;gt;&lt;span class=&quot;s1&quot;&gt;' -l '&lt;/span&gt;a label&lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;iTerm2’s password manager shows the account name (the -a switch). So you don’t really need the -l label. The -l label makes it easier to see in Keychain Access.&lt;/p&gt;
 
@@ -227,14 +252,14 @@ From that, you can figure out how to use a security command to create/update wha
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shift&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;short_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shift&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nil?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;short_name&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nil?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;short_name&lt;/span&gt;
     &lt;span class=&quot;vi&quot;&gt;@users_and_passwordes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
   &lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;security add-generic-password -U -s iTerm2 -T /Applications/iTerm.app&quot;&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write_password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' -w '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gsub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/'/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;COMMAND_PREFIX&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -a '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@short_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@long_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' -w '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;gsub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/'/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_pass&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;
@@ -285,7 +310,7 @@ From that, you can figure out how to use a security command to create/update wha
 
 &lt;p&gt;我怎么用怎么觉得不爽，再也无心他事，直接扑在了改进 zsh 的速度上面。&lt;/p&gt;
 
-&lt;p&gt;我谷歌了很多资料，zsh 太慢的问题被很多人抱怨过，在此过程中我也学会了使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 。&lt;/p&gt;
+&lt;p&gt;我谷歌了很多资料，zsh 太慢的问题被很多人抱怨过，在此过程中我也学会了使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 。&lt;/p&gt;
 
 &lt;p&gt;我发现启动和运行过慢的原因有四点。&lt;/p&gt;
 
@@ -297,21 +322,20 @@ From that, you can figure out how to use a security command to create/update wha
 
 &lt;p&gt;第二，某些响应卡顿的命令明显影响 zsh 启动速度。&lt;/p&gt;
 
-&lt;p&gt;我使用&lt;code class=&quot;highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 的时候发现，每次启动当加载到了某些插件，比如 autojump，执行到&lt;code class=&quot;highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;命令的时候会有非常明显的卡顿。 而在加载过程中，不止一次会调用到这个命令。&lt;/p&gt;
+&lt;p&gt;我使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zsh -xv&lt;/code&gt; 命令调试 zsh 的时候发现，每次启动当加载到了某些插件，比如 autojump，执行到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;命令的时候会有非常明显的卡顿。 而在加载过程中，不止一次会调用到这个命令。&lt;/p&gt;
 
-&lt;p&gt;所以我将所有插件中的&lt;code class=&quot;highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;都替换回了它的结果&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local&lt;/code&gt;，我觉得我并不会轻易改动 brew 的安装目录。修改之后，zsh 的启动时间从十几秒直接缩减到了 3.5 秒。&lt;/p&gt;
+&lt;p&gt;所以我将所有插件中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brew --prefix&lt;/code&gt;都替换回了它的结果&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local&lt;/code&gt;，我觉得我并不会轻易改动 brew 的安装目录。修改之后，zsh 的启动时间从十几秒直接缩减到了 3.5 秒。&lt;/p&gt;
 
 &lt;p&gt;可以用下面这条命令测量 zsh 的启动时间。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;usr/bin/time /bin/zsh -i -c exit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;usr/bin/time /bin/zsh -i -c exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;第三，所用主题的 prompt 功能会非常影响 prompt 的响应速度，尤其是 git prompt&lt;/p&gt;
 
-&lt;p&gt;我根据自己的使用习惯，在 &lt;code class=&quot;highlighter-rouge&quot;&gt;agnoster&lt;/code&gt; 主题之上做了一些修改，添加了一些逻辑。在这次事件发生后，我读了一下主题的源码，做了一些优化。&lt;/p&gt;
+&lt;p&gt;我根据自己的使用习惯，在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agnoster&lt;/code&gt; 主题之上做了一些修改，添加了一些逻辑。在这次事件发生后，我读了一下主题的源码，做了一些优化。&lt;/p&gt;
 
-&lt;p&gt;比如，把类似 &lt;code class=&quot;highlighter-rouge&quot;&gt;echo $var |sed ...&lt;/code&gt; 等造成多进程开销的命令都使用 Bash 内部替换代替（详见&lt;a href=&quot;http://echohn.github.io/2016/05/21/bash-style-guide-cn/&quot;&gt;我翻译的这篇文章&lt;/a&gt;）。&lt;/p&gt;
+&lt;p&gt;比如，把类似 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo $var |sed ...&lt;/code&gt; 等造成多进程开销的命令都使用 Bash 内部替换代替（详见&lt;a href=&quot;http://echohn.github.io/2016/05/21/bash-style-guide-cn/&quot;&gt;我翻译的这篇文章&lt;/a&gt;）。&lt;/p&gt;
 
 &lt;p&gt;而且这次我发现主题中的 git prompt 逻辑会非常影响 prompt 的响应速度。尤其是判断 git 中的版本有没有未提交的文件等状态的相关命令。我在测试的时候，将其替换成一个只显示 git 分支，不显示其他状态的 git prompt，其响应速度直接提升到让我满意的程度。&lt;/p&gt;
 
@@ -369,23 +393,23 @@ From that, you can figure out how to use a security command to create/update wha
         <title>使用 cloc 统计你的代码量</title>
         <description>&lt;p&gt;今天发现一个特别好用的工具 &lt;a href=&quot;https://github.com/AlDanial/cloc&quot;&gt;cloc&lt;/a&gt;，可以用它统计代码的行数。它可以识别多种开发语言，并在计算的时候忽略掉注释和空行。&lt;/p&gt;
 
-&lt;p&gt;我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 &lt;code class=&quot;highlighter-rouge&quot;&gt;find xxx -prune xxx | xargs grep -vE xxx | wc -l&lt;/code&gt; 的超长命令。&lt;/p&gt;
+&lt;p&gt;我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;find xxx -prune xxx | xargs grep -vE xxx | wc -l&lt;/code&gt; 的超长命令。&lt;/p&gt;
 
 &lt;p&gt;每年写年终总结统计工作量的时候，我也常常会用到类似的命令。&lt;/p&gt;
 
 &lt;p&gt;所以我今天突然发现这个工具的时候，还是很惊喜的。&lt;/p&gt;
 
-&lt;p&gt;在 macOS 上，可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;brew install cloc&lt;/code&gt; 来安装它，它支持包括 Windows 在内的多个系统。&lt;/p&gt;
+&lt;p&gt;在 macOS 上，可以通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;brew install cloc&lt;/code&gt; 来安装它，它支持包括 Windows 在内的多个系统。&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;npm install -g cloc                    &lt;span class=&quot;c&quot;&gt;# https://www.npmjs.com/package/cloc&lt;/span&gt;
-sudo apt-get install cloc              &lt;span class=&quot;c&quot;&gt;# Debian, Ubuntu&lt;/span&gt;
-sudo yum install cloc                  &lt;span class=&quot;c&quot;&gt;# Red Hat, Fedora&lt;/span&gt;
-sudo dnf install cloc                  &lt;span class=&quot;c&quot;&gt;# Fedora 22 or later&lt;/span&gt;
-sudo pacman -S cloc                    &lt;span class=&quot;c&quot;&gt;# Arch&lt;/span&gt;
-sudo pkg install cloc                  &lt;span class=&quot;c&quot;&gt;# FreeBSD&lt;/span&gt;
-sudo port install cloc                 &lt;span class=&quot;c&quot;&gt;# Mac OS X with MacPorts&lt;/span&gt;
-brew install cloc                      &lt;span class=&quot;c&quot;&gt;# Mac OS X with Homebrew&lt;/span&gt;
-choco install cloc                     &lt;span class=&quot;c&quot;&gt;# Windows with Chocolatey&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; cloc                    &lt;span class=&quot;c&quot;&gt;# https://www.npmjs.com/package/cloc&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc              &lt;span class=&quot;c&quot;&gt;# Debian, Ubuntu&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                  &lt;span class=&quot;c&quot;&gt;# Red Hat, Fedora&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;dnf &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                  &lt;span class=&quot;c&quot;&gt;# Fedora 22 or later&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; cloc                    &lt;span class=&quot;c&quot;&gt;# Arch&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pkg &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                  &lt;span class=&quot;c&quot;&gt;# FreeBSD&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;port &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                 &lt;span class=&quot;c&quot;&gt;# Mac OS X with MacPorts&lt;/span&gt;
+brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                      &lt;span class=&quot;c&quot;&gt;# Mac OS X with Homebrew&lt;/span&gt;
+choco &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;cloc                     &lt;span class=&quot;c&quot;&gt;# Windows with Chocolatey&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;它有诸多优点：&lt;/p&gt;
 
@@ -406,21 +430,21 @@ choco install cloc                     &lt;span class=&quot;c&quot;&gt;# Windows
 &lt;p&gt;比如写一个 &lt;a href=&quot;http://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository&quot;&gt;cloc-git&lt;/a&gt; 的脚本，用来统计 git 远程项目的代码量。&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
-git clone --depth 1 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+git clone &lt;span class=&quot;nt&quot;&gt;--depth&lt;/span&gt; 1 &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;('temp-linecount-repo' will be deleted automatically)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n\n\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
   cloc temp-linecount-repo &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  rm -rf temp-linecount-repo&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+  &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; temp-linecount-repo&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;运行结果如下：&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;cloc-git https://github.com/rails/rails.git
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cloc-git https://github.com/rails/rails.git
 Cloning into &lt;span class=&quot;s1&quot;&gt;'temp-linecount-repo'&lt;/span&gt;...
-remote: Counting objects: 3615, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
-remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3048/3048&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+remote: Counting objects: 3615, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+remote: Compressing objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3048/3048&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 remote: Total 3615 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, reused 1576 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;delta 52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, pack-reused 0
-Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3615/3615&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 6.08 MiB | 2.28 MiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
-Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;174/174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
-Checking connectivity... &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
+Receiving objects: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3615/3615&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 6.08 MiB | 2.28 MiB/s, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Resolving deltas: 100% &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;174/174&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Checking connectivity... &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'temp-linecount-repo'&lt;/span&gt; will be deleted automatically&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 
@@ -429,9 +453,9 @@ Checking connectivity... &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;.
      309 files ignored.
 
 github.com/AlDanial/cloc v 1.70  &lt;span class=&quot;nv&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;19.61 s &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;141.1 files/s, 18560.1 lines/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
--------------------------------------------------------------------------------
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------&lt;/span&gt;
 Language                     files          blank        comment           code
--------------------------------------------------------------------------------
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------&lt;/span&gt;
 Ruby                          2152          47525          41996         213275
 Markdown                        74          13832              0          34880
 JavaScript                      23            732            747           3385
@@ -445,35 +469,35 @@ SQL                              1              6              0             43
 JSON                             1              0              0             24
 builder                          2              0              0              6
 DTD                              1              0              0              1
--------------------------------------------------------------------------------
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------&lt;/span&gt;
 SUM:                          2767          62913          43565         257521
--------------------------------------------------------------------------------&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------------------------------------------------&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;cloc 也支持使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项对两个版本的代码量进行比较。&lt;/p&gt;
+&lt;p&gt;cloc 也支持使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项对两个版本的代码量进行比较。&lt;/p&gt;
 
-&lt;p&gt;但是在我尝试 cloc 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：&lt;/p&gt;
+&lt;p&gt;但是在我尝试 cloc 使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--diff&lt;/code&gt; 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# github.com/AlDanial/cloc&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;header &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
 &lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;s&quot;&gt;same&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CSS&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;25&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JavaScript&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;38&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;131&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2177&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;language&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;HTML&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;files_count&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;blank&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;comment&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;3&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;182&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;same &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;language &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CSS&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;files_count &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;blank &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;comment &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;code &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;language &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JavaScript&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;files_count &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;38&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;blank &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;comment &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;131&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;code &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2177&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;language &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;HTML&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;files_count &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;blank &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;comment &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;code &lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;182&lt;/span&gt;
 &lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。&lt;/p&gt;
@@ -482,7 +506,7 @@ SUM:                          2767          62913          43565         257521
 
 &lt;p&gt;最后统计了一下我最近在做的项目。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cloc .
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cloc .
      365 text files.
      339 unique files.
      225 files ignored.
@@ -503,8 +527,7 @@ CSS                              3              2             25              2
 -------------------------------------------------------------------------------
 SUM:                           152            812            982          19979
 -------------------------------------------------------------------------------
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;最多的 YAML 代码是从业务库导出的基线数据。由于这是个基于 echarts 的业务数据可视化的项目，前端代码占的比重稍大了一点。&lt;/p&gt;
 
@@ -552,9 +575,8 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;点击实用工具打开终端，执行命令：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;csrutil enable --without debug
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;csrutil enable --without debug
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;重启后发现 XtraFinder 可以加载了，但是当我尝试剪切文件的时候，发现 Finder 会闪退，看来 XtraFinder 还是与 Sierra 兼容性上存在问题。于是&lt;/p&gt;
 
@@ -722,15 +744,15 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;(我写这个就是写着玩，我平时用 Time Capsule 做备份也用不着这个。。。)&lt;/p&gt;
 
-&lt;p&gt;我尝试研究了一下，发现确实完全可行，但是发现了 Safari 的一个问题，Safari 在导入书签的时候，无法正确地识别&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签。而且只能解析与&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签处在同一行的书签。&lt;/p&gt;
+&lt;p&gt;我尝试研究了一下，发现确实完全可行，但是发现了 Safari 的一个问题，Safari 在导入书签的时候，无法正确地识别&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签。而且只能解析与&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签处在同一行的书签。&lt;/p&gt;
 
 &lt;p&gt;这么说可能不易理解，我举例解释一下。&lt;/p&gt;
 
-&lt;p&gt;正常 HTML 生成的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签应该是闭合的。如果在输出后的 HTML 文件不换行，是下面的样式。&lt;/p&gt;
+&lt;p&gt;正常 HTML 生成的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签应该是闭合的。如果在输出后的 HTML 文件不换行，是下面的样式。&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;DT&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.zhihu.com/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;知乎&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/DT&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;这种情况下，Safari 会错误的把&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;前面的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/a&amp;gt;&lt;/code&gt;也解析成书签名，书签名会变成&lt;code class=&quot;highlighter-rouge&quot;&gt;知乎&amp;lt;/a&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;这种情况下，Safari 会错误的把&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;前面的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;/a&amp;gt;&lt;/code&gt;也解析成书签名，书签名会变成&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;知乎&amp;lt;/a&amp;gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;如果输出允许 indent，例如下面的样式：&lt;/p&gt;
 
@@ -740,17 +762,17 @@ SUM:                           152            812            982          19979
 
 &lt;p&gt;。。。Safari 根本就认不出来这个书签啦。&lt;/p&gt;
 
-&lt;p&gt;我试验出的结果是，Safari 在导入书签的时候，只能识别出非闭合的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签，并且需要把书签放置在&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签的同一行中，例如下面这样才能够正常的解析。&lt;/p&gt;
+&lt;p&gt;我试验出的结果是，Safari 在导入书签的时候，只能识别出非闭合的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签，并且需要把书签放置在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;dt&amp;gt;&lt;/code&gt;标签的同一行中，例如下面这样才能够正常的解析。&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;DT&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.zhihu.com/&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;知乎&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;由于上面的问题，而且 xsltproc 将 xml 转换成 html 的时候，没法转换非闭合的标签，最后我在写脚本的时候，只能在导出 HTML 时，加了一个 sed 删除所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签，这真让强迫症痛苦。。。&lt;/p&gt;
+&lt;p&gt;由于上面的问题，而且 xsltproc 将 xml 转换成 html 的时候，没法转换非闭合的标签，最后我在写脚本的时候，只能在导出 HTML 时，加了一个 sed 删除所有的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;/dt&amp;gt;&lt;/code&gt;标签，这真让强迫症痛苦。。。&lt;/p&gt;
 
 &lt;p&gt;最后附上脚本。&lt;/p&gt;
 
 &lt;p&gt;自动备份脚本的使用方法：&lt;/p&gt;
 
-&lt;p&gt;将 「&lt;a href=&quot;https://gist.github.com/echohn/eb8f31165aa288a3d0de115ac11ee543&quot;&gt;备份脚本&lt;/a&gt; 」与「 &lt;a href=&quot;https://gist.github.com/echohn/4c5edcd8697b29cec9bafb36889e6953&quot;&gt;转换模板&lt;/a&gt; 」下载到同一目录，然后在 crontab 里添加执行 &lt;code class=&quot;highlighter-rouge&quot;&gt;SCRIPT_PATH/backup_safari_bookmarks.sh OUTPUT_PATH&lt;/code&gt;即可,其中 OUTPUT_PATH 是书签备份将存放的目录，脚本执行之后，会在这个目录下生成一个文件名为当天日期的 HTML 书签文件。&lt;/p&gt;
+&lt;p&gt;将 「&lt;a href=&quot;https://gist.github.com/echohn/eb8f31165aa288a3d0de115ac11ee543&quot;&gt;备份脚本&lt;/a&gt; 」与「 &lt;a href=&quot;https://gist.github.com/echohn/4c5edcd8697b29cec9bafb36889e6953&quot;&gt;转换模板&lt;/a&gt; 」下载到同一目录，然后在 crontab 里添加执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCRIPT_PATH/backup_safari_bookmarks.sh OUTPUT_PATH&lt;/code&gt;即可,其中 OUTPUT_PATH 是书签备份将存放的目录，脚本执行之后，会在这个目录下生成一个文件名为当天日期的 HTML 书签文件。&lt;/p&gt;
 
 &lt;p&gt;导入备份书签的方法：&lt;/p&gt;
 
@@ -766,467 +788,6 @@ SUM:                           152            812            982          19979
         <category>Mac</category>
         
         <category>script</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统</title>
-        <description>&lt;p&gt;昨天被安全部拉去开会，我被安利了好多安全工具。&lt;/p&gt;
-
-&lt;p&gt;我很喜欢其中一个叫做 &lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon&quot;&gt;&lt;strong&gt;FastNetMon&lt;/strong&gt;&lt;/a&gt; 的 DoS/DDoS 分析防御工具。&lt;/p&gt;
-
-&lt;p&gt;它性能很高，支持多种抓包引擎。支持 ExaBGP 和外部脚本触发报警。FastNetMon 可以部署在旁路上，侦听从核心交换上镜像过来的流量（见下图）。当它发现受到攻击的时候，可以通过脚本通知管理员，在 BGP 上 Blocked 掉被攻击的 IP，或是通过脚本触发任何你能想到的其他操作。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/network_map.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;FastNetMon 也可以结合 BGP 协议，打造自动化的抗 DDoS 安全防御系统。当发现受到攻击的时候，通过在 BGP 上宣告 blocked 受到攻击的 IP 地址。从而将攻击转移到其他地点，保证本地的其他服务不受到 DDoS 攻击的影响。&lt;/p&gt;
-
-&lt;p&gt;当然，在国内的环境，现实的问题在于，当你遭受攻击的时候，&lt;a href=&quot;http://zhihu.com/question/19581905/answer/37397087&quot;&gt;你其实什么都做不了&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;扯远了，今天我就介绍一下，如何把 FastNetMon 与 &lt;a href=&quot;http://grafana.org&quot;&gt;Grafana&lt;/a&gt; 结合起来，打造一个可视化的 DDoS 安全预警系统。&lt;/p&gt;
-
-&lt;h2 id=&quot;1-安装-fastnetmon&quot;&gt;1. 安装 FastNetMon&lt;/h2&gt;
-
-&lt;p&gt;由于只是搭建一个实验环境，我把所有相关的组件都安装在一台 CentOS 6 的虚拟机上。&lt;/p&gt;
-
-&lt;p&gt;FastNetMon 官方提供了便捷的安装脚本，这也是目前官方唯一推荐的安装方式。然而这个脚本有一些坑（后面会提到）。而 RPM 包的安装方式官方看来是&lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL_RPM_PACKAGES.md&quot;&gt;已经暂时放弃了&lt;/a&gt;。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget https://raw.githubusercontent.com/FastVPSEestiOu/fastnetmon/master/src/fastnetmon_install.pl -Ofastnetmon_install.pl 
-perl fastnetmon_install.pl&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;首先需要说明的是，使用这个脚本安装的时候，FastNetMon 官方会从运行的机器上收集一些系统的相关信息用于改进产品。如果你不希望被打扰，可以在脚本后面加上&lt;code class=&quot;highlighter-rouge&quot;&gt;--do-not-track-me&lt;/code&gt;参数阻止数据上传。&lt;/p&gt;
-
-&lt;p&gt;FastNetMon 需要安装很多依赖组件，这个脚本的执行时间取决于你的网速。你可以趁这时候喝口水，起来活动一下身体，或跟你的妹子聊聊微信。你也可以通过跟踪安装日志 /tmp/fastnetmon_install.log 来查看安装的时候究竟做了什么。&lt;/p&gt;
-
-&lt;p&gt;在我十几分钟的等待结束之后，fastnetmon 终于安装完成了。&lt;/p&gt;
-
-&lt;p&gt;在这里，我不得不吐槽一下这个安装脚本。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;虽然在安装之后，屏幕上会输出 We created service fastnetmon for you. You could run it with command: &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/init.d/fastnetmon start&lt;/code&gt; 但是粗心的官方忘记了给 /etc/init.d/fastnetmon 脚本加执行权，我在发现执行找不到脚本的时候发现了这个问题，自己加上了。&lt;/li&gt;
-  &lt;li&gt;即使加上了，/etc/init.d/fastnetmon 这个脚本依赖于 daemonize ，然 daemonize 这个依赖包并没有安装，我自己通过 yum 装上了。&lt;/li&gt;
-  &lt;li&gt;即使这个包装上了，启动的时候也显示成功启动，然后我发现进程并没有运行。查看日志，发现一条 [ERROR] FastNetMon is already running with pid: 3068 的错误。然而，我是第一次启动好不好！&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/shuai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;所以我尝试自己改动了启动脚本，因为 fastnetmon 本身就支持 daemonize 模式，而且直接通过进程运行时生成的 pid 文件与通过启动的 pid 文件路径是一样的，所以可以直接修改 /etc/init.d/fastnetmon 脚本，将 &lt;code class=&quot;highlighter-rouge&quot;&gt;start()&lt;/code&gt;函数替换成如下所示：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;start&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -n &lt;span class=&quot;s2&quot;&gt;$&quot;Starting &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PROGNAME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &quot;&lt;/span&gt;
-        &lt;span class=&quot;nv&quot;&gt;$FASTNETMON&lt;/span&gt; --daemonize
-        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
-        &lt;span class=&quot;c&quot;&gt;# add pretty error messages&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
-            &lt;/span&gt;echo_success
-        &lt;span class=&quot;k&quot;&gt;else
-            &lt;/span&gt;echo_failure
-        &lt;span class=&quot;k&quot;&gt;fi
-        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在通过脚本启动关闭就是正常的了。&lt;/p&gt;
-
-&lt;p&gt;之前说过，FastNetMon 支持多种抓包引擎。有像 pf_ring、netmap、pcap 这种 mirror capture, 也支持 netflow 和 sflow。FastNetMon 的作者 Pavel Odintsov 做过这些抓包引擎的性能对比：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/mirror-performance.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;同样，我也找到&lt;a href=&quot;http://prod.sandia.gov/techlib/access-control.cgi/2015/159378r.pdf&quot;&gt;这篇测试报告&lt;/a&gt;,其中有 pf_ring zc 和 netmap 的性能对比。&lt;/p&gt;
-
-&lt;p&gt;由于 netmap 需要单独安装。在这里我将介绍使用 pf_ring 作为抓包引擎进行实验。你也可以选择 pcap，如果作为实验环境，它的兼容性是最好的。&lt;/p&gt;
-
-&lt;h2 id=&quot;2-使用-pf_ring-作为-fastnetmon-的抓包引擎&quot;&gt;2. 使用 pf_ring 作为 FastNetMon 的抓包引擎&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;这部分是讲我是怎么填坑的。如果你只是做测试，可以选择 pcap 引擎，忽略这一部分。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;FastNetMon 在安装的时候，已经安装了 pf_ring 。&lt;/p&gt;
-
-&lt;p&gt;首先编辑文件 /etc/fastnetmon.conf，将 mirror 的值改为 on ，这将使用 pf_ring 作为抓包引擎。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# PF_RING traffic capture, enough fast but wire speed version need paid license
-mirror = on
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;同时，可以顺便把报警阈值调小一点，方便后面测试攻击。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Limits for Dos/DDoS attacks
-&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;threshold_pps&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;200&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;threshold_mbps&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;threshold_flows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;350&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在就可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/init.d/fastnetmon start&lt;/code&gt; 来启动 FastNetMon 了，这时候我惊喜的发现，FastNetMon 根本起！不！来！&lt;/p&gt;
-
-&lt;p&gt;通过日志可以看到：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;2016-06-03 22:31:08,966 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] pfring_open error: No such device &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pf_ring not loaded or perhaps you use quick mode and have already a socket bound to: eth1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-2016-06-03 22:31:08,966 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ERROR] PF_RING initilization failed, &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;from programm&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这里又是 FastNetMon 那个安装脚本的一大坑。 它并没有安装成功 pf_ring 的 Kernel module，也没有将安装错误抛出来。&lt;/p&gt;
-
-&lt;p&gt;如果通过命令&lt;code class=&quot;highlighter-rouge&quot;&gt;lsmod |grep pf_ring&lt;/code&gt;查找机器上已安装的 pf_ring ，会发现根本找不到。/proc/net 里也没有建立 pf_ring 的目录。&lt;/p&gt;
-
-&lt;p&gt;所以我仔细排查了 fastnetmon 的安装日志 /tmp/fastnetmon_install.log，我发现日志里有这样的内容。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel
-
-make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;'
-********** WARNING WARNING WARNING **********
-*
-* Compiling PF_RING as root might lead you to compile errors
-* Please compile PF_RING as unpriviliged user
-*
-*********************************************
-make -C /lib/modules/2.6.32-573.22.1.el6.x86_64/build SUBDIRS=/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel EXTRA_CFLAGS='&lt;/span&gt;-I/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel -DSVN_REV&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;已导出 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' modules
-make: Entering an unknown directory
-make: Leaving an unknown directory
-make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel'&lt;/span&gt;
-Command finished with code 512
-
-We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: make -j 2 -C /tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel install
-
-make: Entering directory &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel&lt;span class=&quot;s1&quot;&gt;'
-mkdir -p /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
-cp *.ko /lib/modules/2.6.32-573.22.1.el6.x86_64/kernel/net/pf_ring
-make: Leaving directory `/tmp/fastnetmon.build.dir.rwNsXhsTQt/PF_RING-6.0.3/kernel'&lt;/span&gt;
-Command finished with code 512
-
-We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: rmmod pf_ring 2&amp;gt;/dev/null
-
-Command finished with code 256
-
-We are calling &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;: modprobe pf_ring
-
-Command finished with code 256&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;可以看到，首先 pf_ring 在编译的时候有提示，不要用 root 进行编译，可能会导致失败，而且 make、make install 和 modprobe 命令的返回值也不是 0 ，说明编译和之后的安装都没有成功。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/shuai.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;所以我只能自己编译一下 pf_ring 的 Kernel module。&lt;/p&gt;
-
-&lt;p&gt;首先按照人家建议的，我们建一个普通用户 echo，然后找到日志中的编译临时目录，并赋给 echo 用户这个目录的读写权限。&lt;/p&gt;
-
-&lt;p&gt;切换到 echo 用户 然后执行下面命令进行编译。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# su - echo
-$ cd /tmp/fastnetmon.build.dir.lAVvYX7Htd/
-$ ls
-fastnetmon  PF_RING-6.0.3  PF_RING-6.0.3.tar.gz
-$ rm -rf PF_RING-6.0.3
-$ tar zxf  PF_RING-6.0.3.tar.gz
-$ cd PF_RING-6.0.3/kernel/
-$ make
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;好了，退出到这个用户，回到 root，执行安装：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;make -C /tmp/fastnetmon.build.dir.lAVvYX7Htd/PF_RING-6.0.3/kernel install
-modprobe pf_ring&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在执行 lsmod 就能看到这个 module 了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# lsmod |grep pf_ring&lt;/span&gt;
-pf_ring               691861  2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在重新启动 fastnetmon，就能够成功启动了。&lt;/p&gt;
-
-&lt;h2 id=&quot;3-模拟-ddos-攻击测试-fastnetmon&quot;&gt;3. 模拟 DDoS 攻击测试 FastNetMon&lt;/h2&gt;
-
-&lt;p&gt;接下来我们测试 fastnetmon 是否能正确识别 DDoS 攻击。&lt;/p&gt;
-
-&lt;p&gt;首先我们配置一下 FastNetMon 的通知脚本（&lt;a href=&quot;https://github.com/pavel-odintsov/fastnetmon/raw/master/src/notify_about_attack.sh&quot;&gt;下载脚本示例&lt;/a&gt;)。&lt;/p&gt;
-
-&lt;p&gt;将这个脚本复制为 /usr/local/bin/notify_about_attack.sh ，这是 fastnetmon.conf 文件中 notify_script_path 选项默认指定的通知脚本位置，并得给脚本赋执行权。&lt;/p&gt;
-
-&lt;p&gt;编辑这个脚本，找到 ban 的条件语句，由于只是进行测试，我仅仅输出一条消息到 /tmp/ban.log 日志中。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if [ &quot;$4&quot; = &quot;ban&quot; ]; then
-    echo &quot;FastNetMon Guard: IP $1 blocked because $2 attack with power $3 pps&quot; &amp;gt;&amp;gt; /tmp/ban.log
-    exit 0
-fi
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这样通知脚本就配置好了。&lt;/p&gt;
-
-&lt;p&gt;我使用一款叫做 iperf 的工具来模拟 DDoS 攻击，这个工具一般用于测试网络带宽，当然也可以通过大量发包模拟一次 DDoS 攻击。&lt;/p&gt;
-
-&lt;p&gt;在 CentOS 上可以通过 yum 直接安装 iperf：&lt;code class=&quot;highlighter-rouge&quot;&gt;yum install iperf&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;然后通过&lt;code class=&quot;highlighter-rouge&quot;&gt;iperf -su&lt;/code&gt;命令启动 iperf 的服务器端。&lt;/p&gt;
-
-&lt;p&gt;这里 -u 参数指明侦听 udp 端口。&lt;/p&gt;
-
-&lt;p&gt;我将我的 mbp 作为攻击的发器端，同样安装 iperf ： &lt;code class=&quot;highlighter-rouge&quot;&gt;brew install iperf&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;在客户端上向服务器发起探测：&lt;code class=&quot;highlighter-rouge&quot;&gt;iperf  -u -c 10.1.2.137 -b 100M -P 5&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;这时，在服务器上执行 FastNetMon 的客户端命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/fastnetmon/fastnetmon_clinet&lt;/code&gt;进行查看,可以看到出现如下信息。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;FastNetMon v1.0 FastVPS Eesti OU &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VPS and dedicated: http://FastVPS.host
-IPs ordered by: packets
-Incoming traffic         42594 pps    491 mbps      0 flows
-10.1.2.137               35552 pps    410 mbps      0 flows  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;banned&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-
-Outgoing traffic             1 pps	0 mbps      0 flows
-10.1.2.137                   1 pps	0 mbps      0 flows  &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;banned&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-
-Internal traffic             0 pps	0 mbps
-
-Other traffic                0 pps	0 mbps
-
-Screen updated &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;:              0 sec 191 microseconds
-Traffic calculated &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;:          0 sec 7 microseconds
-Total amount of not processed packets: 0
-Packets received:	404792
-Packets dropped:        0
-Packets dropped:        0.0 %
-
-Ban list:
-10.1.2.137/35552 pps incoming at 04_06_16_00:40:13&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;因为之前我设置了攻击阈值为 200 pps，10 mb，目前的这个负载量已经远远超过我设定的阈值，被认为遭到了攻击。可以看到，目前 10.1.2.137 这个 IP 已经被拉进 Ban list 之中了。&lt;/p&gt;
-
-&lt;p&gt;现在我们查看 FastNetMon 是否触发了通知，查看 /tmp/ban.log 这个日志，可以看到通知的消息。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FastNetMon Guard: IP 10.1.2.137 blocked because incoming attack with power 293 pps
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;FastNetMon 确实触发了通知的操作。&lt;/p&gt;
-
-&lt;h2 id=&quot;4-fastnetmon-集成-influxdb&quot;&gt;4. FastNetMon 集成 InfluxDB&lt;/h2&gt;
-
-&lt;p&gt;InfluxDB 是一款开源的分布式时钟、事件和指标数据库。使用 Go 语言编写，它易于分布式和水平伸缩扩展。 InfluxDB 本身提供了非常简单易用的 HTTP API，因此它经常用于监控程序的后端数据存储，Grafana 对它就有非常好的支持。&lt;/p&gt;
-
-&lt;p&gt;它有三大特性：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Time Series（时间序列）：你可以使用与时间有关的相关函数，如最大，最小，求和等。&lt;/li&gt;
-  &lt;li&gt;Metrics（度量）：你可以实时对大量数据进行计算。&lt;/li&gt;
-  &lt;li&gt;Eevents（事件）：它支持任意的事件数据。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;先来安装 InfluxDB。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget https://dl.influxdata.com/influxdb/releases/influxdb-0.13.0.x86_64.rpm
-yum localinstall influxdb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;编辑 InfluxDB 的配置文件 /etc/influxdb/influxdb.conf 中的 graphite 选项，按照如下配置：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ini&quot; data-lang=&quot;ini&quot;&gt;&lt;span class=&quot;nn&quot;&gt;[[graphite]&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;py&quot;&gt;enabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;py&quot;&gt;bind-address&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:2003&quot;&lt;/span&gt;
-  &lt;span class=&quot;py&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;tcp&quot;&lt;/span&gt;
-  &lt;span class=&quot;py&quot;&gt;consistency-level&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;one&quot;&lt;/span&gt;
-
-
-  &lt;span class=&quot;py&quot;&gt;batch-size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5000&lt;/span&gt;
-  &lt;span class=&quot;py&quot;&gt;batch-timeout&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1s&quot;&lt;/span&gt; 
-  &lt;span class=&quot;s&quot;&gt;separator = &quot;.&quot;&lt;/span&gt;
-
-  &lt;span class=&quot;py&quot;&gt;templates&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[&lt;/span&gt;
-    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.hosts.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.cidr.direction.function.resource&quot;,&lt;/span&gt;
-    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.networks.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.cidr.direction.resource&quot;,&lt;/span&gt;
-    &lt;span class=&quot;err&quot;&gt;&quot;fastnetmon.total.*&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;app.measurement.direction.resource&quot;&lt;/span&gt;
-  &lt;span class=&quot;err&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;现在就可以启动 InfluxDB 了。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# /etc/init.d/influxdb start&lt;/span&gt;
-Starting the process influxdb &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; OK &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-influxdb process was started &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; OK &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;同样，需要在 FastNetMon 的配置文件 /etc/fastnetmon.conf 里做一些配置:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;graphite = on
-graphite_host = 127.0.0.1
-graphite_port = 2003
-graphite_prefix = fastnetmon
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;然后重启 FastNetMon:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/init.d/fastnetmon restart
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;等待几秒，接下来登录 Influxdb shell，查看数据库里是否有数据了。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# influx
-Visit https://enterprise.influxdata.com to register for updates, InfluxDB server management, and monitoring.
-Connected to http://localhost:8086 version 0.13.0
-InfluxDB shell version: 0.13.0
-&amp;gt; show databases
-name: databases
----------------
-name
-graphite
-_internal
-
-&amp;gt; use graphite
-Using database graphite
-&amp;gt; show measurements
-name: measurements
-------------------
-name
-fastnetmon.10_1_2_137.incoming.flows
-fastnetmon.10_1_2_137.incoming.mbps
-fastnetmon.10_1_2_137.incoming.pps
-fastnetmon.10_1_2_137.outgoing.flows
-fastnetmon.10_1_2_137.outgoing.mbps
-fastnetmon.10_1_2_137.outgoing.pps
-fastnetmon.172_26_1_1.incoming.flows
-fastnetmon.172_26_1_1.incoming.mbps
-fastnetmon.172_26_1_1.incoming.pps
-fastnetmon.172_26_1_1.outgoing.flows
-fastnetmon.172_26_1_1.outgoing.mbps
-fastnetmon.172_26_1_1.outgoing.pps
-fastnetmon.incoming.mbps
-fastnetmon.incoming.pps
-fastnetmon.incomingflows
-fastnetmon.outgoing.mbps
-fastnetmon.outgoing.pps
-fastnetmon.outgoingflows
-
-&amp;gt; select * from &quot;fastnetmon.incoming.pps&quot; order by time desc limit 10
-name: fastnetmon.incoming.pps
------------------------------
-time			value
-1465079546000000000	0
-1465079545000000000	0
-1465079544000000000	3
-1465079543000000000	0
-1465079542000000000	2
-1465079541000000000	0
-1465079540000000000	0
-1465079539000000000	0
-1465079538000000000	0
-1465079537000000000	0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可以看到，在 graphite 这个数据库里，FastNetMon 已经自动创建了一些表，而且在表里已经有写入的数据了。&lt;/p&gt;
-
-&lt;p&gt;在 InfluxDB 里，有些概念是与传统数据库不同的。在它的每张表（在 InfluxDB 中称为 measurement）里，并没有固定的字段，所以你不需要在前期先设计表的结构。&lt;/p&gt;
-
-&lt;p&gt;表中的每条记录（在 InfluxDB 中称为 points），由时间戳（time）、数据（field）、标签（tags）组成。 每条 points 都要至少包含一个 field。&lt;/p&gt;
-
-&lt;p&gt;如果一条记录插入进来，即使在表中没有这个 tags 或 field 的时候，它也会自动添加这个字段。&lt;/p&gt;
-
-&lt;p&gt;InfluxDB 官方介绍说，在 InfluxDB 的数据库中，可能会有百万计的表。它提供了一个非常强大的特性，支持通过 Go 语言风格的正则表达式对 measurement 进行查询。这对后面我们生成 Grafana 的图表非常有用。例如：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; select * from /fastnetmon.*\.incoming\.pps/ order by time desc limit 3
-name: fastnetmon.incoming.pps
------------------------------
-time			value
-1465083127000000000	3
-1465083126000000000	0
-1465083125000000000	0
-
-name: fastnetmon.172_26_1_1.incoming.pps
-----------------------------------------
-time			value
-1465083127000000000	0
-1465083126000000000	0
-1465083125000000000	0
-
-name: fastnetmon.10_1_2_137.incoming.pps
-----------------------------------------
-time			value
-1465083127000000000	3
-1465083126000000000	0
-1465083125000000000	0
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;这样可以获取到 FastNetMon 中所有进站流量的 pps,而无需确切知道镜像来的流量中一共有多少个目的 IP 地址。&lt;/p&gt;
-
-&lt;p&gt;InfluxDB 不仅提供了 shell ，同时也提供了 WEB 管理接口（端口 8083）和 HTTP API 接口（端口 8086）。接下来，我将配置 Grafana 与它的 HTTP API 端口进行交互。&lt;/p&gt;
-
-&lt;h2 id=&quot;5-安装配置-grafana&quot;&gt;5. 安装配置 Grafana&lt;/h2&gt;
-
-&lt;p&gt;Grafana 目前已经&lt;a href=&quot;http://grafana.org/blog/2016/05/11/grafana-3-0-stable-released.html&quot;&gt;更新到 3.0 &lt;/a&gt;版本了，新增了许多特性。哈哈，好激动，我终于可以把 Kibana 难看的图表给扔掉了。&lt;/p&gt;
-
-&lt;p&gt;使用下面的命令下载安装 Grafana:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install https://grafanarel.s3.amazonaws.com/builds/grafana-3.0.4-1464167696.x86_64.rpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;话不多说，直接启动吧。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/init.d/grafana-server start
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;浏览器打开 Grafana（端口默认 3000），默认用户是 admin, 密码 admin。&lt;/p&gt;
-
-&lt;p&gt;首先点击左上角 Logo，添加数据源,添加 InfluxDB 的配置信息。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-datasource.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;填好之后，点击下方的&lt;code class=&quot;highlighter-rouge&quot;&gt;Save and Test&lt;/code&gt;按钮，如果显示 Success ，说明已经可以连到 InfluxDB 了。&lt;/p&gt;
-
-&lt;p&gt;然后转到 Dashboard ，新建一个 Dashboard。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-dash.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在 Dashboard 里新建一个 Panel。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-new.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;点击 Metrics 标签中的 SQL 语句。在 FROM 一行中，点击 select measurement ，选择 fastnetmon.incoming.pps,可以看到上方 Panel 中的数值已经变化了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-metrics.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;现在数据已经设置好了，你可以选择在 General 标签设置标题，Options 标签设置样式，修改成你喜欢的样子。&lt;/p&gt;
-
-&lt;p&gt;然后我们以同样的方式新建一排 Singlestat 的 Panel ，分别对应 incoming 和 outgoing 的 pps 和 mpbs。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-single-row.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;接下来新建一行，新建两张分别对应 pps 和 mbps 的图表。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-graph-new.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在这次数据的设置里，同样在 select meatruement 的地方，可以使用上一节我讲到的正则表达式，查询所有关于 pps 表的正则表达式 &lt;code class=&quot;highlighter-rouge&quot;&gt;/fastnetmon.*\.pps/&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-graph-metrics.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;然后同样另建一张查询所有 mpbs 表的图。&lt;/p&gt;
-
-&lt;p&gt;至此，我们的 Dashboard 就算新建完成了。&lt;/p&gt;
-
-&lt;p&gt;这时候，我再通过 iperf 模拟发起一次攻击，看一下 Grafana 的效果。还是很漂亮的嘛。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/in-post/grafana-attack.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;今天这篇帖子就讲完了，不知道你是不是已经学会使用 FastNetMon 集成 Grafana 搭建这个 DDoS 安全预警平台了，如果你有任何想法，欢迎你与我交流。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;p&gt;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INSTALL.md&lt;/p&gt;
-
-&lt;p&gt;https://github.com/pavel-odintsov/fastnetmon/blob/master/docs/INFLUXDB_INTEGRATION.md&lt;/p&gt;
-
-&lt;p&gt;https://docs.influxdata.com/influxdb/v0.13/introduction/getting_started/&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 03 Jun 2016 00:00:00 +0800</pubDate>
-        <link>https://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/</link>
-        <guid isPermaLink="true">https://echohn.github.io/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/</guid>
-        
-        <category>安全</category>
-        
-        <category>运维</category>
         
         
       </item>

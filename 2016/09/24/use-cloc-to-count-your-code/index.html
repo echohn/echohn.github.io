@@ -208,23 +208,23 @@
 
 				<p>今天发现一个特别好用的工具 <a href="https://github.com/AlDanial/cloc">cloc</a>，可以用它统计代码的行数。它可以识别多种开发语言，并在计算的时候忽略掉注释和空行。</p>
 
-<p>我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 <code class="highlighter-rouge">find xxx -prune xxx | xargs grep -vE xxx | wc -l</code> 的超长命令。</p>
+<p>我记得我上次申请软件著作权的时候，申请表格中要求提交代码量，当时为了计算行数，我写了类似于 <code class="language-plaintext highlighter-rouge">find xxx -prune xxx | xargs grep -vE xxx | wc -l</code> 的超长命令。</p>
 
 <p>每年写年终总结统计工作量的时候，我也常常会用到类似的命令。</p>
 
 <p>所以我今天突然发现这个工具的时候，还是很惊喜的。</p>
 
-<p>在 macOS 上，可以通过 <code class="highlighter-rouge">brew install cloc</code> 来安装它，它支持包括 Windows 在内的多个系统。</p>
+<p>在 macOS 上，可以通过 <code class="language-plaintext highlighter-rouge">brew install cloc</code> 来安装它，它支持包括 Windows 在内的多个系统。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install -g cloc                    <span class="c"># https://www.npmjs.com/package/cloc</span>
-sudo apt-get install cloc              <span class="c"># Debian, Ubuntu</span>
-sudo yum install cloc                  <span class="c"># Red Hat, Fedora</span>
-sudo dnf install cloc                  <span class="c"># Fedora 22 or later</span>
-sudo pacman -S cloc                    <span class="c"># Arch</span>
-sudo pkg install cloc                  <span class="c"># FreeBSD</span>
-sudo port install cloc                 <span class="c"># Mac OS X with MacPorts</span>
-brew install cloc                      <span class="c"># Mac OS X with Homebrew</span>
-choco install cloc                     <span class="c"># Windows with Chocolatey</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm <span class="nb">install</span> <span class="nt">-g</span> cloc                    <span class="c"># https://www.npmjs.com/package/cloc</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>cloc              <span class="c"># Debian, Ubuntu</span>
+<span class="nb">sudo </span>yum <span class="nb">install </span>cloc                  <span class="c"># Red Hat, Fedora</span>
+<span class="nb">sudo </span>dnf <span class="nb">install </span>cloc                  <span class="c"># Fedora 22 or later</span>
+<span class="nb">sudo </span>pacman <span class="nt">-S</span> cloc                    <span class="c"># Arch</span>
+<span class="nb">sudo </span>pkg <span class="nb">install </span>cloc                  <span class="c"># FreeBSD</span>
+<span class="nb">sudo </span>port <span class="nb">install </span>cloc                 <span class="c"># Mac OS X with MacPorts</span>
+brew <span class="nb">install </span>cloc                      <span class="c"># Mac OS X with Homebrew</span>
+choco <span class="nb">install </span>cloc                     <span class="c"># Windows with Chocolatey</span></code></pre></figure>
 
 <p>它有诸多优点：</p>
 
@@ -245,21 +245,21 @@ choco install cloc                     <span class="c"># Windows with Chocolatey
 <p>比如写一个 <a href="http://stackoverflow.com/questions/26881441/can-you-get-the-number-of-lines-of-code-from-a-github-repository">cloc-git</a> 的脚本，用来统计 git 远程项目的代码量。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/usr/bin/env bash</span>
-git clone --depth 1 <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> temp-linecount-repo <span class="o">&amp;&amp;</span>
+git clone <span class="nt">--depth</span> 1 <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> temp-linecount-repo <span class="o">&amp;&amp;</span>
   <span class="nb">printf</span> <span class="s2">"('temp-linecount-repo' will be deleted automatically)</span><span class="se">\n\n\n</span><span class="s2">"</span> <span class="o">&amp;&amp;</span>
   cloc temp-linecount-repo <span class="o">&amp;&amp;</span>
-  rm -rf temp-linecount-repo</code></pre></figure>
+  <span class="nb">rm</span> <span class="nt">-rf</span> temp-linecount-repo</code></pre></figure>
 
 <p>运行结果如下：</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>cloc-git https://github.com/rails/rails.git
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cloc-git https://github.com/rails/rails.git
 Cloning into <span class="s1">'temp-linecount-repo'</span>...
-remote: Counting objects: 3615, <span class="k">done</span>.
-remote: Compressing objects: 100% <span class="o">(</span>3048/3048<span class="o">)</span>, <span class="k">done</span>.
+remote: Counting objects: 3615, <span class="k">done</span><span class="nb">.</span>
+remote: Compressing objects: 100% <span class="o">(</span>3048/3048<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
 remote: Total 3615 <span class="o">(</span>delta 174<span class="o">)</span>, reused 1576 <span class="o">(</span>delta 52<span class="o">)</span>, pack-reused 0
-Receiving objects: 100% <span class="o">(</span>3615/3615<span class="o">)</span>, 6.08 MiB | 2.28 MiB/s, <span class="k">done</span>.
-Resolving deltas: 100% <span class="o">(</span>174/174<span class="o">)</span>, <span class="k">done</span>.
-Checking connectivity... <span class="k">done</span>.
+Receiving objects: 100% <span class="o">(</span>3615/3615<span class="o">)</span>, 6.08 MiB | 2.28 MiB/s, <span class="k">done</span><span class="nb">.</span>
+Resolving deltas: 100% <span class="o">(</span>174/174<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+Checking connectivity... <span class="k">done</span><span class="nb">.</span>
 <span class="o">(</span><span class="s1">'temp-linecount-repo'</span> will be deleted automatically<span class="o">)</span>
 
 
@@ -268,9 +268,9 @@ Checking connectivity... <span class="k">done</span>.
      309 files ignored.
 
 github.com/AlDanial/cloc v 1.70  <span class="nv">T</span><span class="o">=</span>19.61 s <span class="o">(</span>141.1 files/s, 18560.1 lines/s<span class="o">)</span>
--------------------------------------------------------------------------------
+<span class="nt">-------------------------------------------------------------------------------</span>
 Language                     files          blank        comment           code
--------------------------------------------------------------------------------
+<span class="nt">-------------------------------------------------------------------------------</span>
 Ruby                          2152          47525          41996         213275
 Markdown                        74          13832              0          34880
 JavaScript                      23            732            747           3385
@@ -284,35 +284,35 @@ SQL                              1              6              0             43
 JSON                             1              0              0             24
 builder                          2              0              0              6
 DTD                              1              0              0              1
--------------------------------------------------------------------------------
+<span class="nt">-------------------------------------------------------------------------------</span>
 SUM:                          2767          62913          43565         257521
--------------------------------------------------------------------------------</code></pre></figure>
+<span class="nt">-------------------------------------------------------------------------------</span></code></pre></figure>
 
-<p>cloc 也支持使用 <code class="highlighter-rouge">--diff</code> 选项对两个版本的代码量进行比较。</p>
+<p>cloc 也支持使用 <code class="language-plaintext highlighter-rouge">--diff</code> 选项对两个版本的代码量进行比较。</p>
 
-<p>但是在我尝试 cloc 使用 <code class="highlighter-rouge">--diff</code> 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：</p>
+<p>但是在我尝试 cloc 使用 <code class="language-plaintext highlighter-rouge">--diff</code> 选项比较文件并输出结果的时候， 我发现了一个问题，cloc 输出的 yaml 或 json 文件内容是不正确的。如下所示：</p>
 
 <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="nn">---</span>
 <span class="c1"># github.com/AlDanial/cloc</span>
-<span class="s">header</span> <span class="pi">:</span>
+<span class="na">header </span><span class="pi">:</span>
 <span class="nn">...</span>
 
-<span class="s">same</span> <span class="pi">:</span>
-    <span class="s">language</span> <span class="pi">:</span> <span class="s">CSS</span>
-    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">3</span>
-    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
-    <span class="s">comment</span> <span class="pi">:</span> <span class="s">25</span>
-    <span class="s">code</span> <span class="pi">:</span> <span class="s">2</span>
-    <span class="s">language</span> <span class="pi">:</span> <span class="s">JavaScript</span>
-    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">38</span>
-    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
-    <span class="s">comment</span> <span class="pi">:</span> <span class="s">131</span>
-    <span class="s">code</span> <span class="pi">:</span> <span class="s">2177</span>
-    <span class="s">language</span> <span class="pi">:</span> <span class="s">HTML</span>
-    <span class="s">files_count</span> <span class="pi">:</span> <span class="s">3</span>
-    <span class="s">blank</span> <span class="pi">:</span> <span class="s">0</span>
-    <span class="s">comment</span> <span class="pi">:</span> <span class="s">3</span>
-    <span class="s">code</span> <span class="pi">:</span> <span class="s">182</span>
+<span class="na">same </span><span class="pi">:</span>
+    <span class="na">language </span><span class="pi">:</span> <span class="s">CSS</span>
+    <span class="na">files_count </span><span class="pi">:</span> <span class="m">3</span>
+    <span class="na">blank </span><span class="pi">:</span> <span class="m">0</span>
+    <span class="na">comment </span><span class="pi">:</span> <span class="m">25</span>
+    <span class="na">code </span><span class="pi">:</span> <span class="m">2</span>
+    <span class="na">language </span><span class="pi">:</span> <span class="s">JavaScript</span>
+    <span class="na">files_count </span><span class="pi">:</span> <span class="m">38</span>
+    <span class="na">blank </span><span class="pi">:</span> <span class="m">0</span>
+    <span class="na">comment </span><span class="pi">:</span> <span class="m">131</span>
+    <span class="na">code </span><span class="pi">:</span> <span class="m">2177</span>
+    <span class="na">language </span><span class="pi">:</span> <span class="s">HTML</span>
+    <span class="na">files_count </span><span class="pi">:</span> <span class="m">3</span>
+    <span class="na">blank </span><span class="pi">:</span> <span class="m">0</span>
+    <span class="na">comment </span><span class="pi">:</span> <span class="m">3</span>
+    <span class="na">code </span><span class="pi">:</span> <span class="m">182</span>
 <span class="nn">...</span></code></pre></figure>
 
 <p>这是 diff 输出的 yaml 文件。注意 same 下面的 key 并不是根据开发语言区分的二级 Hash，而是所有结果都使用了同样的 key 名放在了一起。这样如果有其他工具读取输出文件，势必会导致前面同名 key 的值被后面的值覆盖。造成解析后会丢失绝大部分的报告内容。</p>
@@ -321,7 +321,7 @@ SUM:                          2767          62913          43565         257521
 
 <p>最后统计了一下我最近在做的项目。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ cloc .
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cloc .
      365 text files.
      339 unique files.
      225 files ignored.
@@ -342,8 +342,7 @@ CSS                              3              2             25              2
 -------------------------------------------------------------------------------
 SUM:                           152            812            982          19979
 -------------------------------------------------------------------------------
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>最多的 YAML 代码是从业务库导出的基线数据。由于这是个基于 echarts 的业务数据可视化的项目，前端代码占的比重稍大了一点。</p>
 
@@ -422,7 +421,7 @@ SUM:                           152            812            982          19979
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -520,6 +519,12 @@ SUM:                           152            812            982          19979
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -645,7 +650,7 @@ SUM:                           152            812            982          19979
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

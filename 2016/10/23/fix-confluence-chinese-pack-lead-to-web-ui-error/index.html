@@ -235,8 +235,8 @@
 
 <p>我打开了补丁包，试着过滤了一下代码的关键字。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>unzip Confluence-5.10.0-rc1-language-pack-zh_CN.jar
-<span class="gp">$ </span>grep -r start ./
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>unzip Confluence-5.10.0-rc1-language-pack-zh_CN.jar
+<span class="nv">$ </span><span class="nb">grep</span> <span class="nt">-r</span> start ./
 .//atlassian-plugin.xml:    &lt;resource <span class="nv">name</span><span class="o">=</span><span class="s2">"i18n-101"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"i18n"</span> <span class="nv">location</span><span class="o">=</span><span class="s2">"com/atlassian/confluence/plugins/gettingstarted/i18n"</span>/&gt;
 .//com/atlassian/confluence/plugins/gettingstarted/i18n_zh_CN.properties:confluence.gettingstarted.movie<span class="o">=</span>//www.atlassian.com/software/confluence/videos/<span class="o">{</span>0<span class="o">}</span>.html<span class="se">\n</span>
 ...</code></pre></figure>
@@ -245,7 +245,7 @@
 
 <p>于是将文件中多余的换行符去掉，重新打包。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>jar cvf ../Confluence-5.10.0-rc1-language-pack-zh_CN.jar ./</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>jar cvf ../Confluence-5.10.0-rc1-language-pack-zh_CN.jar ./</code></pre></figure>
 
 <p>将修改后的中文补丁传上去，刷新主页面，咦，居然错误还在？</p>
 
@@ -328,7 +328,7 @@
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -426,6 +426,12 @@
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -551,7 +557,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

@@ -210,7 +210,7 @@
 
 				<p>我懒，我喜欢让自己的工作环境变得轻松，喜欢 Automate Everything 。</p>
 
-<p>今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个<code class="highlighter-rouge">ip a</code>看一下 ip 地址，再 <code class="highlighter-rouge">⌃</code> + <code class="highlighter-rouge">⌘</code> 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是射手）！</p>
+<p>今天在用 Vmware Fusion 测东西的时候，我就发现我虽然在虚机模板上做了各种优化，但是每次新创建一个链接克隆的时候，我居然还要在 Fusion 中进入虚机，登录，敲个<code class="language-plaintext highlighter-rouge">ip a</code>看一下 ip 地址，再 <code class="language-plaintext highlighter-rouge">⌃</code> + <code class="language-plaintext highlighter-rouge">⌘</code> 退出虚机，然后才能在 iTerm 中 ssh 这个虚机，这让大处女座怎么忍（其实我是射手）！</p>
 
 <p>所以就想，干脆启动虚机的时候能看到 ip 地址就好啦。</p>
 
@@ -224,25 +224,25 @@
 
 <p>嗯，ifup-post 脚本里真有下面这么一句呢（其实没有自己手动添也行）。</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> -x /sbin/ifup-local <span class="o">]</span>; <span class="k">then</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> <span class="nt">-x</span> /sbin/ifup-local <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     /sbin/ifup-local <span class="k">${</span><span class="nv">DEVICE</span><span class="k">}</span></code></pre></figure>
 
-<p>于是就写了 <code class="highlighter-rouge">/sbin/ifup-local</code> 这么个脚本。</p>
+<p>于是就写了 <code class="language-plaintext highlighter-rouge">/sbin/ifup-local</code> 这么个脚本。</p>
 
 <p>因为这个脚本是每启动一个网卡就要执行一次，我嫌麻烦还要判断网卡，干脆就直接都写一样的了。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
 
-<span class="nv">addr</span><span class="o">=</span><span class="k">$(</span>ip a | awk <span class="s1">'/scope global/{print $NF" ipaddress : "$2}'</span><span class="k">)</span>
+<span class="nv">addr</span><span class="o">=</span><span class="si">$(</span>ip a | <span class="nb">awk</span> <span class="s1">'/scope global/{print $NF" ipaddress : "$2}'</span><span class="si">)</span>
 <span class="nv">file</span><span class="o">=</span><span class="s2">"/etc/issue"</span>
 
-sed -i <span class="s1">'/ipaddress/d'</span> <span class="nv">$file</span>
-sed -i <span class="s1">'/^$/d'</span> <span class="nv">$file</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/ipaddress/d'</span> <span class="nv">$file</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/^$/d'</span> <span class="nv">$file</span>
 
-mv <span class="nv">$file</span> <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak
-<span class="nb">echo</span> <span class="nv">$addr</span> &gt; <span class="nv">$file</span>
-<span class="nb">echo</span> &gt;&gt; <span class="nv">$file</span>
-cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak &gt;&gt; <span class="nv">$file</span></code></pre></figure>
+<span class="nb">mv</span> <span class="nv">$file</span> <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak
+<span class="nb">echo</span> <span class="nv">$addr</span> <span class="o">&gt;</span> <span class="nv">$file</span>
+<span class="nb">echo</span> <span class="o">&gt;&gt;</span> <span class="nv">$file</span>
+<span class="nb">cat</span> <span class="k">${</span><span class="nv">file</span><span class="k">}</span>.bak <span class="o">&gt;&gt;</span> <span class="nv">$file</span></code></pre></figure>
 
 <p>最后新建一台虚机看一下效果，完美~！</p>
 
@@ -323,7 +323,7 @@ cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -421,6 +421,12 @@ cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -546,7 +552,7 @@ cat <span class="k">${</span><span class="nv">file</span><span class="k">}</span
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

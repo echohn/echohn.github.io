@@ -187,6 +187,31 @@
             ">
     			
 <div class="post-preview">
+    <a href="/2021/01/23/fix-rubymine-not-found-node/">
+        <h2 class="post-title">
+            修复 RubyMine 在 Alfred workflow 打开项目时，出现 yarn packages are out of date 的错误
+        </h2>
+        
+        <h3 class="post-subtitle">
+            
+        </h3>
+        
+        <div class="post-content-preview">
+            近来发现 RubyMine 在启动项目的服务时，有时正常，有时候异常，异常就如下图所示（启动 rails s）：
+
+
+在直接启动 RubyMine 的时候是不会出现该问题的，但是通过 Alfred 的 jetbrains workflow 直接启动项目时会出现此现象。
+
+排查中发现，我在项目中实际用到的是 node 12, 但是在服务启动时，总是在调用 node 14。然而在 RubyMin...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Echo on January 23, 2021
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
     <a href="/2017/08/10/use-line-comment-with-apidoc-in-ruby-language/">
         <h2 class="post-title">
             在 Ruby 中使用行注释生成 apiDoc
@@ -419,30 +444,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-    <a href="/2016/06/03/use-fastnetmon-and-grafana-to-build-a-graphical-ddos-early-warning-system/">
-        <h2 class="post-title">
-            使用 FastNetMon + Grafana 打造可视化的 DDoS 安全告警系统
-        </h2>
-        
-        <h3 class="post-subtitle">
-            
-        </h3>
-        
-        <div class="post-content-preview">
-            昨天被安全部拉去开会，我被安利了好多安全工具。
-
-我很喜欢其中一个叫做 FastNetMon 的 DoS/DDoS 分析防御工具。
-
-它性能很高，支持多种抓包引擎。支持 ExaBGP 和外部脚本触发报警。FastNetMon 可以部署在旁路上，侦听从核心交换上镜像过来的流量（见下图）。当它发现受到攻击的时候，可以通过脚本通知管理员，在 BGP 上 Blocked 掉被攻击的 IP，或是通过脚...
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Echo on June 3, 2016
-    </p>
-</div>
-<hr>
-
 
 <!-- Pager -->
 
@@ -491,7 +492,7 @@
                             
                         
                             
-                                <a href="/tags/#Ruby" title="Ruby" rel="4">
+                                <a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -589,6 +590,12 @@
                             
                                 <a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
                         
@@ -705,7 +712,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

@@ -231,8 +231,8 @@
 <p>你无需在命令行中使用分号（我希望是这样），同样也不要在脚本中使用它。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
-<span class="nv">name</span><span class="o">=</span><span class="s1">'dave'</span>;
-<span class="nb">echo</span> <span class="s2">"hello </span><span class="nv">$name</span><span class="s2">"</span>;
+<span class="nv">name</span><span class="o">=</span><span class="s1">'dave'</span><span class="p">;</span>
+<span class="nb">echo</span> <span class="s2">"hello </span><span class="nv">$name</span><span class="s2">"</span><span class="p">;</span>
 
 <span class="c">#right</span>
 <span class="nv">name</span><span class="o">=</span><span class="s1">'dave'</span>
@@ -240,7 +240,7 @@
 
 <h3 id="函数">函数</h3>
 
-<p>不要使用关键字 <code class="highlighter-rouge">function</code> 创建函数。所有函数中创建的变量都应该声明为局部变量。</p>
+<p>不要使用关键字 <code class="language-plaintext highlighter-rouge">function</code> 创建函数。所有函数中创建的变量都应该声明为局部变量。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
 <span class="k">function </span>foo <span class="o">{</span>
@@ -254,7 +254,7 @@ foo<span class="o">()</span> <span class="o">{</span>
 
 <h3 id="代码块声明">代码块声明</h3>
 
-<p><code class="highlighter-rouge">then</code> 应与 <code class="highlighter-rouge">if</code> 放在同一行，<code class="highlighter-rouge">do</code> 应与 <code class="highlighter-rouge">while</code> 放在同一行。</p>
+<p><code class="language-plaintext highlighter-rouge">then</code> 应与 <code class="language-plaintext highlighter-rouge">if</code> 放在同一行，<code class="language-plaintext highlighter-rouge">do</code> 应与 <code class="language-plaintext highlighter-rouge">while</code> 放在同一行。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
 <span class="k">if </span><span class="nb">true
@@ -268,7 +268,7 @@ foo<span class="o">()</span> <span class="o">{</span>
 <span class="o">}</span>
 
 <span class="c"># right</span>
-<span class="k">if </span><span class="nb">true</span>; <span class="k">then</span>
+<span class="k">if </span><span class="nb">true</span><span class="p">;</span> <span class="k">then</span>
     ...
 <span class="k">fi</span></code></pre></figure>
 
@@ -282,20 +282,20 @@ foo<span class="o">()</span> <span class="o">{</span>
 
 <h2 id="bash-主义">Bash 主义</h2>
 
-<p>本风格指南用于 bash。这意味着，如果可以选择，使用 bash 的内建命令或关键字，总是好于外部命令或<code class="highlighter-rouge">sh(1)</code>的语法。</p>
+<p>本风格指南用于 bash。这意味着，如果可以选择，使用 bash 的内建命令或关键字，总是好于外部命令或<code class="language-plaintext highlighter-rouge">sh(1)</code>的语法。</p>
 
-<h3 id="test1"><code class="highlighter-rouge">test(1)</code></h3>
+<h3 id="test1"><code class="language-plaintext highlighter-rouge">test(1)</code></h3>
 
-<p>使用 <code class="highlighter-rouge">[[ ... ]]</code> 进行条件测试, 而不是 <code class="highlighter-rouge">[ .. ]</code> 或 <code class="highlighter-rouge">test ...</code></p>
+<p>使用 <code class="language-plaintext highlighter-rouge">[[ ... ]]</code> 进行条件测试, 而不是 <code class="language-plaintext highlighter-rouge">[ .. ]</code> 或 <code class="language-plaintext highlighter-rouge">test ...</code></p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
-<span class="nb">test</span> -d /etc
+<span class="nb">test</span> <span class="nt">-d</span> /etc
 
 <span class="c"># also wrong</span>
-<span class="o">[</span> -d /etc <span class="o">]</span>
+<span class="o">[</span> <span class="nt">-d</span> /etc <span class="o">]</span>
 
 <span class="c"># correct</span>
-<span class="o">[[</span> -d /etc <span class="o">]]</span></code></pre></figure>
+<span class="o">[[</span> <span class="nt">-d</span> /etc <span class="o">]]</span></code></pre></figure>
 
 <p>查看 http://mywiki.wooledge.org/BashFAQ/031 了解更多信息。</p>
 
@@ -306,60 +306,60 @@ foo<span class="o">()</span> <span class="o">{</span>
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">n</span><span class="o">=</span>10
 
 <span class="c"># wrong</span>
-<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>seq 1 5<span class="k">)</span>; <span class="k">do</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>1 5<span class="si">)</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span>
 
 <span class="c"># wrong</span>
-<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>seq 1 <span class="s2">"</span><span class="nv">$n</span><span class="s2">"</span><span class="k">)</span>; <span class="k">do</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>1 <span class="s2">"</span><span class="nv">$n</span><span class="s2">"</span><span class="si">)</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span>
 
 <span class="c"># right</span>
-<span class="k">for </span>f <span class="k">in</span> <span class="o">{</span>1..5<span class="o">}</span>; <span class="k">do</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="o">{</span>1..5<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span>
 
 <span class="c"># right</span>
-<span class="k">for</span> <span class="o">((</span>i <span class="o">=</span> 0; i &lt; n; i++<span class="o">))</span>; <span class="k">do</span>
+<span class="k">for</span> <span class="o">((</span>i <span class="o">=</span> 0<span class="p">;</span> i &lt; n<span class="p">;</span> i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span></code></pre></figure>
 
 <h3 id="命令替换">命令替换</h3>
 
-<p>使用 <code class="highlighter-rouge">$(...)</code> 进行命令替换.</p>
+<p>使用 <code class="language-plaintext highlighter-rouge">$(...)</code> 进行命令替换.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">foo</span><span class="o">=</span><span class="sb">`</span>date<span class="sb">`</span>  <span class="c"># wrong</span>
-<span class="nv">foo</span><span class="o">=</span><span class="k">$(</span>date<span class="k">)</span> <span class="c"># right</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">foo</span><span class="o">=</span><span class="sb">`</span><span class="nb">date</span><span class="sb">`</span>  <span class="c"># wrong</span>
+<span class="nv">foo</span><span class="o">=</span><span class="si">$(</span><span class="nb">date</span><span class="si">)</span> <span class="c"># right</span></code></pre></figure>
 
 <h3 id="数学--整数操作">数学 / 整数操作</h3>
 
-<p>使用 <code class="highlighter-rouge">((...))</code> 和 <code class="highlighter-rouge">$((...))</code>。</p>
+<p>使用 <code class="language-plaintext highlighter-rouge">((...))</code> 和 <code class="language-plaintext highlighter-rouge">$((...))</code>。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">a</span><span class="o">=</span>5
 <span class="nv">b</span><span class="o">=</span>4
 
 <span class="c"># wrong</span>
-<span class="k">if</span> <span class="o">[[</span> <span class="nv">$a</span> -gt <span class="nv">$b</span> <span class="o">]]</span>; <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$a</span> <span class="nt">-gt</span> <span class="nv">$b</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     ...
 <span class="k">fi</span>
 
 <span class="c"># right</span>
-<span class="k">if</span> <span class="o">((</span>a &gt; b<span class="o">))</span>; <span class="k">then</span>
+<span class="k">if</span> <span class="o">((</span>a <span class="o">&gt;</span> b<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
     ...
 <span class="k">fi</span></code></pre></figure>
 
-<p><strong>不要</strong>使用 <code class="highlighter-rouge">let</code> 命令。</p>
+<p><strong>不要</strong>使用 <code class="language-plaintext highlighter-rouge">let</code> 命令。</p>
 
 <h3 id="参数扩展">参数扩展</h3>
 
-<p>使用<a href="http://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion">参数扩展</a>要好于使用外部命令，例如 <code class="highlighter-rouge">echo</code>, <code class="highlighter-rouge">sed</code>, <code class="highlighter-rouge">awk</code> 等等。</p>
+<p>使用<a href="http://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion">参数扩展</a>要好于使用外部命令，例如 <code class="language-plaintext highlighter-rouge">echo</code>, <code class="language-plaintext highlighter-rouge">sed</code>, <code class="language-plaintext highlighter-rouge">awk</code> 等等。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">name</span><span class="o">=</span><span class="s1">'bahamas10'</span>
 
 <span class="c"># wrong</span>
-<span class="nv">prog</span><span class="o">=</span><span class="k">$(</span>basename <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="k">)</span>
-<span class="nv">nonumbers</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$name</span><span class="s2">"</span> | sed -e <span class="s1">'s/[0-9]//g'</span><span class="k">)</span>
+<span class="nv">prog</span><span class="o">=</span><span class="si">$(</span><span class="nb">basename</span> <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="si">)</span>
+<span class="nv">nonumbers</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$name</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s/[0-9]//g'</span><span class="si">)</span>
 
 <span class="c"># right</span>
 <span class="nv">prog</span><span class="o">=</span><span class="k">${</span><span class="nv">0</span><span class="p">##*/</span><span class="k">}</span>
@@ -370,12 +370,12 @@ foo<span class="o">()</span> <span class="o">{</span>
 <p>不要使用 <a href="http://mywiki.wooledge.org/ParsingLs">解析 ls(1)</a>，而使用 bash 内置函数来循环文件。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># very wrong, potentially unsafe</span>
-<span class="k">for </span>f <span class="k">in</span> <span class="k">$(</span>ls<span class="k">)</span>; <span class="k">do</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="si">$(</span><span class="nb">ls</span><span class="si">)</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span>
 
 <span class="c"># right</span>
-<span class="k">for </span>f <span class="k">in</span> <span class="k">*</span>; <span class="k">do</span>
+<span class="k">for </span>f <span class="k">in</span> <span class="k">*</span><span class="p">;</span> <span class="k">do</span>
     ...
 <span class="k">done</span></code></pre></figure>
 
@@ -391,25 +391,25 @@ foo<span class="o">()</span> <span class="o">{</span>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
 <span class="nv">modules</span><span class="o">=</span><span class="s1">'json httpserver jshint'</span>
-<span class="k">for </span>module <span class="k">in</span> <span class="nv">$modules</span>; <span class="k">do
-    </span>npm install -g <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
+<span class="k">for </span>module <span class="k">in</span> <span class="nv">$modules</span><span class="p">;</span> <span class="k">do
+    </span>npm <span class="nb">install</span> <span class="nt">-g</span> <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
 <span class="k">done</span>
 
 <span class="c"># right</span>
 <span class="nv">modules</span><span class="o">=(</span>json httpserver jshint<span class="o">)</span>
-<span class="k">for </span>module <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">modules</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span>; <span class="k">do
-    </span>npm install -g <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
+<span class="k">for </span>module <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">modules</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+    </span>npm <span class="nb">install</span> <span class="nt">-g</span> <span class="s2">"</span><span class="nv">$module</span><span class="s2">"</span>
 <span class="k">done</span></code></pre></figure>
 
 <h3 id="内置读取">内置读取</h3>
 
-<p>只要有可能，使用 bash 内置的 <code class="highlighter-rouge">read</code> 避免调用外部命令。</p>
+<p>只要有可能，使用 bash 内置的 <code class="language-plaintext highlighter-rouge">read</code> 避免调用外部命令。</p>
 
 <p>例子：</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">fqdn</span><span class="o">=</span><span class="s1">'computer1.daveeddy.com'</span>
 
-<span class="nv">IFS</span><span class="o">=</span>. <span class="nb">read </span>hostname domain tld <span class="o">&lt;&lt;&lt;</span> <span class="s2">"</span><span class="nv">$fqdn</span><span class="s2">"</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="nb">.</span> <span class="nb">read hostname </span>domain tld <span class="o">&lt;&lt;&lt;</span> <span class="s2">"</span><span class="nv">$fqdn</span><span class="s2">"</span>
 <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$hostname</span><span class="s2"> is in </span><span class="nv">$domain</span><span class="s2">.</span><span class="nv">$tld</span><span class="s2">"</span>
 <span class="c"># =&gt; "computer1 is in daveeddy.com"</span></code></pre></figure>
 
@@ -417,22 +417,22 @@ foo<span class="o">()</span> <span class="o">{</span>
 
 <h3 id="gnu-用户工具">GNU 用户工具</h3>
 
-<p>全世界不会都运行在 GNU 或 Linux 上；当调用外部命令时，例如 <code class="highlighter-rouge">awk</code>, <code class="highlighter-rouge">sed</code>, <code class="highlighter-rouge">grep</code>，避免 GNU 特定的选项，使其尽量易于移植。</p>
+<p>全世界不会都运行在 GNU 或 Linux 上；当调用外部命令时，例如 <code class="language-plaintext highlighter-rouge">awk</code>, <code class="language-plaintext highlighter-rouge">sed</code>, <code class="language-plaintext highlighter-rouge">grep</code>，避免 GNU 特定的选项，使其尽量易于移植。</p>
 
 <p>当你编写 bash ，并且使用给你的所有强大工具和 bash 的内建命令时，你会发现甚至很少有机会需要调用外部命令。</p>
 
 <h3 id="uuoc"><a href="http://www.smallo.ruhr.de/award.html">UUOC</a></h3>
 
-<p>不要在你不需要的时候使用 <code class="highlighter-rouge">cat(1)</code>。如果程序支持从标准输入读取，使用 bash 重定向传递数据。</p>
+<p>不要在你不需要的时候使用 <code class="language-plaintext highlighter-rouge">cat(1)</code>。如果程序支持从标准输入读取，使用 bash 重定向传递数据。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
-cat file | grep foo
+<span class="nb">cat </span>file | <span class="nb">grep </span>foo
 
 <span class="c"># right</span>
-grep foo &lt; file
+<span class="nb">grep </span>foo &lt; file
 
 <span class="c"># also right</span>
-grep foo file</code></pre></figure>
+<span class="nb">grep </span>foo file</code></pre></figure>
 
 <p>如果我们能够推断，当程序说它可以通过名称读取文件，并且这样做能获得更好的性能时，我们可以使用这个内置读取文件方法的命令行工具，而不是标准输入。</p>
 
@@ -456,7 +456,7 @@ grep foo file</code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">foo</span><span class="o">=</span><span class="s1">'hello world'</span>
 
-<span class="k">if</span> <span class="o">[[</span> -n <span class="nv">$foo</span> <span class="o">]]</span>; <span class="k">then</span>   <span class="c"># 不需要引号 - [[ ... ]] 不会把变量分词</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nt">-n</span> <span class="nv">$foo</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>   <span class="c"># 不需要引号 - [[ ... ]] 不会把变量分词</span>
     <span class="nb">echo</span> <span class="s2">"</span><span class="nv">$foo</span><span class="s2">"</span>          <span class="c"># 需要印号</span>
 <span class="k">fi
 
@@ -467,26 +467,26 @@ grep foo file</code></pre></figure>
 </ol>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">printf_date_supported</span><span class="o">=</span><span class="nb">false
-</span><span class="k">if </span><span class="nb">printf</span> <span class="s1">'%()T'</span> &amp;&gt;/dev/null; <span class="k">then
+</span><span class="k">if </span><span class="nb">printf</span> <span class="s1">'%()T'</span> &amp;&gt;/dev/null<span class="p">;</span> <span class="k">then
     </span><span class="nv">printf_date_supported</span><span class="o">=</span><span class="nb">true
 </span><span class="k">fi
 
-if</span> <span class="nv">$printf_date_supported</span>; <span class="k">then</span>
+if</span> <span class="nv">$printf_date_supported</span><span class="p">;</span> <span class="k">then</span>
     ...
 <span class="k">fi</span></code></pre></figure>
 
-<p>在这个例子中，虽然在 <code class="highlighter-rouge">if</code> 声明中的 <code class="highlighter-rouge">$printf_date_supported</code> 将经历分词，但仍然不需要引号，因为这个变量的内容被明确地控制着，并不会从用户或其它命令里取值。</p>
+<p>在这个例子中，虽然在 <code class="language-plaintext highlighter-rouge">if</code> 声明中的 <code class="language-plaintext highlighter-rouge">$printf_date_supported</code> 将经历分词，但仍然不需要引号，因为这个变量的内容被明确地控制着，并不会从用户或其它命令里取值。</p>
 
-<p>同样的，例如 <code class="highlighter-rouge">$$</code>, <code class="highlighter-rouge">$?</code>, <code class="highlighter-rouge">$#</code>这些变量，也不需要引号，因为他们绝不会包含空格、制表符或换行符。</p>
+<p>同样的，例如 <code class="language-plaintext highlighter-rouge">$$</code>, <code class="language-plaintext highlighter-rouge">$?</code>, <code class="language-plaintext highlighter-rouge">$#</code>这些变量，也不需要引号，因为他们绝不会包含空格、制表符或换行符。</p>
 
 <p>然而，如果仍怀有疑问，可以查看<a href="http://mywiki.wooledge.org/Quotes">引用所有的扩展</a>。</p>
 
 <h3 id="变量声明">变量声明</h3>
 
-<p>避免大写的变量名，除非有一个很好的理由使用他们。不要使用 <code class="highlighter-rouge">let</code> 或 <code class="highlighter-rouge">readonly</code> 创建变量。<code class="highlighter-rouge">declare</code> 应该<em>只用于</em>关联数组。在函数中，应<em>始终</em>使用 <code class="highlighter-rouge">local</code> 声明变量。</p>
+<p>避免大写的变量名，除非有一个很好的理由使用他们。不要使用 <code class="language-plaintext highlighter-rouge">let</code> 或 <code class="language-plaintext highlighter-rouge">readonly</code> 创建变量。<code class="language-plaintext highlighter-rouge">declare</code> 应该<em>只用于</em>关联数组。在函数中，应<em>始终</em>使用 <code class="language-plaintext highlighter-rouge">local</code> 声明变量。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
-<span class="nb">declare</span> -i <span class="nv">foo</span><span class="o">=</span>5
+<span class="nb">declare</span> <span class="nt">-i</span> <span class="nv">foo</span><span class="o">=</span>5
 <span class="nb">let </span>foo++
 <span class="nb">readonly </span><span class="nv">bar</span><span class="o">=</span><span class="s1">'something'</span>
 <span class="nv">FOOBAR</span><span class="o">=</span>baz
@@ -499,29 +499,29 @@ if</span> <span class="nv">$printf_date_supported</span>; <span class="k">then</
 
 <h3 id="shebang">shebang</h3>
 
-<p>Bash 不总是位于 <code class="highlighter-rouge">/bin/bash</code>，因此尽量这样来写这一行：</p>
+<p>Bash 不总是位于 <code class="language-plaintext highlighter-rouge">/bin/bash</code>，因此尽量这样来写这一行：</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/usr/bin/env bash</span></code></pre></figure>
 
 <h3 id="错误检查">错误检查</h3>
 
-<p>举个例子，<code class="highlighter-rouge">cd</code> 不总是工作。请务必检查 <code class="highlighter-rouge">cd</code>（或类似的命令）任何可能的错误，如果错误存在就退出或将错误抛出。</p>
+<p>举个例子，<code class="language-plaintext highlighter-rouge">cd</code> 不总是工作。请务必检查 <code class="language-plaintext highlighter-rouge">cd</code>（或类似的命令）任何可能的错误，如果错误存在就退出或将错误抛出。</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># wrong</span>
 <span class="nb">cd</span> /some/path <span class="c"># 可能会失败</span>
-rm file       <span class="c"># 如果 cd 失败我在哪？我删除了什么？</span>
+<span class="nb">rm </span>file       <span class="c"># 如果 cd 失败我在哪？我删除了什么？</span>
 
 <span class="c"># right</span>
 <span class="nb">cd</span> /some/path <span class="o">||</span> <span class="nb">exit
-</span>rm file</code></pre></figure>
+rm </span>file</code></pre></figure>
 
-<h3 id="set--e"><code class="highlighter-rouge">set -e</code></h3>
+<h3 id="set--e"><code class="language-plaintext highlighter-rouge">set -e</code></h3>
 
-<p>不要设置 <code class="highlighter-rouge">errexit</code>。如同在 C 语言中，有时你想要得到一个错误，或是你期望什么执行失败，并不意味着你想要退出程序。</p>
+<p>不要设置 <code class="language-plaintext highlighter-rouge">errexit</code>。如同在 C 语言中，有时你想要得到一个错误，或是你期望什么执行失败，并不意味着你想要退出程序。</p>
 
 <p>http://mywiki.wooledge.org/BashFAQ/105</p>
 
-<h3 id="eval"><code class="highlighter-rouge">eval</code></h3>
+<h3 id="eval"><code class="language-plaintext highlighter-rouge">eval</code></h3>
 
 <p>永远不要使用.</p>
 
@@ -612,7 +612,7 @@ rm file       <span class="c"># 如果 cd 失败我在哪？我删除了什么�
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -710,6 +710,12 @@ rm file       <span class="c"># 如果 cd 失败我在哪？我删除了什么�
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -835,7 +841,7 @@ rm file       <span class="c"># 如果 cd 失败我在哪？我删除了什么�
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe

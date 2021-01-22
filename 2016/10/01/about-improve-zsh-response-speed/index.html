@@ -229,7 +229,7 @@
 
 <p>我怎么用怎么觉得不爽，再也无心他事，直接扑在了改进 zsh 的速度上面。</p>
 
-<p>我谷歌了很多资料，zsh 太慢的问题被很多人抱怨过，在此过程中我也学会了使用 <code class="highlighter-rouge">zsh -xv</code> 命令调试 zsh 。</p>
+<p>我谷歌了很多资料，zsh 太慢的问题被很多人抱怨过，在此过程中我也学会了使用 <code class="language-plaintext highlighter-rouge">zsh -xv</code> 命令调试 zsh 。</p>
 
 <p>我发现启动和运行过慢的原因有四点。</p>
 
@@ -241,21 +241,20 @@
 
 <p>第二，某些响应卡顿的命令明显影响 zsh 启动速度。</p>
 
-<p>我使用<code class="highlighter-rouge">zsh -xv</code> 命令调试 zsh 的时候发现，每次启动当加载到了某些插件，比如 autojump，执行到<code class="highlighter-rouge">brew --prefix</code>命令的时候会有非常明显的卡顿。 而在加载过程中，不止一次会调用到这个命令。</p>
+<p>我使用<code class="language-plaintext highlighter-rouge">zsh -xv</code> 命令调试 zsh 的时候发现，每次启动当加载到了某些插件，比如 autojump，执行到<code class="language-plaintext highlighter-rouge">brew --prefix</code>命令的时候会有非常明显的卡顿。 而在加载过程中，不止一次会调用到这个命令。</p>
 
-<p>所以我将所有插件中的<code class="highlighter-rouge">brew --prefix</code>都替换回了它的结果<code class="highlighter-rouge">/usr/local</code>，我觉得我并不会轻易改动 brew 的安装目录。修改之后，zsh 的启动时间从十几秒直接缩减到了 3.5 秒。</p>
+<p>所以我将所有插件中的<code class="language-plaintext highlighter-rouge">brew --prefix</code>都替换回了它的结果<code class="language-plaintext highlighter-rouge">/usr/local</code>，我觉得我并不会轻易改动 brew 的安装目录。修改之后，zsh 的启动时间从十几秒直接缩减到了 3.5 秒。</p>
 
 <p>可以用下面这条命令测量 zsh 的启动时间。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>usr/bin/time /bin/zsh -i -c exit
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>usr/bin/time /bin/zsh -i -c exit
+</code></pre></div></div>
 
 <p>第三，所用主题的 prompt 功能会非常影响 prompt 的响应速度，尤其是 git prompt</p>
 
-<p>我根据自己的使用习惯，在 <code class="highlighter-rouge">agnoster</code> 主题之上做了一些修改，添加了一些逻辑。在这次事件发生后，我读了一下主题的源码，做了一些优化。</p>
+<p>我根据自己的使用习惯，在 <code class="language-plaintext highlighter-rouge">agnoster</code> 主题之上做了一些修改，添加了一些逻辑。在这次事件发生后，我读了一下主题的源码，做了一些优化。</p>
 
-<p>比如，把类似 <code class="highlighter-rouge">echo $var |sed ...</code> 等造成多进程开销的命令都使用 Bash 内部替换代替（详见<a href="http://echohn.github.io/2016/05/21/bash-style-guide-cn/">我翻译的这篇文章</a>）。</p>
+<p>比如，把类似 <code class="language-plaintext highlighter-rouge">echo $var |sed ...</code> 等造成多进程开销的命令都使用 Bash 内部替换代替（详见<a href="http://echohn.github.io/2016/05/21/bash-style-guide-cn/">我翻译的这篇文章</a>）。</p>
 
 <p>而且这次我发现主题中的 git prompt 逻辑会非常影响 prompt 的响应速度。尤其是判断 git 中的版本有没有未提交的文件等状态的相关命令。我在测试的时候，将其替换成一个只显示 git 分支，不显示其他状态的 git prompt，其响应速度直接提升到让我满意的程度。</p>
 
@@ -348,7 +347,7 @@
                             
         				
                             
-                				<a href="/tags/#Ruby" title="Ruby" rel="4">
+                				<a href="/tags/#Ruby" title="Ruby" rel="5">
                                     Ruby
                                 </a>
                             
@@ -446,6 +445,12 @@
                             
                 				<a href="/tags/#apiDoc" title="apiDoc" rel="1">
                                     apiDoc
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#RubyMine" title="RubyMine" rel="1">
+                                    RubyMine
                                 </a>
                             
         				
@@ -571,7 +576,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Echo's Blog 2017
+                    Copyright &copy; Echo's Blog 2021
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> |
                     <iframe
